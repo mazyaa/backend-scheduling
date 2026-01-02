@@ -1,0 +1,205 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum RoleUser {
+  admin
+  peserta
+  instruktur
+  asesor
+  direktur
+
+  @@map("role_user")
+}
+
+enum Aktivitas {
+  materi
+  uji_kompetensi
+
+  @@map("aktivitas")
+}
+
+enum StatusKompetensi {
+  kompeten
+  belum_kompeten
+
+  @@map("status_kompetensi") // map to snake_case table name in database
+}
+
+model User {
+  id       String   @id @default(uuid()) // use @id for primary key, and @default(uuid()) to auto-generate UUIDs
+  name     String   @db.VarChar(150) //use @db.VarChar(length) to set the maximum length of a string, if not specified, defaults use type 'text'
+  email    String   @db.VarChar(150)
+  noWa     String   @unique @map("no_wa") @db.VarChar(20) // use @map("column_name") to map to different column name in database
+  role     RoleUser
+  password String   @db.VarChar(255)
+  keahlian String?  @db.VarChar(255) // use ? (optional chain) to make a field optional (nullable in database)
+
+  createdAt DateTime @default(now()) @map("created_at") // use @default(now()) to set default value to current timestamp
+  updatedAt DateTime @updatedAt @map("updated_at") // use @updatedAt to auto-update timestamp on record update
+
+  // Relations      // define relations to other models
+  jadwalTraining   JadwalTraining[] // jadwalTraining is related to User in one-to-many relation, and if use on query, we use user.jadwalTraining to get all related jadwalTraining records
+  profilPeserta    ProfilPeserta? // one-to-one relation
+  pesertaTraining  PesertaTraining[] // one-to-many relation
+  materiUploaded   MateriTraining[]
+  penilaian        Penilaian[]
+  sertifikat       Sertifikat[]
+  instrukturJadwal DetailJadwalTraining[] @relation("instruktur_relation")
+  asesorJadwal     DetailJadwalTraining[] @relation("asesor_relation")
+
+  @@map("users")
+}
+
+model Training {
+  id           String  @id @default(uuid())
+  namaTraining String  @unique @map("nama_training") @db.VarChar(150)
+  description  String?
+
+  jadwalTraining JadwalTraining[]
+
+  @@map("training")
+}
+
+model JadwalTraining {
+  id          String   @id @default(uuid())
+  trainingId  String   @map("training_id")
+  userId      String   @map("user_id")
+  startDate   DateTime @map("start_date")
+  duration    Int
+  meetingLink String   @map("meeting_link")
+  batch       String   @db.VarChar(100)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  training        Training               @relation(fields: [trainingId], references: [id])
+  user            User                   @relation(fields: [userId], references: [id])
+  detailJadwal    DetailJadwalTraining[]
+  pesertaTraining PesertaTraining[]
+  penilaian       Penilaian[]
+  sertifikat      Sertifikat[]
+
+  @@map("jadwal_training")
+}
+
+model DetailJadwalTraining {
+  id               String     @id @default(uuid())
+  jadwalTrainingId String     @map("jadwal_training_id")
+  hari             DateTime
+  hariKe           Int        @map("hari_ke")
+  aktivitas        Aktivitas?
+  fileMateri       String?    @map("file_materi")
+
+  instrukturId String? @map("instruktur_id")
+  asesorId     String? @map("asesor_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  jadwalTraining JadwalTraining @relation(fields: [jadwalTrainingId], references: [id])
+
+  // Relations to User model for instruktur and asesor
+  instruktur User? @relation("instruktur_relation", fields: [instrukturId], references: [id])
+  asesor User? @relation("asesor_relation", fields: [asesorId], references: [id])
+
+  materiTraining MateriTraining[]
+
+  @@map("detail_jadwal_training")
+}
+
+model ProfilPeserta {
+  id                   String  @id @default(uuid())
+  userId               String  @unique @map("user_id")
+  instansi             String  @db.VarChar(200)
+  fileCv               String  @map("file_cv")
+  fileIjazah           String  @map("file_ijazah")
+  fileSuratRekomendasi String? @map("file_surat_rekomendasi")
+  fileKtp              String  @map("file_ktp")
+  fileFoto             String? @map("file_foto")
+  fileBuktiBayar       String? @map("file_bukti_bayar")
+  fileBuktiFollow      String? @map("file_bukti_follow")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("profil_peserta")
+}
+
+model PesertaTraining {
+  id               String @id @default(uuid())
+  userId           String @map("user_id")
+  jadwalTrainingId String @map("jadwal_training_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user           User           @relation(fields: [userId], references: [id])
+  jadwalTraining JadwalTraining @relation(fields: [jadwalTrainingId], references: [id])
+
+  @@unique([userId, jadwalTrainingId])
+  @@map("peserta_training")
+}
+
+model MateriTraining {
+  id                     String  @id @default(uuid())
+  detailJadwalTrainingId String  @map("detail_jadwal_training_id")
+  judul                  String  @db.VarChar(200)
+  fileMateri             String? @map("file_materi")
+  diuploadOleh           String  @map("diupload_oleh")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  detailJadwalTraining DetailJadwalTraining @relation(fields: [detailJadwalTrainingId], references: [id])
+
+  uploader User @relation(fields: [diuploadOleh], references: [id])
+
+  @@map("materi_training")
+}
+
+model Penilaian {
+  id               String           @id @default(uuid())
+  userId           String           @map("user_id")
+  jadwalTrainingId String           @map("jadwal_training_id")
+  statusKompetensi StatusKompetensi @map("status_kompetensi")
+  catatan          String
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  user           User           @relation(fields: [userId], references: [id])
+  jadwalTraining JadwalTraining @relation(fields: [jadwalTrainingId], references: [id])
+
+  @@unique([userId, jadwalTrainingId])
+  @@map("penilaian")
+}
+
+model Sertifikat {
+  id               String @id @default(uuid())
+  userId           String @map("user_id")
+  jadwalTrainingId String @map("jadwal_training_id")
+  nomorSertifikat  String @unique @map("nomor_sertifikat") @db.VarChar(150)
+  fileSertifikat   String @map("file_sertifikat")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  user           User           @relation(fields: [userId], references: [id])
+  jadwalTraining JadwalTraining @relation(fields: [jadwalTrainingId], references: [id])
+
+  @@map("sertifikat")
+}
