@@ -3,23 +3,26 @@ import { createServer } from 'http';
 import loadMiddlewares from './loaders';
 import routes from './routes';
 import config from './config';
+import { prisma } from './utils/prisma';
 
 async function main() {
-    try {
-        const app = express(); // create an express application
-        const server = createServer(app); // create an HTTP server using the express app
-        
-        loadMiddlewares(app);
+  try {
+    const app = express(); // create an express application
+    const server = createServer(app); // create an HTTP server using the express app
 
-        routes(app);
+    loadMiddlewares(app);
 
-        server.listen(config.port, () => {
-            console.log(`Server running in ${config.nodeEnv} mode on http://localhost:${config.port}/api`);
-        });
+    routes(app);
 
-    } catch (error) {
-        console.error('Error starting server:', error);
-    }
+    server.listen(config.port, () => {
+        console.log(
+            `Server running in ${config.nodeEnv} mode on http://localhost:${config.port}/api`,
+        );
+    });
+
+} catch (error) {
+    console.error('Error starting server:', error);
+  }
 }
 
 main();
