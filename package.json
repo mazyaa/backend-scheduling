@@ -10,7 +10,8 @@
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
     "db:reset": "prisma migrate reset",
-    "db:status": "prisma migrate status"
+    "db:status": "prisma migrate status",
+    "db:seed": "ts-node src/utils/prisma/seed.ts"
   },
   "author": "mazyaa",
   "license": "ISC",
