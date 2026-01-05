@@ -3,9 +3,8 @@ import { createServer } from 'http';
 import loadMiddlewares from './loaders';
 import routes from './routes';
 import config from './config';
-import { prisma } from './utils/prisma';
 
-async function main() {
+async function main(): Promise<void> {
   try {
     const app = express(); // create an express application
     const server = createServer(app); // create an HTTP server using the express app

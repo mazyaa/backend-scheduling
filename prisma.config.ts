@@ -6,7 +6,7 @@ import { DATABASE_URL } from "./src/utils/env";
 export default defineConfig({
   schema: "src/utils/prisma/schema.prisma",
   migrations: {
-    path: "prisma/migrations",
+    path: "src/utils/prisma/migrations",
   },
   datasource: {
     url: DATABASE_URL,
