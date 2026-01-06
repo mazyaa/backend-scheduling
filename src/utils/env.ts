@@ -26,3 +26,6 @@ export const ASESOR_PASSWORD: string = process.env.ASESOR_PASSWORD || '';
 export const DIREKTUR_EMAIL: string = process.env.DIREKTUR_EMAIL || '';
 export const DIREKTUR_NOWA: string = process.env.DIREKTUR_NOWA || '';
 export const DIREKTUR_PASSWORD: string = process.env.DIREKTUR_PASSWORD || '';
+
+// JWT Secret
+export const JWT_SECRET: string = process.env.JWT_SECRET || '';

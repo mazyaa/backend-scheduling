@@ -3,6 +3,7 @@ import { createServer } from 'http';
 import loadMiddlewares from './loaders';
 import routes from './routes';
 import config from './config';
+import { loadErrorMiddlewares } from './middlewares/error';
 
 async function main(): Promise<void> {
   try {
@@ -12,6 +13,8 @@ async function main(): Promise<void> {
     loadMiddlewares(app);
 
     routes(app);
+
+    loadErrorMiddlewares(app);
 
     server.listen(config.port, () => {
         console.log(
