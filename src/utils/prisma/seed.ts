@@ -1,6 +1,7 @@
 import { prisma } from '../client';
-import { RoleUser } from '@prisma/client';
 import bcrypt from 'bcrypt';
+import { RoleUser } from '@prisma/client';
+import { IUser } from '../interfaces';
 import {
     ADMIN_EMAIL,
     ADMIN_NOWA,
@@ -19,17 +20,8 @@ import {
     DIREKTUR_PASSWORD,
 } from '../env';
 
-interface UserSeedData {
-    name: string;
-    email: string;
-    noWa: string;
-    role: RoleUser;
-    password: string;
-    keahlian?: string;
-}
-
 async function seedUsers() {
-    const users: UserSeedData[] = [
+    const users: IUser[] = [
         {
             name: 'Admin',
             email: ADMIN_EMAIL,
