@@ -1,5 +1,5 @@
-import express from 'express';
-import { createServer } from 'http';
+import express, { Express } from 'express';
+import { createServer, Server } from 'http';
 import loadMiddlewares from './loaders';
 import routes from './routes';
 import config from './config';
@@ -7,13 +7,12 @@ import { loadErrorMiddlewares } from './middlewares/error';
 
 async function main(): Promise<void> {
   try {
-    const app = express(); // create an express application
-    const server = createServer(app); // create an HTTP server using the express app
+    const app: Express = express(); // create an express application
+    const server: Server = createServer(app); // create an HTTP server using the express app
 
+    // assign middlewares, routes, and error handlers to express app
     loadMiddlewares(app);
-
     routes(app);
-
     loadErrorMiddlewares(app);
 
     server.listen(config.port, () => {
