@@ -1,7 +1,7 @@
 import { prisma } from "../utils/client";
 import { ICreateUser, IUser } from "../utils/interfaces";
 
-export const createUser = async (payload: IUser): Promise<ICreateUser> => {
+export const createUser = async (payload: IUser): Promise<IUser> => {
     return await prisma.user.create({
         data: {
             name: payload.name,
@@ -20,7 +20,7 @@ export const getUserById = async (id: string): Promise<ICreateUser | null> => {
     })
 }
 
-export const getUserByEmail = async (email: string): Promise<ICreateUser | null > => {
+export const getUserByEmail = async (email: string): Promise<IUser | null > => {
     return await prisma.user.findUnique({ // if using findUnique attribute must be unique
         where: { email },
     });

@@ -6,12 +6,11 @@ export interface IUser {
     noWa: string;
     role: RoleUser;
     password: string;
-    keahlian?: string;
+    keahlian?: string | null;
 }
 
-export interface ICreateUser extends Omit<IUser, "keahlian"> { // use Omit to exclude keahlian from IUser and recreate type keahlian to Ilogin
+export interface ICreateUser extends IUser { // use Omit to exclude keahlian from IUser and recreate type keahlian to Ilogin
     id: string;
-    keahlian?: string | null;
 }
 
 export interface ITokenPayload extends Pick<IUser, "email"> { // use Pick to select only email from IUser so if have pick, not neet to rewrite type again
