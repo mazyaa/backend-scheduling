@@ -3,7 +3,6 @@ import { IUser } from "../utils/interfaces";
 import { generateRandomPassword } from "../utils/helper";
 import { HttpError } from "../utils/error";
 import * as userRepository from "../repositories/user";
-import bcrypt from "bcrypt";
 
 export const createInstrukturAndAsesor = async (props: IUser): Promise<Omit<IUser, "password">> => {
     const { name, email, noWa, role, keahlian } = props;
@@ -17,7 +16,7 @@ export const createInstrukturAndAsesor = async (props: IUser): Promise<Omit<IUse
     const validateNoWa = await userRepository.getUserByNoWa(noWa);
 
     if (validateNoWa) {
-        throw new HttpError("No WhatsApp already in use", 409);
+        throw new HttpError("Number WhatsApp already in use", 409);
     }
 
     const randomPassword = generateRandomPassword(12);
@@ -34,7 +33,7 @@ export const createInstrukturAndAsesor = async (props: IUser): Promise<Omit<IUse
     const result = await userRepository.createUser(newUser);
     const {password, ...data} = result; // exclude password from result
 
-    return result;
+    return data;
 }
 
 export const getInstrukturAndAsesorByEmail = async (email: string): Promise<IUser | null> => {
