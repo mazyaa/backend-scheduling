@@ -40,7 +40,7 @@ model User {
   id       String   @id @default(uuid()) // use @id for primary key, and @default(uuid()) to auto-generate UUIDs
   name     String   @db.VarChar(150) //use @db.VarChar(length) to set the maximum length of a string, if not specified, defaults use type 'text'
   email    String   @unique @db.VarChar(150)
-  noWa     String   @map("no_wa") @db.VarChar(20) // use @map("column_name") to map to different column name in database
+  noWa     String   @unique @map("no_wa") @db.VarChar(20) // use @map("column_name") to map to different column name in database
   role     RoleUser
   password String   @db.VarChar(255)
   keahlian String?  @db.VarChar(255) // use ? (optional chain) to make a field optional (nullable in database)

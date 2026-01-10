@@ -41,7 +41,7 @@ export const verifyTokenAndUser = async (token: string): Promise<ICreateUser> =>
         const { id } = verifyToken(token); // destructuring id from payload returned by verifyToken function
 
         const user = await userRepository.getUserById(id);
-
+       
         if (!user) {
             throw new HttpError("User not found!", 404);
         }

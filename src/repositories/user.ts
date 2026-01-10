@@ -25,3 +25,9 @@ export const getUserByEmail = async (email: string): Promise<ICreateUser | null 
         where: { email },
     });
 }
+
+export const getUserByNoWa = async (noWa: string): Promise<ICreateUser | null > => {
+    return await prisma.user.findUnique({  // if using findUnique attribute must be unique
+        where: { noWa },
+    });
+}
