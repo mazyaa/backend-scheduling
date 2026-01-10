@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ICreateUser } from "../utils/interfaces";
 import { HttpError } from "../utils/error";
-import * as userServices from "../services/user";
+import * as authServices from "../services/auth";
 
 export const checkUserEmailorNoWaExists = async (req: Request, res: Response, next: NextFunction) => {
     const { email, noWa } = req.body;
@@ -12,7 +12,7 @@ export const checkUserEmailorNoWaExists = async (req: Request, res: Response, ne
    
     // check if email already exists in the database
     if (email && !skipUniqueCheckEmail) {
-        const existingUserByEmail = await userServices.getInstrukturAndAsesorByEmail(email);
+        const existingUserByEmail = await authServices.getUserByEmail(email);
 
         if (existingUserByEmail) {
             throw new HttpError("Email already in use", 409);
@@ -23,7 +23,7 @@ export const checkUserEmailorNoWaExists = async (req: Request, res: Response, ne
 
     // check if noWa already exists in the database
     if (noWa && !skipUniqueCheckNoWa) {
-        const existingUserByNoWa = await userServices.getInstrukturAndAsesorByNoWa(noWa);
+        const existingUserByNoWa = await authServices.getUserByNumberWhatsapp(noWa);
 
         if (existingUserByNoWa) {
             throw new HttpError("No WhatsApp already in use", 409);

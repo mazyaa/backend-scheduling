@@ -8,13 +8,15 @@ const notFoundHandler = (req: Request, res: Response, next: NextFunction): void 
 };
 
 // General error handling middleware
-const errorHandler = (err: HttpError, req: Request, res: Response, next: NextFunction): void => {
+const errorHandler = (err: unknown, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof HttpError) { // check if the error is an instance of HttpError
         res.status(err.statusCode).json({ message: err.message }); // send JSON response with status code and message
+        return;
     }
 
     if (err instanceof Error) { // check if the error is an instance of Error
         res.status(500).json({ message: err.message }); // send JSON response with status code 500 and message
+        return;
     }
 
     res.status(500).json({ message: 'Internal Server Error' }); // default response for unknown errors
