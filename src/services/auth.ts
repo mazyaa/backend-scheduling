@@ -1,9 +1,9 @@
-import * as userRepository from "../repositories/user";
-import { HttpError } from "../utils/error";
+import * as authRepository from "../repositories/auth";
 import bcrypt from "bcrypt";
-import { generateToken, verifyToken } from "../utils/jwt";
-import { ICreateUser, Ilogin } from "../utils/interfaces";
 import jwt from "jsonwebtoken";
+import { HttpError } from "../utils/error";
+import { generateToken, verifyToken } from "../utils/jwt";
+import { ICreateUser, Ilogin, IUser } from "../utils/interfaces";
 
 export const isPasswordMatch = async (password: string, hashedPassword: string): Promise<boolean> => {
     const isMatch = await bcrypt.compare(password, hashedPassword);
@@ -12,7 +12,7 @@ export const isPasswordMatch = async (password: string, hashedPassword: string):
 }
 
 export const login = async (email: string, password: string): Promise<Ilogin> => {
-    const user = await userRepository.getUserByEmail(email);
+    const user = await authRepository.getUserByEmail(email);
 
     if (!user) {
         throw new HttpError("User not found!", 404);
@@ -40,7 +40,7 @@ export const verifyTokenAndUser = async (token: string): Promise<ICreateUser> =>
     try {
         const { id } = verifyToken(token); // destructuring id from payload returned by verifyToken function
 
-        const user = await userRepository.getUserById(id);
+        const user = await authRepository.getUserById(id);
        
         if (!user) {
             throw new HttpError("User not found!", 404);
@@ -53,6 +53,18 @@ export const verifyTokenAndUser = async (token: string): Promise<ICreateUser> =>
         }
 
         throw error; // using throw to rethrow the error to be handled by the caller
-    }
-    
+    } 
+}
+
+
+export const getUserByEmail = async (email: string): Promise<IUser | null> => {
+    const data = await authRepository.getUserByEmail(email);
+
+    return data;
+}
+
+export const getUserByNumberWhatsapp = async (noWa: string): Promise<IUser | null> => {
+    const data = await authRepository.getUserByNumberWhatsapp(noWa); 
+
+    return data;
 }

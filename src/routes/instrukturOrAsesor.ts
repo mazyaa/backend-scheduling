@@ -1,10 +1,9 @@
 import { Router } from "express";
 import * as authMiddlewares from "../middlewares/auth";
 import * as instrukturAndAsesorValidation from "../middlewares/validation/users";
-import * as userMiddlewares from "../middlewares/users";
-import * as userController from "../controllers/users";
+import * as instrukturOrAsesorController from "../controllers/instrukturOrAsesor";
 
-const userRoutes = (router: Router): void => {
+const instrukturOrAsesorRoutes = (router: Router): void => {
     const userRouter = Router(); 
 
     router.use('/user', userRouter); // second params is use for registering all user related routes to userRouter ex: /user/create-instruktur-or-asesor etc.
@@ -15,8 +14,8 @@ const userRoutes = (router: Router): void => {
             authMiddlewares.isAuthorized,
             authMiddlewares.isAdmin,
             instrukturAndAsesorValidation.createOrUpdateInstrukturAndAsesorValidation,
-            userController.createInstrukturAndAsesor,
+            instrukturOrAsesorController.createInstrukturAndAsesor,
         );
 }
 
-export default userRoutes;
+export default instrukturOrAsesorRoutes;

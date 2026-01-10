@@ -1,6 +1,7 @@
 import { Application, Router } from 'express';
 import authRoutes from './auth';
-import userRoutes from './user';
+import instrukturOrAsesorRoutes from './instrukturOrAsesor';
+
 
 const routes = (app: Application): void => {
   const router = Router(); // this value is null at the beginning
@@ -10,7 +11,7 @@ const routes = (app: Application): void => {
 
   // registering all routes to router
   authRoutes(router); 
-  userRoutes(router);
+  instrukturOrAsesorRoutes(router);
 };
 
 export default routes;
