@@ -14,7 +14,7 @@ export const createPeserta = async (payload: IUser): Promise<ICreateUser> => {
     });
 }
 
-export const getPesertaById = async (id: string): Promise<ICreateUser | null> => {
+export const getPesertaById = async (id: string): Promise<IUser | null> => {
     return await prisma.user.findUnique({ // if using findUnique attribute must be unique (id is unique)
         where: { id },
     })

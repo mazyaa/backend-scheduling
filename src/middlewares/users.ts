@@ -3,6 +3,18 @@ import { ICreateUser } from "../utils/interfaces";
 import { HttpError } from "../utils/error";
 import * as authServices from "../services/auth";
 
+export const checkUserIdExists = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { id } = req.params;
+
+    const user = await authServices.getUserById(id);
+
+    if (!user) {
+        throw new HttpError("User not found", 404);
+    }
+
+    next();
+}
+
 export const checkUserEmailorNoWaExists = async (req: Request, res: Response, next: NextFunction) => {
     const { email, noWa } = req.body;
 
