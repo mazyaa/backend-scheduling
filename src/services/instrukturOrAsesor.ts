@@ -1,83 +1,129 @@
-import * as authRepository from "../repositories/auth";
-import * as instrukturOrAsesorRepository from "../repositories/instruturOrAsesor";
-import { generateRandomPassword } from "../utils/helper";
-import { HttpError } from "../utils/error";
-import { ICreateUser, IUser } from "../utils/interfaces";
+import * as authRepository from '../repositories/auth';
+import * as instrukturOrAsesorRepository from '../repositories/instruturOrAsesor';
+import { generateRandomPassword } from '../utils/helper';
+import { HttpError } from '../utils/error';
+import {
+  ICreateUser,
+  IMetaPagination,
+  IPaginationQuery,
+  IUser,
+} from '../utils/interfaces';
 
-export const createInstrukturAndAsesor = async (payload: ICreateUser): Promise<Omit<IUser, "password">> => {
-    const { name, email, noWa, role, keahlian } = payload;
+export const createInstrukturAndAsesor = async (
+  payload: ICreateUser,
+): Promise<Omit<IUser, 'password'>> => {
+  const { name, email, noWa, role, keahlian } = payload;
 
-    const validateEmail = await authRepository.getUserByEmail(email);
+  const validateEmail = await authRepository.getUserByEmail(email);
 
-    if (validateEmail) {
-        throw new HttpError("Email already in use", 409);
-    };
+  if (validateEmail) {
+    throw new HttpError('Email already in use', 409);
+  }
 
-    const validateNoWa = await authRepository.getUserByNumberWhatsapp(noWa);
+  const validateNoWa = await authRepository.getUserByNumberWhatsapp(noWa);
 
-    if (validateNoWa) {
-        throw new HttpError("Number WhatsApp already in use", 409);
-    }
+  if (validateNoWa) {
+    throw new HttpError('Number WhatsApp already in use', 409);
+  }
 
-    const randomPassword = generateRandomPassword(12);
+  const randomPassword = generateRandomPassword(12);
 
-    const newUser: ICreateUser = {
-        name,
-        email,
-        noWa,
-        role,
-        password: randomPassword,
-        keahlian,
-    };
+  const newUser: ICreateUser = {
+    name,
+    email,
+    noWa,
+    role,
+    password: randomPassword,
+    keahlian,
+  };
 
-    const data = await instrukturOrAsesorRepository.createInstrukturOrAsesor(newUser);
-    const {password, ...result} = data; // exclude password from result
+  const data =
+    await instrukturOrAsesorRepository.createInstrukturOrAsesor(newUser);
+  const { password, ...result } = data; // exclude password from result
 
-    return result;
-}
+  return result;
+};
 
-export const getInstrukturOrAsesorById = async (id: string): Promise<Omit<IUser, "password">> => {
-    const data = await instrukturOrAsesorRepository.getInstrukturOrAsesorById(id); 
-    
-    const { password, ...result } = data as IUser; // exclude password from result
+export const getInstrukturOrAsesorById = async (
+  id: string,
+): Promise<Omit<IUser, 'password'>> => {
+  const data = await instrukturOrAsesorRepository.getInstrukturOrAsesorById(id);
 
-    return result;
-}
+  const { password, ...result } = data as IUser; // exclude password from result
 
-export const getInstrukturOrAsesorByName = async (name: string): Promise<Omit<IUser, "password">[]> => {
-    // if name is provided, search by name, else get all instruktur or asesor
-    if (name && name.trim() !== '') { // use name.trim() to avoid spaces only
-        // search by name
-        const data = await instrukturOrAsesorRepository.getInstrukturOrAsesorByName(name);
-        const result = data.map(({ password, ...user }) => user); // exclude password from result, must use map because getInstrukturOrAsesorByName returns an array
+  return result;
+};
 
-        if (!data || data.length === 0) {
-            throw new HttpError("Instruktur or Asesor not found", 404);
-        }
+export const getAllInstrukturOrAsesor = async (
+  payload: IPaginationQuery,
+): Promise<{
+  data: Omit<IUser, 'password'>[];
+  pagination: IMetaPagination;
+}> => {
+  const { page, limit, search } = payload;
 
-        return result;
-    }
+  const skip = (page - 1) * limit; // for skipping data ex: page 2 => (2-1)*10 = 10 data will be skipped
 
-    // get all instruktur or asesor
-    const data = await instrukturOrAsesorRepository.getAllInstrukturOrAsesor();
-    const result = data.map(({ password, ...user }) => user); // exclude password from result, must use map because getAllInstrukturOrAsesor returns an array
+  // search filter
+  const where = search
+    ? {
+        name: {
+          contains: search, // contains is like operator in SQL so it will search for name that contains the search keyword
+          mode: 'insensitive', // case insensitive ex: "John" = "john"
+        },
+      }
+    : undefined;
 
-    return data;
+  const [data, total] = await Promise.all([ // Promise.all to run multiple async task simultaneously
+    // task 1: get all instruktur or asesor with pagination
+    instrukturOrAsesorRepository.getAllInstrukturOrAsesor({
+      skip,
+      take: limit,
+      where,
+      orderBy: { createdAt: 'desc' }, // order by data newest first
+    }),
 
-}
+    // task 2: count total instruktur or asesor
+    instrukturOrAsesorRepository.countInstrukturOrAsesor(where),
+  ]);
 
-export const updateInstrukturAndAsesor = async (id: string, payload: Partial<ICreateUser>): Promise<Omit<IUser, "password">> => {
-    const data = await instrukturOrAsesorRepository.updateInstrukturOrAsesor(id, payload);
+  const result = (data as IUser[]).map(({ password, ...rest }) => rest); // exclude password from each result
 
-    const { password, ...result } = data as IUser; // exclude password from result
+  const totalPages = Math.ceil(total / limit); // use Math.ceil to round up the total pages ex: 95/10 = 9.5 => 10 pages
 
-    return result;
-}
+  return {
+    data: result,
+    pagination: {
+      total, // total data
+      totalPages,
+      currentPage: page,
+      limit,
+      hasNext: page < totalPages, // if current page less than total pages means has next page
+      hasPrevious: page > 1, // if current page greater than 1 means has previous page
+    },
+  };
+};
 
-export const deleteInstrukturAndAsesor = async (id: string): Promise<Omit<IUser, "password">> => {
-    const data = await instrukturOrAsesorRepository.deleteInstrukturOrAsesor(id);
+export const updateInstrukturAndAsesor = async (
+  id: string,
+  payload: Partial<ICreateUser>,
+): Promise<Omit<IUser, 'password'>> => {
+  const data = await instrukturOrAsesorRepository.updateInstrukturOrAsesor(
+    id,
+    payload,
+  );
 
-    const { password, ...result } = data as IUser; // exclude password from result
+  const { password, ...result } = data as IUser; // exclude password from result
 
-    return result;
-}
+  return result;
+};
+
+export const deleteInstrukturAndAsesor = async (
+  id: string,
+): Promise<Omit<IUser, 'password'>> => {
+  const data = await instrukturOrAsesorRepository.deleteInstrukturOrAsesor(id);
+
+  const { password, ...result } = data as IUser; // exclude password from result
+
+  return result;
+};

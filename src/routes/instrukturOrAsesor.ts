@@ -33,7 +33,7 @@ const instrukturOrAsesorRoutes = (router: Router): void => {
         '/',
         authMiddlewares.isAuthorized,
         aclMiddlewares.isAdmin,
-        instrukturOrAsesorController.getInstrukturOrAsesorByName,
+        instrukturOrAsesorController.getAllInstrukturAndAsesor,
      );
 
 
