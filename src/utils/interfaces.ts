@@ -1,10 +1,10 @@
-import { ROLES } from "./constants";
+import type { RoleUser } from "@prisma/client";
 
 export interface ICreateUser {
     name: string;
     email: string;
     noWa: string;
-    role: ROLES;
+    role: RoleUser;
     password: string;
     keahlian?: string | null;
 }
@@ -19,6 +19,6 @@ export interface ITokenPayload extends Pick<ICreateUser, "email"> { // use Pick 
 
 export interface Ilogin {
     name: string;
-    role: ROLES;
+    role: string;
     token: string;
 }
