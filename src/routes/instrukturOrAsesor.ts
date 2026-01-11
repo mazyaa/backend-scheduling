@@ -1,4 +1,5 @@
 import { Router } from "express";
+import * as aclMiddlewares from "../middlewares/acl";
 import * as instrukturOrAsesorController from "../controllers/instrukturOrAsesor";
 import * as authMiddlewares from "../middlewares/auth";
 import * as instrukturAndAsesorValidationMiddlewares from "../middlewares/validation/users";
@@ -14,7 +15,7 @@ const instrukturOrAsesorRoutes = (router: Router): void => {
     instrukturOrAsesorRouter.post(
         '/',
         authMiddlewares.isAuthorized,
-        authMiddlewares.isAdmin,
+        aclMiddlewares.isAdmin,
         instrukturAndAsesorValidationMiddlewares.createOrUpdateInstrukturAndAsesorValidation,
         instrukturOrAsesorController.createInstrukturAndAsesor,
     );
@@ -22,7 +23,7 @@ const instrukturOrAsesorRoutes = (router: Router): void => {
     instrukturOrAsesorRouter.get(
         '/:id',
         authMiddlewares.isAuthorized,
-        authMiddlewares.isAdmin,
+        aclMiddlewares.isAdmin,
         commonValidationMiddlewares.validateIdParams,
         userMiddlewares.checkUserIdExists,
         instrukturOrAsesorController.getInstrukturOrAsesorById,
@@ -31,7 +32,7 @@ const instrukturOrAsesorRoutes = (router: Router): void => {
     instrukturOrAsesorRouter.get(
         '/',
         authMiddlewares.isAuthorized,
-        authMiddlewares.isAdmin,
+        aclMiddlewares.isAdmin,
         instrukturOrAsesorController.getInstrukturOrAsesorByName,
      );
 
@@ -39,7 +40,7 @@ const instrukturOrAsesorRoutes = (router: Router): void => {
     instrukturOrAsesorRouter.put(
         '/:id',
         authMiddlewares.isAuthorized,
-        authMiddlewares.isAdmin,
+        aclMiddlewares.isAdmin,
         commonValidationMiddlewares.validateIdParams,
         instrukturAndAsesorValidationMiddlewares.createOrUpdateInstrukturAndAsesorValidation,
         userMiddlewares.checkUserIdExists,
@@ -50,7 +51,7 @@ const instrukturOrAsesorRoutes = (router: Router): void => {
     instrukturOrAsesorRouter.delete(
         '/:id',
         authMiddlewares.isAuthorized,
-        authMiddlewares.isAdmin,
+        aclMiddlewares.isAdmin,
         commonValidationMiddlewares.validateIdParams,
         userMiddlewares.checkUserIdExists,
         instrukturOrAsesorController.deleteInstrukturAndAsesor,

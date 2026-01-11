@@ -23,13 +23,3 @@ export const isAuthorized = async (req: Request, res: Response, next: NextFuncti
 
     next(); // if everything is fine, pass control to next middleware or controller
 }
-
-export const isAdmin = (req: Request, res: Response, next: NextFunction): void => {
-    const user = res.locals.user as ICreateUser; // use casting for changing type of res.locals.user to ICreateUser
-
-    if (user.role !== "admin") {
-        throw new HttpError("Forbidden: Admin access required", 403);
-    }
-
-    next(); // if user is admin, pass control to next middleware or controller
-}

@@ -1,9 +1,10 @@
+import { ROLES } from "./constants";
 
 export interface ICreateUser {
     name: string;
     email: string;
     noWa: string;
-    role: 'admin' | 'instruktur' | 'asesor' | 'peserta' | 'direktur';
+    role: ROLES;
     password: string;
     keahlian?: string | null;
 }
@@ -18,6 +19,6 @@ export interface ITokenPayload extends Pick<ICreateUser, "email"> { // use Pick 
 
 export interface Ilogin {
     name: string;
-    role: string;
+    role: ROLES;
     token: string;
 }
