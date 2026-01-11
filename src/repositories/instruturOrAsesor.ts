@@ -1,5 +1,5 @@
 import { prisma } from "../utils/client";
-import { ICreateUser, IUser } from "../utils/interfaces";
+import { ICreateUser, IPagination, IUser } from "../utils/interfaces";
 
 export const createInstrukturOrAsesor = async (payload: ICreateUser): Promise<IUser> => {
     return await prisma.user.create({
@@ -20,18 +20,6 @@ export const getInstrukturOrAsesorById = async (id: string): Promise<IUser | nul
     });
 }
 
-export const getInstrukturOrAsesorByName = async (name: string): Promise<IUser[]> => {
-    return await prisma.user.findMany({
-        where: { 
-            name: {
-                contains: name,
-                mode: "insensitive",
-            }
-        },
-    });
-}
-
-
 export const updateInstrukturOrAsesor = async (id: string, payload: Partial<IUser>): Promise<IUser> => { // Partial<IUser> means that all properties in IUser are optional
     return await prisma.user.update({
         where: { id},
@@ -45,6 +33,18 @@ export const deleteInstrukturOrAsesor = async (id: string): Promise<IUser> => {
     });
 };
 
-export const getAllInstrukturOrAsesor = async (): Promise<IUser[]> => {
-    return await prisma.user.findMany();
-};
+export const getAllInstrukturOrAsesor = async (payload: IPagination): Promise<IUser[]> => {
+    const { skip, take, where, orderBy } = payload;
+    return await prisma.user.findMany({
+       skip,
+       take,
+       where,
+       orderBy,
+    });
+}
+
+export const countInstrukturOrAsesor = async (where?: object): Promise<number> => {
+    return await prisma.user.count({
+        where,
+    });
+}

@@ -22,3 +22,25 @@ export interface Ilogin {
     role: string;
     token: string;
 }
+
+export interface IPagination {
+    skip: number;
+    take: number;
+    where?: any;
+    orderBy?: any;
+}
+
+export interface IPaginationQuery {
+    page: number;
+    limit: number;
+    search?: string;
+}
+
+export interface IMetaPagination {
+     total: number;
+        totalPages: number;
+        currentPage: number;
+        limit: number;
+        hasNext: boolean;
+        hasPrevious: boolean;
+}
