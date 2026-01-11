@@ -36,7 +36,7 @@ export const login = async (email: string, password: string): Promise<Ilogin> =>
     };
 }
 
-export const verifyTokenAndUser = async (token: string): Promise<ICreateUser> => {
+export const verifyTokenAndUser = async (token: string): Promise<IUser> => {
     try {
         const { id } = verifyToken(token); // destructuring id from payload returned by verifyToken function
 
@@ -54,6 +54,12 @@ export const verifyTokenAndUser = async (token: string): Promise<ICreateUser> =>
 
         throw error; // using throw to rethrow the error to be handled by the caller
     } 
+}
+
+export const getUserById = async (id: string): Promise<IUser | null> => {
+    const data = await authRepository.getUserById(id);
+
+    return data;
 }
 
 
