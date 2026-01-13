@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { HttpError } from "../utils/error";
 import { generateToken, verifyToken } from "../utils/jwt";
-import { ICreateUser, Ilogin, IUser } from "../utils/interfaces";
+import { Ilogin, IUser } from "../utils/interfaces";
 
 export const isPasswordMatch = async (password: string, hashedPassword: string): Promise<boolean> => {
     const isMatch = await bcrypt.compare(password, hashedPassword);

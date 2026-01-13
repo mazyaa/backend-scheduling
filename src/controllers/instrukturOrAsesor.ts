@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import * as instrukturOrAsesorServices from '../services/instrukturOrAsesor';
-import { IPaginationQuery, IUser, IMetaPagination } from '../utils/interfaces';
 
 export const createInstrukturAndAsesor = async (req: Request, res: Response): Promise<void> => {
     const { name, email, noWa, role, password, keahlian } = req.body;
@@ -78,12 +77,3 @@ export const deleteInstrukturAndAsesor = async (req: Request, res: Response): Pr
         data: result,
     });
 }
-
-// export const getAllInstrukturAndAsesor = async (req: Request, res: Response): Promise<void> => {
-//     const result = await instrukturOrAsesorServices.getAllInstrukturAndAsesor();
-
-//     res.status(200).json({
-//         message: 'All Users Retrieved Successfully!',
-//         data: result,
-//     });
-// }

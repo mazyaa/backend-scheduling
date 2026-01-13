@@ -1,7 +1,7 @@
 import { prisma } from '../client';
 import bcrypt from 'bcrypt';
 import { RoleUser } from '@prisma/client';
-import { IUser } from '../interfaces';
+import { ICreateUser } from '../interfaces';
 import {
     ADMIN_EMAIL,
     ADMIN_NOWA,
@@ -21,7 +21,7 @@ import {
 } from '../env';
 
 async function seedUsers() {
-    const users: IUser[] = [
+    const users: ICreateUser[] = [
         {
             name: 'Admin',
             email: ADMIN_EMAIL,
