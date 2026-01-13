@@ -1,10 +1,10 @@
-import { Router } from "express";
 import * as aclMiddlewares from "../middlewares/acl";
 import * as instrukturOrAsesorController from "../controllers/instrukturOrAsesor";
 import * as authMiddlewares from "../middlewares/auth";
-import * as instrukturAndAsesorValidationMiddlewares from "../middlewares/validation/users";
+import * as instrukturAndAsesorValidationMiddlewares from "../middlewares/validation/instrukturOrAsesor";
 import * as userMiddlewares from "../middlewares/users";
 import * as commonValidationMiddlewares from "../middlewares/validation/common";
+import { Router } from "express";
 
 const instrukturOrAsesorRoutes = (router: Router): void => {
     const instrukturOrAsesorRouter = Router(); 

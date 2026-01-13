@@ -4,14 +4,12 @@ import { generateRandomPassword } from '../utils/helper';
 import { HttpError } from '../utils/error';
 import {
   ICreateUser,
-  IMetaPagination,
   IPaginationQuery,
+  IResultPagination,
   IUser,
 } from '../utils/interfaces';
 
-export const createInstrukturAndAsesor = async (
-  payload: ICreateUser,
-): Promise<Omit<IUser, 'password'>> => {
+export const createInstrukturAndAsesor = async (payload: ICreateUser): Promise<Omit<IUser, 'password'>> => {
   const { name, email, noWa, role, keahlian } = payload;
 
   const validateEmail = await authRepository.getUserByEmail(email);
@@ -37,16 +35,13 @@ export const createInstrukturAndAsesor = async (
     keahlian,
   };
 
-  const data =
-    await instrukturOrAsesorRepository.createInstrukturOrAsesor(newUser);
+  const data = await instrukturOrAsesorRepository.createInstrukturOrAsesor(newUser);
   const { password, ...result } = data; // exclude password from result
 
   return result;
 };
 
-export const getInstrukturOrAsesorById = async (
-  id: string,
-): Promise<Omit<IUser, 'password'>> => {
+export const getInstrukturOrAsesorById = async (id: string): Promise<Omit<IUser, 'password'>> => {
   const data = await instrukturOrAsesorRepository.getInstrukturOrAsesorById(id);
 
   const { password, ...result } = data as IUser; // exclude password from result
@@ -58,7 +53,7 @@ export const getAllInstrukturOrAsesor = async (
   payload: IPaginationQuery,
 ): Promise<{
   data: Omit<IUser, 'password'>[];
-  pagination: IMetaPagination;
+  pagination: IResultPagination;
 }> => {
   const { page, limit, search } = payload;
 
@@ -106,7 +101,7 @@ export const getAllInstrukturOrAsesor = async (
 
 export const updateInstrukturAndAsesor = async (
   id: string,
-  payload: Partial<ICreateUser>,
+  payload: Partial<ICreateUser>, // use Partial<ICreateUser> means that all properties in ICreateUser are optional
 ): Promise<Omit<IUser, 'password'>> => {
   const data = await instrukturOrAsesorRepository.updateInstrukturOrAsesor(
     id,
@@ -118,9 +113,7 @@ export const updateInstrukturAndAsesor = async (
   return result;
 };
 
-export const deleteInstrukturAndAsesor = async (
-  id: string,
-): Promise<Omit<IUser, 'password'>> => {
+export const deleteInstrukturAndAsesor = async (id: string): Promise<Omit<IUser, 'password'>> => {
   const data = await instrukturOrAsesorRepository.deleteInstrukturOrAsesor(id);
 
   const { password, ...result } = data as IUser; // exclude password from result
