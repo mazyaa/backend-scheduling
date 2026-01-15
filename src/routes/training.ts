@@ -2,6 +2,7 @@ import * as trainingController from '../controllers/training';
 import * as aclMiddlewares from '../middlewares/acl';
 import * as authMiddlewares from '../middlewares/auth';
 import * as trainingValidationMiddlewares from '../middlewares/validation/training';
+import * as commonValidationMiddlewares from '../middlewares/validation/common';
 import * as trainingMiddlewares from '../middlewares/training';
 import { Router } from 'express';
 
@@ -22,8 +23,8 @@ const trainingRoutes = (router: Router): void => {
         '/:id',
         authMiddlewares.isAuthorized,
         aclMiddlewares.isAdmin,
-        trainingValidationMiddlewares.createOrUpdateTrainingValidation,
         trainingMiddlewares.checkTrainingIdExist,
+        commonValidationMiddlewares.validateIdParams,
         trainingController.getTrainingById,
     );
 
@@ -38,8 +39,8 @@ const trainingRoutes = (router: Router): void => {
         '/:id',
         authMiddlewares.isAuthorized,
         aclMiddlewares.isAdmin,
-        trainingValidationMiddlewares.createOrUpdateTrainingValidation,
         trainingMiddlewares.checkTrainingIdExist,
+        commonValidationMiddlewares.validateIdParams,
         trainingController.updateTraining,
     );
 
@@ -49,6 +50,7 @@ const trainingRoutes = (router: Router): void => {
         aclMiddlewares.isAdmin,
         trainingValidationMiddlewares.createOrUpdateTrainingValidation,
         trainingMiddlewares.checkTrainingIdExist,
+        commonValidationMiddlewares.validateIdParams,
         trainingController.deleteTraining,
     );
 };

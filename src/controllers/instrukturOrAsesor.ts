@@ -1,5 +1,6 @@
-import { Request, Response } from 'express';
 import * as instrukturOrAsesorServices from '../services/instrukturOrAsesor';
+import { Request, Response } from 'express';
+import { ICreateUser } from '../utils/interfaces';
 
 export const createInstrukturAndAsesor = async (req: Request, res: Response): Promise<void> => {
     const { name, email, noWa, role, password, keahlian } = req.body;
