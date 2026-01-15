@@ -3,16 +3,9 @@ import { Request, Response } from 'express';
 import { ICreateUser } from '../utils/interfaces';
 
 export const createInstrukturAndAsesor = async (req: Request, res: Response): Promise<void> => {
-    const { name, email, noWa, role, password, keahlian } = req.body as ICreateUser;
+    const payload = req.body as ICreateUser;
 
-    const result = await instrukturOrAsesorServices.createInstrukturAndAsesor({
-        name,   
-        email,
-        noWa,
-        role,
-        password,
-        keahlian,
-    });
+    const result = await instrukturOrAsesorServices.createInstrukturAndAsesor(payload);
 
     res.status(201).json({
         message: 'User Created Successfully!',
