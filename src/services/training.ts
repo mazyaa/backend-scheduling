@@ -2,7 +2,6 @@ import * as trainingRepository from '../repositories/training';
 import { HttpError } from '../utils/error';
 import {
   ICreateTraining,
-  IPagination,
   IPaginationQuery,
   IResultPagination,
   ITraining,

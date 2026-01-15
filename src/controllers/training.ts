@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import * as trainingServices from '../services/training';
+import { ICreateTraining } from '../utils/interfaces';
 
 export const createTraining = async (req: Request, res: Response): Promise<void> => {
-    const { namaTraining, description } = req.body;
+    const { namaTraining, description } = req.body as ICreateTraining;
 
     const result = await trainingServices.createTraining({
         namaTraining,
