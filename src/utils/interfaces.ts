@@ -19,10 +19,15 @@ export interface ITokenPayload extends Pick<ICreateUser, 'email'> {
   id: string;
 }
 
-export interface Ilogin {
+export interface IToken {
   name: string;
   role: string;
   token: string;
+}
+
+export interface Ilogin {
+  email: string;
+  password: string;
 }
 
 export interface IPagination {
@@ -48,10 +53,19 @@ export interface IResultPagination {
 }
 
 export interface ICreateTraining {
-    namaTraining: string;
-    description: string | null;
+  namaTraining: string;
+  description: string | null;
 }
 
 export interface ITraining extends ICreateTraining {
-    id: string;
+  id: string;
+}
+
+export interface ICreateSchedule {
+  trainingId: string;
+  userId: string;
+  startDate: Date;
+  duration: number;
+  meetingLink: string;
+  batch: string;
 }

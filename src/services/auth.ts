@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { HttpError } from "../utils/error";
 import { generateToken, verifyToken } from "../utils/jwt";
-import { Ilogin, IUser } from "../utils/interfaces";
+import { Ilogin, IToken, IUser } from "../utils/interfaces";
 
 export const isPasswordMatch = async (password: string, hashedPassword: string): Promise<boolean> => {
     const isMatch = await bcrypt.compare(password, hashedPassword);
@@ -11,7 +11,9 @@ export const isPasswordMatch = async (password: string, hashedPassword: string):
     return isMatch;
 }
 
-export const login = async (email: string, password: string): Promise<Ilogin> => {
+export const login = async (payload: Ilogin): Promise<IToken> => {
+    const { email, password } = payload;
+
     const user = await authRepository.getUserByEmail(email);
 
     if (!user) {
