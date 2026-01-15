@@ -8,25 +8,14 @@ import {
   ITraining,
 } from '../utils/interfaces';
 
-export const createTraining = async (payload: ICreateTraining): Promise<ITraining> => {
-  const { namaTraining, description } = payload;
-
-  const newTraining: ICreateTraining = {
-    namaTraining,
-    description,
-  };
-
-  const data = await trainingRepository.createTraining(newTraining);
+export const createTraining = async (payload: ICreateTraining): Promise<ITraining> => {  
+  const data = await trainingRepository.createTraining(payload);
 
   return data;
 };
 
-export const getTrainingById = async (id: string): Promise<ITraining> => {
+export const getTrainingById = async (id: string): Promise<ITraining | null> => {
   const data = await trainingRepository.getTrainingById(id);
-
-  if (!data) {
-    throw new HttpError(' Training not found!', 404);
-  }
 
   return data;
 };
@@ -104,12 +93,6 @@ export const updateTraining = async (
 };
 
 export const deleteTraining = async (id: string): Promise<ITraining> => {
-  const training = await trainingRepository.deleteTraining(id);
-
-  if (!training) {
-    throw new HttpError('Training not found!', 404);
-  }
-
   const data = await trainingRepository.deleteTraining(id);
 
   return data;
