@@ -1,4 +1,4 @@
-import type { RoleUser } from '@prisma/client';
+import type { RoleUser, Aktivitas } from '@prisma/client';
 
 export interface ICreateUser {
   name: string;
@@ -61,11 +61,17 @@ export interface ITraining extends ICreateTraining {
   id: string;
 }
 
+export interface IDetailJadwal {
+  hari: Date;
+  hariKe: number;
+  aktivitas: Aktivitas;
+}
+
 export interface ICreateSchedule {
   trainingId: string;
-  userId: string;
   startDate: Date;
   duration: number;
   meetingLink: string;
   batch: string;
+  detailJadwal?: Omit<IDetailJadwal, 'aktivitas'>[];
 }

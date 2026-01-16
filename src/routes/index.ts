@@ -2,6 +2,7 @@ import { Application, Router } from 'express';
 import authRoutes from './auth';
 import instrukturOrAsesorRoutes from './instrukturOrAsesor';
 import trainingRoutes from './training';
+import { scheduleRoutes } from './schedule';
 
 
 const routes = (app: Application): void => {
@@ -14,6 +15,7 @@ const routes = (app: Application): void => {
   authRoutes(router); 
   instrukturOrAsesorRoutes(router);
   trainingRoutes(router);
+  scheduleRoutes(router);
 };
 
 export default routes;
