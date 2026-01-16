@@ -74,7 +74,7 @@ model Training {
 model JadwalTraining {
   id          String   @id @default(uuid())
   trainingId  String   @map("training_id")
-  userId      String   @map("user_id")
+  userId      String?   @map("user_id")
   startDate   DateTime @map("start_date")
   duration    Int
   meetingLink String   @map("meeting_link")
@@ -84,7 +84,7 @@ model JadwalTraining {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   training        Training               @relation(fields: [trainingId], references: [id])
-  user            User                   @relation(fields: [userId], references: [id])
+  user            User?                   @relation(fields: [userId], references: [id])
   detailJadwal    DetailJadwalTraining[]
   pesertaTraining PesertaTraining[]
   penilaian       Penilaian[]
