@@ -33,4 +33,12 @@ export const createSchedule = async (payload: ICreateSchedule) => {
         ...payload,
         detailJadwal: details,
     });
+
+    return newSchedule;
+}
+
+export const getScheduleById = async (id: string) => {
+    const schedule = await scheduleRepository.getScheduleById(id);
+
+    return schedule;
 }
