@@ -12,6 +12,7 @@ export const createSchedule = async (payload: ICreateSchedule) => {
         throw new HttpError("Training not found", 404);
     }
 
+    // validate conflict schedule by date and batch so if there is already a schedule with the same date and batch, it will throw an error
     const checkConflict = await scheduleRepository.checkConflictSchedule(startDate, batch);
 
     if (checkConflict) {
