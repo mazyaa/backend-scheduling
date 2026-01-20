@@ -16,6 +16,12 @@ export const getTrainingById = async (id: string): Promise<ITraining | null> => 
     });
 };
 
+export const getTrainingByName = async (namaTraining: string): Promise<ITraining | null> => {
+    return prisma.training.findUnique({
+        where: { namaTraining },
+    });
+}
+
 export const updateTraining = async (id: string, payload: ICreateTraining): Promise<ITraining> => {
     return prisma.training.update({
         where: { id },
