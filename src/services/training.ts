@@ -7,7 +7,15 @@ import {
   ITraining,
 } from '../utils/interfaces';
 
-export const createTraining = async (payload: ICreateTraining): Promise<ITraining> => {  
+export const createTraining = async (payload: ICreateTraining): Promise<ITraining> => { 
+  const { namaTraining } = payload;
+  
+  const existingTraining = await trainingRepository.getTrainingByName(namaTraining);
+
+  if (existingTraining) {
+    throw new HttpError('Training with the same name already exists!', 409);
+  }
+  
   const data = await trainingRepository.createTraining(payload);
 
   return data;

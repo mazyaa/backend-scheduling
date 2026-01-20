@@ -56,19 +56,11 @@ export const countSchedule = async (where?: object): Promise<number> => {
 }
 
 
-export const checkConflictSchedule = async (startDate: Date, batch: string) => {
-    const startDay = startOfDay(startDate); // use startOfDay to get the start of the day ex: 2023-10-10 00:00:00
-    const endDay = endOfDay(startDate); // use endOfDay to get the end of the day ex: 2023-10-10 23:59:59
-
+export const checkConflictSchedule = async (trainingId: string, batch: string) => {
     return await prisma.jadwalTraining.findFirst({
         where: {
-            startDate: {
-                gte: startDay, // greater than or equal to startDay 
-                lte: endDay // less than or equal to endDay
-            },
-            batch: {
-                equals: batch // use equals to match exact batch
-            }
+            trainingId,
+            batch,
         }
     });
 }

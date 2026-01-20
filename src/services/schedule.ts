@@ -13,15 +13,15 @@ export const createSchedule = async (payload: ICreateSchedule) => {
     }
 
     // validate conflict schedule by date and batch so if there is already a schedule with the same date and batch, it will throw an error
-    const checkConflict = await scheduleRepository.checkConflictSchedule(startDate, batch);
+    const checkConflict = await scheduleRepository.checkConflictSchedule(trainingId, batch);
 
     if (checkConflict) {
-        throw new HttpError("Schedule conflict detected for the given date and batch", 409);
+        throw new HttpError("Schedule with the same training and batch already exists", 409);
     }
 
     // main feature: generate detailJadwal based on startDate and duration
     const details = Array.from({ length: duration }).map((_, i) => { // use Array.from to create an array with length of duration ex: duration = 3 -> [undefined, undefined, undefined]
-        const hari = new Date(startDate); // create new Date object based on startDate
+        const hari = new Date(startDate); // create new Date object by copying startDate
         hari.setDate(hari.getDate() + i); // add days by duration index
 
         return {
