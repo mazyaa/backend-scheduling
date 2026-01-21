@@ -26,5 +26,15 @@ export const scheduleRoutes = (router: Router): void => {
         commonValidationMiddleware.validateIdParams,
         scheduleMiddlewares.checkScheduleIdExists,
         scheduleController.getScheduleById,
+    );
+
+    scheduleRouter.put(
+        '/:id',
+        authMiddlewares.isAuthorized,
+        aclMiddlewares.isAdmin,
+        commonValidationMiddleware.validateIdParams,
+        scheduleMiddlewares.checkScheduleIdExists,
+        scheduleValidationMiddlewares.updateScheduleValidation,
+        scheduleController.updateSchedule,
     )
 }
