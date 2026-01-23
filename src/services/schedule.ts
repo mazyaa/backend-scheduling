@@ -43,3 +43,21 @@ export const getScheduleById = async (id: string) => {
 
     return schedule;
 }
+
+export const updateSchedule = async (id:string, payload: Partial<Omit<ICreateSchedule, 'detailJadwal'>>) => {
+    const { trainingId, batch, startDate, duration } = payload;
+
+    if (startDate || duration) {
+        throw new HttpError("Cannot update field startDate or duration", 400);
+    }
+
+    const checkConflict = await scheduleRepository.checkConflictSchedule(trainingId!, batch!);
+
+    if (checkConflict) {
+        throw new HttpError("Schedule with the same training and batch already exists", 409);
+    }
+
+    const updatedSchedule = await scheduleRepository.updateSchedule(id, payload);
+
+    return updateSchedule;
+}

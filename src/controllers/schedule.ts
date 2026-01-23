@@ -23,3 +23,15 @@ export const getScheduleById = async (req: Request, res: Response): Promise<void
         data: result,
     });
 }
+
+export const updateSchedule = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const payload = req.body as Partial<Omit<ICreateSchedule, 'detailJadwal'>>;
+
+    const result = await scheduleServices.updateSchedule(id, payload);
+
+    res.status(200).json({
+        message: "Schedule updated successfully",
+        data: result,
+    });
+}
