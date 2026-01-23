@@ -83,8 +83,8 @@ model JadwalTraining {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  training        Training               @relation(fields: [trainingId], references: [id])
-  user            User?                   @relation(fields: [userId], references: [id])
+  training        Training               @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  user            User?                   @relation(fields: [userId], references: [id], onDelete: Cascade)
   detailJadwal    DetailJadwalTraining[]
   pesertaTraining PesertaTraining[]
   penilaian       Penilaian[]
@@ -107,7 +107,7 @@ model DetailJadwalTraining {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  jadwalTraining JadwalTraining @relation(fields: [jadwalTrainingId], references: [id])
+  jadwalTraining JadwalTraining @relation(fields: [jadwalTrainingId], references: [id], onDelete: Cascade)
 
   // Relations to User model for instruktur and asesor
   instruktur User? @relation("instruktur_relation", fields: [instrukturId], references: [id])
@@ -133,7 +133,7 @@ model ProfilPeserta {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("profil_peserta")
 }
@@ -146,8 +146,8 @@ model PesertaTraining {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  user           User           @relation(fields: [userId], references: [id])
-  jadwalTraining JadwalTraining @relation(fields: [jadwalTrainingId], references: [id])
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jadwalTraining JadwalTraining @relation(fields: [jadwalTrainingId], references: [id], onDelete: Cascade)
 
   @@unique([userId, jadwalTrainingId])
   @@map("peserta_training")
@@ -163,9 +163,9 @@ model MateriTraining {
   createdAt DateTime  @default(now()) @map("created_at")
   deletedAt DateTime? @map("deleted_at")
 
-  detailJadwalTraining DetailJadwalTraining @relation(fields: [detailJadwalTrainingId], references: [id])
+  detailJadwalTraining DetailJadwalTraining @relation(fields: [detailJadwalTrainingId], references: [id], onDelete: Cascade)
 
-  uploader User @relation(fields: [diuploadOleh], references: [id])
+  uploader User @relation(fields: [diuploadOleh], references: [id], onDelete: Cascade)
 
   @@map("materi_training")
 }
@@ -180,8 +180,8 @@ model Penilaian {
   createdAt DateTime  @default(now()) @map("created_at")
   deletedAt DateTime? @map("deleted_at")
 
-  user           User           @relation(fields: [userId], references: [id])
-  jadwalTraining JadwalTraining @relation(fields: [jadwalTrainingId], references: [id])
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jadwalTraining JadwalTraining @relation(fields: [jadwalTrainingId], references: [id], onDelete: Cascade)
 
   @@unique([userId, jadwalTrainingId])
   @@map("penilaian")
@@ -197,8 +197,8 @@ model Sertifikat {
   createdAt DateTime  @default(now()) @map("created_at")
   deletedAt DateTime? @map("deleted_at")
 
-  user           User           @relation(fields: [userId], references: [id])
-  jadwalTraining JadwalTraining @relation(fields: [jadwalTrainingId], references: [id])
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jadwalTraining JadwalTraining @relation(fields: [jadwalTrainingId], references: [id], onDelete: Cascade)
 
   @@map("sertifikat")
 }
