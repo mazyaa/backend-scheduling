@@ -32,7 +32,7 @@ export const createScheduleValidation = async (req: Request, res: Response, next
 export const updateScheduleValidation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         // validate from req.body against updateScheduleSchema
-        await updateScheduleSchema.validateAsync(req.body, { abortEarly: false });
+        await updateScheduleSchema.validateAsync(req.body, { abortEarly: false }); 
 
         next(); // if no error, pass control to next middleware or controller
     } catch (error) {

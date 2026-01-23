@@ -35,3 +35,14 @@ export const updateSchedule = async (req: Request, res: Response): Promise<void>
         data: result,
     });
 }
+
+export const deleteSchedule = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+
+    const result = await scheduleServices.deleteSchedule(id);
+
+    res.status(200).json({
+        message: "Schedule deleted successfully",
+        data: result,
+    })
+}

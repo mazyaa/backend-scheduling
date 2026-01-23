@@ -37,4 +37,13 @@ export const scheduleRoutes = (router: Router): void => {
         scheduleValidationMiddlewares.updateScheduleValidation,
         scheduleController.updateSchedule,
     )
+
+    scheduleRouter.delete(
+        '/:id',
+        authMiddlewares.isAuthorized,
+        aclMiddlewares.isAdmin,
+        commonValidationMiddleware.validateIdParams,
+        scheduleMiddlewares.checkScheduleIdExists,
+        scheduleController.deleteSchedule,
+    )
 }

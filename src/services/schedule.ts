@@ -57,7 +57,13 @@ export const updateSchedule = async (id:string, payload: Partial<Omit<ICreateSch
         throw new HttpError("Schedule with the same training and batch already exists", 409);
     }
 
-    const updatedSchedule = await scheduleRepository.updateSchedule(id, payload);
+    const data = await scheduleRepository.updateSchedule(id, payload);
 
-    return updateSchedule;
+    return data;
+}
+
+export const deleteSchedule = async (id: string) => {
+    const deletedSchedule = await scheduleRepository.deleteSchedule(id);
+
+    return deletedSchedule;
 }
