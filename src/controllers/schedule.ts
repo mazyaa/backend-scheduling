@@ -24,6 +24,24 @@ export const getScheduleById = async (req: Request, res: Response): Promise<void
     });
 }
 
+export const getAllSchedules = async (req: Request, res: Response): Promise<void> => {
+    const page = Math.max(Number(req.query.page) || 1, 1);
+    const limit = Math.max(Number(req.query.limit) || 10, 1);
+    const search = (req.query.search?.toString().trim() as string) || undefined;
+
+    const result = await scheduleServices.getAllSchedules({
+        page,
+        limit,
+        search,
+    });
+    
+    res.status(200).json({
+        message: "Schedules retrieved successfully",
+        data: result.data,
+        pagination: result.pagination,
+    });
+}
+
 export const updateSchedule = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     const payload = req.body as Partial<Omit<ICreateSchedule, 'detailJadwal'>>;

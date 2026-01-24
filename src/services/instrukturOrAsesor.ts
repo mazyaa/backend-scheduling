@@ -93,8 +93,8 @@ export const getAllInstrukturOrAsesor = async (
       totalPages,
       currentPage: page,
       limit,
-      hasNext: page < totalPages, // if current page less than total pages means has next page
-      hasPrevious: page > 1, // if current page greater than 1 means has previous page
+      hasNext: page < totalPages, // if not last page, true
+      hasPrevious: page > 1, // if not first page, true (not on page 1)
     },
   };
 };
