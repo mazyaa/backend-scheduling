@@ -24,8 +24,8 @@ export const getTrainingById = async (req: Request, res: Response): Promise<void
 }   
 
 export const getAllTraining = async (req: Request, res: Response): Promise<void> => {
-    const page = Math.max(Number(req.query.page) || 1, 1); // use math.max to ensure page is at least one, and mean (1, 1) is default value and impossible less than 1
-    const limit = Math.max(Number(req.query.limit) || 10, 1);
+    const page = Math.max(Number(req.query.page) || 1, 1); // get highest value, and set default and minimum page is 1
+    const limit = Math.max(Number(req.query.limit) || 10, 1); 
     const search = (req.query.search?.toString().trim() as string) || undefined; // trim to remove whitespace
 
     const result = await trainingServices.getAllTraining({

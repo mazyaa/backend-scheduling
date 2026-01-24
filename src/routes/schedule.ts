@@ -28,6 +28,13 @@ export const scheduleRoutes = (router: Router): void => {
         scheduleController.getScheduleById,
     );
 
+    scheduleRouter.get(
+        '/',
+        authMiddlewares.isAuthorized,
+        aclMiddlewares.isAdmin,
+        scheduleController.getAllSchedules,
+    )
+
     scheduleRouter.put(
         '/:id',
         authMiddlewares.isAuthorized,

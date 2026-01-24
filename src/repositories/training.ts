@@ -38,7 +38,7 @@ export const deleteTraining = async (id: string): Promise<ITraining> => {
 export const getAllTraining = async (paylaod: IPagination): Promise<ITraining[]> => {
     const { skip, take, where, orderBy } = paylaod;
 
-    return prisma.training.findMany({
+    return await prisma.training.findMany({
          skip,
          take,
          where,

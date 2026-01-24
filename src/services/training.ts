@@ -53,6 +53,7 @@ export const getAllTraining = async (
       skip,
       take: limit,
       where,
+      orderBy: { createdAt: 'desc'}
     }),
 
     // task 2: count total training
@@ -68,8 +69,8 @@ export const getAllTraining = async (
       totalPages,
       currentPage: page,
       limit,
-      hasNext: page < totalPages, // if current page less than total pages, means has next page
-      hasPrevious: page > 1, // if current page greater than 1, means has previous page
+      hasNext: page < totalPages, // if no last page, true
+      hasPrevious: page > 1, // if not first page, true
     },
   };
 };

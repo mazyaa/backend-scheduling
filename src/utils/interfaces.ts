@@ -76,3 +76,7 @@ export interface ICreateSchedule {
   batch: string;
   detailJadwal?: IDetailJadwal[];
 }
+
+export interface ISchedules extends ICreateSchedule {
+  id: string;
+}

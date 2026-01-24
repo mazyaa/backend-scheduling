@@ -35,6 +35,7 @@ export const deleteInstrukturOrAsesor = async (id: string): Promise<IUser> => {
 
 export const getAllInstrukturOrAsesor = async (payload: IPagination): Promise<IUser[]> => {
     const { skip, take, where, orderBy } = payload;
+    
     return await prisma.user.findMany({
        skip,
        take,

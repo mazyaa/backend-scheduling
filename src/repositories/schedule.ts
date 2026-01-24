@@ -1,6 +1,6 @@
 import { prisma } from "../utils/client";
 import { startOfDay, endOfDay } from "date-fns";
-import type { ICreateSchedule, IPagination } from "../utils/interfaces";
+import type { ICreateSchedule, IPagination, ISchedules } from "../utils/interfaces";
 
 export const createSchedule = async (payload: ICreateSchedule): Promise<ICreateSchedule> => {
     return await prisma.jadwalTraining.create({
@@ -39,8 +39,9 @@ export const deleteSchedule = async (id: string): Promise<ICreateSchedule> => {
     });
 };
 
-export const getAllSchedules = async (payload: IPagination): Promise<ICreateSchedule[]> => {
+export const getAllSchedules = async (payload: IPagination): Promise<ISchedules[]> => {
     const { skip, take, where, orderBy } = payload;
+    
     return await prisma.jadwalTraining.findMany({
        skip,
        take,
