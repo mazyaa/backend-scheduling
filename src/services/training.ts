@@ -77,7 +77,7 @@ export const getAllTraining = async (
 
 export const updateTraining = async (
   id: string,
-  payload: ICreateTraining,
+  payload: Partial<ICreateTraining>,
 ): Promise<ITraining> => {
   const { namaTraining, description } = payload;
 
@@ -87,7 +87,7 @@ export const updateTraining = async (
     throw new HttpError('Training not found!', 404);
   }
 
-  const updatedTrainingPayload: ICreateTraining = {
+  const updatedTrainingPayload = {
     namaTraining,
     description,
   };

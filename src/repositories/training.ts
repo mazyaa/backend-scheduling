@@ -22,7 +22,7 @@ export const getTrainingByName = async (namaTraining: string): Promise<ITraining
     });
 }
 
-export const updateTraining = async (id: string, payload: ICreateTraining): Promise<ITraining> => {
+export const updateTraining = async (id: string, payload: Partial<ICreateTraining>): Promise<ITraining> => {
     return prisma.training.update({
         where: { id },
         data: { ...payload },
