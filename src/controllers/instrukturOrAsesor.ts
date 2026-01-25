@@ -44,16 +44,9 @@ export const getAllInstrukturAndAsesor = async (req: Request, res: Response): Pr
 
 export const updateInstrukturAndAsesor = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-    const { name, email, noWa, role, password, keahlian } = req.body;
+   const payload = req.body as Partial<ICreateUser>;
 
-    const result = await instrukturOrAsesorServices.updateInstrukturAndAsesor(id, {
-        name,
-        email,
-        noWa, 
-        role,
-        password,
-        keahlian,
-    });
+    const result = await instrukturOrAsesorServices.updateInstrukturAndAsesor(id, payload);
 
     res.status(200).json({
         message: 'User Updated Successfully!',
