@@ -66,6 +66,9 @@ model Training {
   namaTraining String  @unique @map("nama_training") @db.VarChar(150)
   description  String?
 
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
   jadwalTraining JadwalTraining[]
 
   @@map("training")
