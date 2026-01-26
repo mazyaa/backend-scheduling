@@ -69,7 +69,8 @@ model Training {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  jadwalTraining JadwalTraining[]
+  jadwalTraining        JadwalTraining[]
+  detailJadwalTrainings DetailJadwalTraining[]
 
   @@map("training")
 }
@@ -77,7 +78,7 @@ model Training {
 model JadwalTraining {
   id          String   @id @default(uuid())
   trainingId  String   @map("training_id")
-  userId      String?   @map("user_id")
+  userId      String?  @map("user_id")
   startDate   DateTime @map("start_date")
   duration    Int
   meetingLink String   @map("meeting_link")
@@ -87,7 +88,7 @@ model JadwalTraining {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   training        Training               @relation(fields: [trainingId], references: [id], onDelete: Cascade)
-  user            User?                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user            User?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
   detailJadwal    DetailJadwalTraining[]
   pesertaTraining PesertaTraining[]
   penilaian       Penilaian[]
@@ -98,11 +99,11 @@ model JadwalTraining {
 
 model DetailJadwalTraining {
   id               String     @id @default(uuid())
+  trainingId       String     @map("training_id")
   jadwalTrainingId String     @map("jadwal_training_id")
   hari             DateTime
   hariKe           Int        @map("hari_ke")
   aktivitas        Aktivitas?
-  fileMateri       String?    @map("file_materi")
 
   instrukturId String? @map("instruktur_id")
   asesorId     String? @map("asesor_id")
@@ -111,10 +112,11 @@ model DetailJadwalTraining {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   jadwalTraining JadwalTraining @relation(fields: [jadwalTrainingId], references: [id], onDelete: Cascade)
+  training       Training       @relation(fields: [trainingId], references: [id], onDelete: Cascade)
 
   // Relations to User model for instruktur and asesor
   instruktur User? @relation("instruktur_relation", fields: [instrukturId], references: [id])
-  asesor User? @relation("asesor_relation", fields: [asesorId], references: [id])
+  asesor     User? @relation("asesor_relation", fields: [asesorId], references: [id])
 
   materiTraining MateriTraining[]
 

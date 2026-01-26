@@ -69,7 +69,7 @@ export const getAllSchedules = async (
 
   const where = search
     ? {
-        training: { // relation to training table
+        training: { // join to training table to search by namaTraining
             namaTraining: {
                 contains: search,
                 mode: 'insensitive',

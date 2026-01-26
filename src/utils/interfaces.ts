@@ -61,11 +61,10 @@ export interface ITraining extends ICreateTraining {
   id: string;
 }
 
-export interface IDetailJadwal {
+export interface ICreateDetailJadwal {
   hari: Date;
   hariKe: number;
   aktivitas?: Aktivitas;
-  fileMateri?: string | null
 }
 
 export interface ICreateSchedule {
@@ -74,7 +73,7 @@ export interface ICreateSchedule {
   duration: number;
   meetingLink: string;
   batch: string;
-  detailJadwal?: IDetailJadwal[];
+  detailJadwal?: ICreateDetailJadwal[];
 }
 
 export interface ISchedules extends ICreateSchedule {
