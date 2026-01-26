@@ -63,7 +63,6 @@ export interface ITraining extends ICreateTraining {
 
 export interface ICreateDetailSchedule {
   hari: Date;
-  trainingId?: string;
   hariKe: number;
   aktivitas?: Aktivitas;
 }
