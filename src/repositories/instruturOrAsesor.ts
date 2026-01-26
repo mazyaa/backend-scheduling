@@ -34,13 +34,19 @@ export const deleteInstrukturOrAsesor = async (id: string): Promise<IUser> => {
 };
 
 export const getAllInstrukturOrAsesor = async (payload: IPagination): Promise<IUser[]> => {
-    const { skip, take, where, orderBy } = payload;
-    
+    const { skip, take, where = {}, orderBy } = payload;
+
     return await prisma.user.findMany({
-       skip,
-       take,
-       where,
-       orderBy,
+        skip,
+        take,
+        where: {
+            ...where,
+            OR: [ // filter only role instruktur and asesor
+                { role: "instruktur" },
+                { role: "asesor" }
+            ]
+        },
+        orderBy,
     });
 }
 

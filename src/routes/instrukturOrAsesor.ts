@@ -16,7 +16,7 @@ const instrukturOrAsesorRoutes = (router: Router): void => {
         '/',
         authMiddlewares.isAuthorized,
         aclMiddlewares.isAdmin,
-        instrukturAndAsesorValidationMiddlewares.createOrUpdateInstrukturAndAsesorValidation,
+        instrukturAndAsesorValidationMiddlewares.createInstrukturAndAsesorValidation,
         instrukturOrAsesorController.createInstrukturAndAsesor,
     );
 
@@ -42,7 +42,7 @@ const instrukturOrAsesorRoutes = (router: Router): void => {
         authMiddlewares.isAuthorized,
         aclMiddlewares.isAdmin,
         commonValidationMiddlewares.validateIdParams,
-        instrukturAndAsesorValidationMiddlewares.createOrUpdateInstrukturAndAsesorValidation,
+        instrukturAndAsesorValidationMiddlewares.updateInstrukturAndAsesorValidation,
         userMiddlewares.checkUserIdExists,
         userMiddlewares.checkUserEmailorNoWaExists,
         instrukturOrAsesorController.updateInstrukturAndAsesor,
