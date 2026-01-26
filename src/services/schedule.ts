@@ -3,7 +3,6 @@ import {
   IPaginationQuery,
   IResultPagination,
   ISchedules,
-  ITraining,
 } from '../utils/interfaces';
 import * as scheduleRepository from '../repositories/schedule';
 import * as trainingRepository from '../repositories/training';

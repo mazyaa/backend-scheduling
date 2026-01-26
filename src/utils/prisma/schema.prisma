@@ -49,7 +49,6 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at") // use @updatedAt to auto-update timestamp on record update
 
   // Relations      // define relations to other models
-  jadwalTraining   JadwalTraining[] // jadwalTraining is related to User in one-to-many relation, and if use on query, we use user.jadwalTraining to get all related jadwalTraining records
   profilPeserta    ProfilPeserta? // one-to-one relation
   pesertaTraining  PesertaTraining[] // one-to-many relation
   materiUploaded   MateriTraining[]
@@ -78,7 +77,6 @@ model Training {
 model JadwalTraining {
   id          String   @id @default(uuid())
   trainingId  String   @map("training_id")
-  userId      String?  @map("user_id")
   startDate   DateTime @map("start_date")
   duration    Int
   meetingLink String   @map("meeting_link")
@@ -88,7 +86,6 @@ model JadwalTraining {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   training        Training               @relation(fields: [trainingId], references: [id], onDelete: Cascade)
-  user            User?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
   detailJadwal    DetailJadwalTraining[]
   pesertaTraining PesertaTraining[]
   penilaian       Penilaian[]
