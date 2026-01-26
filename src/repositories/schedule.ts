@@ -15,7 +15,6 @@ export const createSchedule = async (payload: ICreateSchedule): Promise<ISchedul
                 ? {
                     createMany: {
                         data: payload.detailJadwal.map((detail) => ({
-                            trainingId: payload.trainingId,
                             hari: detail.hari,
                             hariKe: detail.hariKe,
                         })),

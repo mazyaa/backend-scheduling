@@ -69,7 +69,6 @@ model Training {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   jadwalTraining        JadwalTraining[]
-  detailJadwalTrainings DetailJadwalTraining[]
 
   @@map("training")
 }
@@ -96,7 +95,6 @@ model JadwalTraining {
 
 model DetailJadwalTraining {
   id               String     @id @default(uuid())
-  trainingId       String     @map("training_id")
   jadwalTrainingId String     @map("jadwal_training_id")
   hari             DateTime
   hariKe           Int        @map("hari_ke")
@@ -109,7 +107,6 @@ model DetailJadwalTraining {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   jadwalTraining JadwalTraining @relation(fields: [jadwalTrainingId], references: [id], onDelete: Cascade)
-  training       Training       @relation(fields: [trainingId], references: [id], onDelete: Cascade)
 
   // Relations to User model for instruktur and asesor
   instruktur User? @relation("instruktur_relation", fields: [instrukturId], references: [id])
