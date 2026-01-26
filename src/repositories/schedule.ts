@@ -1,20 +1,27 @@
 import { prisma } from "../utils/client";
-import { startOfDay, endOfDay } from "date-fns";
 import type { ICreateSchedule, IPagination, ISchedules } from "../utils/interfaces";
 
-export const createSchedule = async (payload: ICreateSchedule): Promise<ICreateSchedule> => {
+export const createSchedule = async (payload: ICreateSchedule): Promise<ISchedules> => {
     return await prisma.jadwalTraining.create({
         data: {
-            trainingId: payload.trainingId,
+            training: {
+                connect: { id: payload.trainingId}
+            },
             startDate: new Date(payload.startDate),
             duration: payload.duration,
             meetingLink: payload.meetingLink,
             batch: payload.batch,
-            detailJadwal: {
-                createMany: {
-                    data: payload.detailJadwal || [],
+            detailJadwal: payload.detailJadwal?.length 
+                ? {
+                    createMany: {
+                        data: payload.detailJadwal.map((detail) => ({
+                            trainingId: payload.trainingId,
+                            hari: detail.hari,
+                            hariKe: detail.hariKe,
+                        })),
+                    }
                 }
-            }
+                : undefined,
         }
     });
 }
