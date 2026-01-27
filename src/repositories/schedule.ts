@@ -25,21 +25,44 @@ export const createSchedule = async (payload: ICreateSchedule): Promise<ISchedul
     });
 }
 
-export const getScheduleById = async (id: string): Promise<ICreateSchedule | null> => {
+export const getScheduleById = async (id: string): Promise<ISchedules| null> => {
     return await prisma.jadwalTraining.findUnique({ // if using findUnique attribute must be unique (id is unique)
         where: { id },
     })
 }
 
 
-export const updateSchedule = async (id: string, payload: Partial<Omit<ICreateSchedule, "detailJadwal">>): Promise<ICreateSchedule> => { // Partial<IUser> means that all properties in IUser are optional
+export const updateSchedule = async (id: string, payload: ICreateSchedule, existingSchedule: ISchedules): Promise<ISchedules> => { // Partial<IUser> means that all properties in IUser are optional
     return await prisma.jadwalTraining.update({
-        where: { id},
-        data: { ...payload }
+        where: { id },
+        data: {
+            training: {
+                connect: {
+                    id: payload.trainingId ?? existingSchedule.trainingId,
+                }
+            },
+            startDate: payload.startDate ? new Date(payload.startDate) : existingSchedule.startDate,
+            duration: payload.duration ?? existingSchedule.duration,
+            meetingLink: payload.meetingLink ?? existingSchedule.meetingLink,
+            batch: payload.batch ?? existingSchedule.batch,
+            ...(payload.detailJadwal?.length
+                ? {
+                    detailJadwal: {
+                        deleteMany: {}, // first delete all existing detailJadwal
+                        createMany: {
+                            data: payload.detailJadwal.map((detail) => ({
+                                hari: detail.hari,
+                                hariKe: detail.hariKe,
+                            }))
+                        }
+                    }
+                }
+                : {}),
+        },
     });
 }
 
-export const deleteSchedule = async (id: string): Promise<ICreateSchedule> => {
+export const deleteSchedule = async (id: string): Promise<ISchedules> => {
     return await prisma.jadwalTraining.delete({
         where: { id }
     });

@@ -105,13 +105,16 @@ export const getAllSchedules = async (
 
 export const updateSchedule = async (
   id: string,
-  payload: Partial<Omit<ICreateSchedule, 'detailJadwal'>>,
+  payload: ICreateSchedule,
 ) => {
-  const { trainingId, batch, startDate, duration } = payload;
+  const { trainingId, startDate, duration, batch } = payload;
 
-  if (startDate || duration) {
-    throw new HttpError('Cannot update field startDate or duration', 400);
+  const existingSchedule = await scheduleRepository.getScheduleById(id);
+
+  if (!existingSchedule) {
+    throw new HttpError('Schedule not found', 404);
   }
+
 
   const checkConflict = await scheduleRepository.checkConflictSchedule(
     trainingId!,
@@ -125,7 +128,27 @@ export const updateSchedule = async (
     );
   }
 
-  const data = await scheduleRepository.updateSchedule(id, payload);
+   // main feature: generate detailJadwal based on startDate and duration
+  const details = Array.from({ length: (duration || existingSchedule.duration) }).map((_, i) => {
+    // use Array.from to create an array with length of duration ex: duration = 3 -> [undefined, undefined, undefined]
+    const hari = new Date(startDate || existingSchedule.startDate); // create new Date object by copying startDate or existingSchedule.startDate
+    hari.setDate(hari.getDate() + i); // add days by duration index 
+    console.log(hari);
+
+    return {
+      hari,
+      hariKe: i + 1,
+    };
+  });
+
+  const data = await scheduleRepository.updateSchedule(
+    id,
+    {
+      ...payload,
+      detailJadwal: details,
+    },
+    existingSchedule,
+  );
 
   return data;
 };
