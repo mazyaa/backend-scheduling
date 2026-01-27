@@ -44,7 +44,7 @@ export const getAllSchedules = async (req: Request, res: Response): Promise<void
 
 export const updateSchedule = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-    const payload = req.body as Partial<Omit<ICreateSchedule, 'detailJadwal'>>;
+    const payload = req.body as ICreateSchedule;
 
     const result = await scheduleServices.updateSchedule(id, payload);
 

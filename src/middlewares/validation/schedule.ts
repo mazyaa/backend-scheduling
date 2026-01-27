@@ -13,6 +13,8 @@ const createScheduleSchema = Joi.object({
 
 const updateScheduleSchema = Joi.object({
     trainingId: Joi.string().uuid(),
+    startDate: Joi.date(),
+    duration: Joi.number().integer().min(1),
     meetingLink: Joi.string().uri(),
     batch: Joi.string(),
 });
