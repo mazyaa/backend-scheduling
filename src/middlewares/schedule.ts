@@ -10,5 +10,7 @@ export const checkScheduleIdExists = async (req: Request, res: Response, next: N
         throw new HttpError("Schedule not found", 404);
     }
 
+    res.locals.schedule = schedule; // store schedule data in res.locals for access in next middleware or controller 
+
     next();
 }

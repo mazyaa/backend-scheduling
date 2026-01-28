@@ -45,8 +45,9 @@ export const getAllSchedules = async (req: Request, res: Response): Promise<void
 export const updateSchedule = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     const payload = req.body as ICreateSchedule;
+    const existingSchedule = res.locals.schedule;
 
-    const result = await scheduleServices.updateSchedule(id, payload);
+    const result = await scheduleServices.updateSchedule(id, payload, existingSchedule);
 
     res.status(200).json({
         message: "Schedule updated successfully",

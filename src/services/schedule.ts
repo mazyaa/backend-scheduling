@@ -106,15 +106,9 @@ export const getAllSchedules = async (
 export const updateSchedule = async (
   id: string,
   payload: ICreateSchedule,
+  existingSchedule: ISchedules,
 ) => {
   const { trainingId, startDate, duration, batch } = payload;
-
-  const existingSchedule = await scheduleRepository.getScheduleById(id);
-
-  if (!existingSchedule) {
-    throw new HttpError('Schedule not found', 404);
-  }
-
 
   const checkConflict = await scheduleRepository.checkConflictSchedule(
     trainingId!,
@@ -133,7 +127,6 @@ export const updateSchedule = async (
     // use Array.from to create an array with length of duration ex: duration = 3 -> [undefined, undefined, undefined]
     const hari = new Date(startDate || existingSchedule.startDate); // create new Date object by copying startDate or existingSchedule.startDate
     hari.setDate(hari.getDate() + i); // add days by duration index 
-    console.log(hari);
 
     return {
       hari,
