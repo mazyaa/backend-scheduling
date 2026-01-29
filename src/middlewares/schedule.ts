@@ -1,6 +1,7 @@
 import * as scheduleServices from "../services/schedule";
 import { NextFunction, Request, Response } from "express";
 import { HttpError } from "../utils/error";
+import { ICreateSchedule } from "../utils/interfaces";
 
 export const checkScheduleIdExists = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { id } = req.params;
@@ -13,4 +14,4 @@ export const checkScheduleIdExists = async (req: Request, res: Response, next: N
     res.locals.schedule = schedule; // store schedule data in res.locals for access in next middleware or controller 
 
     next();
-}
+};

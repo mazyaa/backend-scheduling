@@ -9,14 +9,26 @@ const createScheduleSchema = Joi.object({
     duration: Joi.number().integer().min(1).required(),
     meetingLink: Joi.string().uri().required(),
     batch: Joi.string().required(),
+    detailJadwal: Joi.array().items(
+        Joi.object({
+            hari: Joi.date(),
+            hariKe: Joi.number().integer().min(1),
+        })
+    )
 });
 
 const updateScheduleSchema = Joi.object({
-    trainingId: Joi.string().uuid(),
-    startDate: Joi.date(),
-    duration: Joi.number().integer().min(1),
-    meetingLink: Joi.string().uri(),
-    batch: Joi.string(),
+    trainingId: Joi.string().uuid().optional(),
+    startDate: Joi.date().optional(),
+    duration: Joi.number().integer().min(1).optional(),
+    meetingLink: Joi.string().uri().optional(),
+    batch: Joi.string().optional(),
+    detailJadwal: Joi.array().items(
+        Joi.object({
+            hari: Joi.date(),
+            hariKe: Joi.number().integer().min(1),
+        })
+    ).optional()
 });
 
 export const createScheduleValidation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
