@@ -15,7 +15,8 @@ const trainingRoutes = (router: Router): void => {
         '/',
         authMiddlewares.isAuthorized,
         aclMiddlewares.isAdmin,
-        trainingValidationMiddlewares.createOrUpdateTrainingValidation,
+        trainingValidationMiddlewares.createTrainingValidation,
+        trainingMiddlewares.checkTrainingNameDuplicate,
         trainingController.createTraining,
     );
 
@@ -41,6 +42,8 @@ const trainingRoutes = (router: Router): void => {
         aclMiddlewares.isAdmin,
         trainingMiddlewares.checkTrainingIdExist,
         commonValidationMiddlewares.validateIdParams,
+        trainingValidationMiddlewares.updateTrainingValidation,
+        trainingMiddlewares.checkTrainingNameDuplicate,
         trainingController.updateTraining,
     );
 
@@ -48,7 +51,6 @@ const trainingRoutes = (router: Router): void => {
         '/:id',
         authMiddlewares.isAuthorized,
         aclMiddlewares.isAdmin,
-        trainingValidationMiddlewares.createOrUpdateTrainingValidation,
         trainingMiddlewares.checkTrainingIdExist,
         commonValidationMiddlewares.validateIdParams,
         trainingController.deleteTraining,

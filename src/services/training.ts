@@ -7,15 +7,7 @@ import {
   ITraining,
 } from '../utils/interfaces';
 
-export const createTraining = async (payload: ICreateTraining): Promise<ITraining> => { 
-  const { namaTraining } = payload;
-  
-  const existingTraining = await trainingRepository.getTrainingByName(namaTraining);
-
-  if (existingTraining) {
-    throw new HttpError('Training with the same name already exists!', 409);
-  }
-  
+export const createTraining = async (payload: ICreateTraining): Promise<ITraining> => {   
   const data = await trainingRepository.createTraining(payload);
 
   return data;
@@ -26,6 +18,12 @@ export const getTrainingById = async (id: string): Promise<ITraining | null> => 
 
   return data;
 };
+
+export const getTrainingByName = async (namaTraining: string): Promise<ITraining | null> => {
+  const data = await trainingRepository.getTrainingByName(namaTraining);
+
+  return data;
+}
 
 export const getAllTraining = async (
   payload: IPaginationQuery,
@@ -78,23 +76,12 @@ export const getAllTraining = async (
 export const updateTraining = async (
   id: string,
   payload: Partial<ICreateTraining>,
+  existingTraining: ITraining,
 ): Promise<ITraining> => {
-  const { namaTraining, description } = payload;
-
-  const training = await trainingRepository.getTrainingById(id);
-
-  if (!training) {
-    throw new HttpError('Training not found!', 404);
-  }
-
-  const updatedTrainingPayload = {
-    namaTraining,
-    description,
-  };
-
   const data = await trainingRepository.updateTraining(
     id,
-    updatedTrainingPayload,
+    payload,
+    existingTraining,
   );
 
   return data;
