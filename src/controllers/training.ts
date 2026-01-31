@@ -43,10 +43,9 @@ export const getAllTraining = async (req: Request, res: Response): Promise<void>
 
 export const updateTraining = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-    const payload = req.body as Partial<ICreateTraining>;
-    const existingTraining = res.locals.training
+    const payload = req.body as ICreateTraining;
 
-    const result = await trainingServices.updateTraining(id, payload, existingTraining);
+    const result = await trainingServices.updateTraining(id, payload);
 
     res.status(200).json({
         message: 'Training Updated Successfully!',

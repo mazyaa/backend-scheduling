@@ -19,11 +19,16 @@ export const checkTrainingIdExist = async (req: Request, res: Response, next: Ne
 export const checkTrainingNameDuplicate = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { namaTraining } = req.body;
 
-    const existingTraining = await trainingServices.getTrainingByName(namaTraining);
+    const existingTraining = res.locals.training;
+    const skipUniqueCheck: boolean = existingTraining?.namaTraining === namaTraining; // if true, skip name uniqueness check
 
-    if (existingTraining) {
-        throw new HttpError("Training with the same name already exists!", 409);
+    if (namaTraining && !skipUniqueCheck) {
+        const trainingWithSameName = await trainingServices.getTrainingByName(namaTraining);
+
+        if (trainingWithSameName) {
+            throw new HttpError("Training name already in use", 409);
+        }
     }
-
+    
     next();
 }

@@ -73,16 +73,8 @@ export const getAllTraining = async (
   };
 };
 
-export const updateTraining = async (
-  id: string,
-  payload: Partial<ICreateTraining>,
-  existingTraining: ITraining,
-): Promise<ITraining> => {
-  const data = await trainingRepository.updateTraining(
-    id,
-    payload,
-    existingTraining,
-  );
+export const updateTraining = async (id: string, payload: Partial<ICreateTraining>): Promise<ITraining> => {
+  const data = await trainingRepository.updateTraining(id, payload);
 
   return data;
 };
