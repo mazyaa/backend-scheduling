@@ -1,28 +1,31 @@
 import { Request, Response, NextFunction } from "express";
-import { ICreateUser } from "../utils/interfaces";
+import { ICreateUser, IUser } from "../utils/interfaces";
 import { HttpError } from "../utils/error";
 import * as authServices from "../services/auth";
 
 export const checkUserIdExists = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { id } = req.params;
 
-    const user = await authServices.getUserById(id);
+    const users = await authServices.getUserById(id);
 
-    if (!user) {
+    if (!users) {
         throw new HttpError("User not found", 404);
     }
+
+    res.locals.users = users;
 
     next();
 }
 
+//ini dipakenya nanti pas update data user, ngambil dari data user yang udah login terus di compare sama email/noWa yang di update
 export const checkUserEmailorNoWaExists = async (req: Request, res: Response, next: NextFunction) => {
     const { email, noWa } = req.body;
 
-    const currentUser = res.locals.user as ICreateUser; // get current user from res.locals
-
+    const currentUser = res.locals.currentUserLogin as IUser; // get current user from res.locals
+    
     const skipUniqueCheckEmail: boolean = currentUser?.email === email as string; // if true, skip email uniqueness check
    
-    // check if email already exists in the database
+    // if email provided and skipUniqueCheckEmail is false
     if (email && !skipUniqueCheckEmail) {
         const existingUserByEmail = await authServices.getUserByEmail(email);
 
@@ -33,7 +36,7 @@ export const checkUserEmailorNoWaExists = async (req: Request, res: Response, ne
 
     const skipUniqueCheckNoWa = currentUser?.noWa === noWa; // if true, skip noWa uniqueness check
 
-    // check if noWa already exists in the database
+    // if noWa provided and skipUniqueCheckNoWa is false
     if (noWa && !skipUniqueCheckNoWa) {
         const existingUserByNoWa = await authServices.getUserByNumberWhatsapp(noWa);
 

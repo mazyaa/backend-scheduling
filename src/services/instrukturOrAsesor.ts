@@ -12,18 +12,6 @@ import {
 export const createInstrukturAndAsesor = async (payload: ICreateUser): Promise<Omit<IUser, 'password'>> => {
   const { name, email, noWa, role, keahlian } = payload;
 
-  const validateEmail = await authRepository.getUserByEmail(email);
-
-  if (validateEmail) {
-    throw new HttpError('Email already in use', 409);
-  }
-
-  const validateNoWa = await authRepository.getUserByNumberWhatsapp(noWa);
-
-  if (validateNoWa) {
-    throw new HttpError('Number WhatsApp already in use', 409);
-  }
-
   const randomPassword = generateRandomPassword(12);
 
   const newUser: ICreateUser = {
@@ -101,12 +89,9 @@ export const getAllInstrukturOrAsesor = async (
 
 export const updateInstrukturAndAsesor = async (
   id: string,
-  payload: Partial<ICreateUser>, // use Partial<ICreateUser> means that all properties in ICreateUser are optional
+  payload: ICreateUser, 
 ): Promise<Omit<IUser, 'password'>> => {
-  const data = await instrukturOrAsesorRepository.updateInstrukturOrAsesor(
-    id,
-    payload,
-  );
+  const data = await instrukturOrAsesorRepository.updateInstrukturOrAsesor(id, payload);
 
   const { password, ...result } = data as IUser; // exclude password from result
 
