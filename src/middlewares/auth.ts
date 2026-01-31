@@ -19,7 +19,7 @@ export const isAuthorized = async (req: Request, res: Response, next: NextFuncti
 
     const user = await verifyTokenAndUser(token);
 
-    res.locals.user = user as ICreateUser; // store user data in res.locals for access in next middleware or controller
+    res.locals.currentUserLogin = user as ICreateUser; // store user data in res.locals for access in next middleware or controller
 
     next(); // if everything is fine, pass control to next middleware or controller
 }

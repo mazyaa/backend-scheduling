@@ -20,10 +20,17 @@ export const getInstrukturOrAsesorById = async (id: string): Promise<IUser | nul
     });
 }
 
-export const updateInstrukturOrAsesor = async (id: string, payload: Partial<IUser>): Promise<IUser> => { // Partial<IUser> means that all properties in IUser are optional
+export const updateInstrukturOrAsesor = async (id: string, payload: ICreateUser): Promise<IUser> => { 
     return await prisma.user.update({
-        where: { id},
-        data: { ...payload }
+        where: { id },
+        data: { 
+            // use spread operator to conditionally update fields only if they are provided in the payload
+            ...(payload.name && { name: payload.name }), // if payload.name exists, update name
+            ...(payload.email && { email: payload.email }),
+            ...(payload.noWa && { noWa: payload.noWa }),
+            ...(payload.role && { role: payload.role }),
+            ...(payload.keahlian && { keahlian: payload.keahlian }),
+         }
     });
 }
 

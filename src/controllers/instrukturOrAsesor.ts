@@ -1,6 +1,6 @@
 import * as instrukturOrAsesorServices from '../services/instrukturOrAsesor';
 import { Request, Response } from 'express';
-import { ICreateUser } from '../utils/interfaces';
+import { ICreateUser, IUser } from '../utils/interfaces';
 
 export const createInstrukturAndAsesor = async (req: Request, res: Response): Promise<void> => {
     const payload = req.body as ICreateUser;
@@ -44,7 +44,7 @@ export const getAllInstrukturAndAsesor = async (req: Request, res: Response): Pr
 
 export const updateInstrukturAndAsesor = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-   const payload = req.body as Partial<ICreateUser>;
+   const payload = req.body as ICreateUser;
 
     const result = await instrukturOrAsesorServices.updateInstrukturAndAsesor(id, payload);
 

@@ -3,6 +3,7 @@ import * as instrukturOrAsesorController from "../controllers/instrukturOrAsesor
 import * as authMiddlewares from "../middlewares/auth";
 import * as instrukturAndAsesorValidationMiddlewares from "../middlewares/validation/instrukturOrAsesor";
 import * as userMiddlewares from "../middlewares/users";
+import * as instrukturOrAsesorMiddlewares from "../middlewares/instrukturOrAsesor";
 import * as commonValidationMiddlewares from "../middlewares/validation/common";
 import { Router } from "express";
 
@@ -17,6 +18,7 @@ const instrukturOrAsesorRoutes = (router: Router): void => {
         authMiddlewares.isAuthorized,
         aclMiddlewares.isAdmin,
         instrukturAndAsesorValidationMiddlewares.createInstrukturAndAsesorValidation,
+        instrukturOrAsesorMiddlewares.checkInstrukturOrAsesorEmailAndNoWaExist,
         instrukturOrAsesorController.createInstrukturAndAsesor,
     );
 
@@ -44,7 +46,7 @@ const instrukturOrAsesorRoutes = (router: Router): void => {
         commonValidationMiddlewares.validateIdParams,
         instrukturAndAsesorValidationMiddlewares.updateInstrukturAndAsesorValidation,
         userMiddlewares.checkUserIdExists,
-        userMiddlewares.checkUserEmailorNoWaExists,
+        instrukturOrAsesorMiddlewares.checkInstrukturOrAsesorEmailAndNoWaExist,
         instrukturOrAsesorController.updateInstrukturAndAsesor,
     );
 
