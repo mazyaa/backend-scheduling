@@ -3,7 +3,7 @@ import { RoleUser } from "@prisma/client";
 import { HttpError } from "../utils/error";
 
 const allowRoles = (...roles: RoleUser[]) => {
-    return (req: Request, res: Response, next: NextFunction): void => {
+    return (_req: Request, res: Response, next: NextFunction): void => {
         const userRole = res.locals.currentUserLogin.role as RoleUser;
 
         if (!roles.includes(userRole)) {

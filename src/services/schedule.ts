@@ -136,11 +136,7 @@ export const updateSchedule = async (
 
   const data = await scheduleRepository.updateSchedule(
     id,
-    {
-      ...payload,
-      detailJadwal: details,
-    },
-    existingSchedule,
+    {...payload, detailJadwal: details}
   );
 
   return data;

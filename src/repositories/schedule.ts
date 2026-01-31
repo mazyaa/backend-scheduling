@@ -32,19 +32,17 @@ export const getScheduleById = async (id: string): Promise<ISchedules| null> => 
 }
 
 
-export const updateSchedule = async (id: string, payload: ICreateSchedule, existingSchedule: ISchedules): Promise<ISchedules> => { // Partial<IUser> means that all properties in IUser are optional
+export const updateSchedule = async (id: string, payload: ICreateSchedule): Promise<ISchedules> => { // Partial<IUser> means that all properties in IUser are optional
     return await prisma.jadwalTraining.update({
         where: { id },
         data: {
             training: {
-                connect: {
-                    id: payload.trainingId ?? existingSchedule.trainingId,
-                }
+                connect: payload.trainingId ? { id: payload.trainingId } : undefined, // if trainingId is provided in payload, connect to that training, else keep existing training
             },
-            startDate: payload.startDate ? new Date(payload.startDate) : existingSchedule.startDate,
-            duration: payload.duration ?? existingSchedule.duration,
-            meetingLink: payload.meetingLink ?? existingSchedule.meetingLink,
-            batch: payload.batch ?? existingSchedule.batch,
+            ...(payload.startDate && { startDate: new Date(payload.startDate) }), // if startDate is provided in payload, update it
+            ...(payload.duration && { duration: payload.duration }),
+            ...(payload.meetingLink && { meetingLink: payload.meetingLink }),
+            ...(payload.batch && { batch: payload.batch }),
             ...(payload.detailJadwal?.length
                 ? {
                     detailJadwal: {
