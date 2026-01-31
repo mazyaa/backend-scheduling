@@ -22,12 +22,12 @@ export const getTrainingByName = async (namaTraining: string): Promise<ITraining
     });
 }
 
-export const updateTraining = async (id: string, payload: Partial<ICreateTraining>, existingTraining: ITraining): Promise<ITraining> => {
+export const updateTraining = async (id: string, payload: Partial<ICreateTraining>): Promise<ITraining> => {
     return prisma.training.update({
         where: { id },
         data: { 
-            namaTraining: payload.namaTraining ?? existingTraining.namaTraining,
-            description: payload.description ?? existingTraining.description,
+            ...(payload.namaTraining && { namaTraining: payload.namaTraining }),
+            ...(payload.description !== undefined && { description: payload.description }),
          },
     });
 };

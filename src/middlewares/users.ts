@@ -21,7 +21,7 @@ export const checkUserIdExists = async (req: Request, res: Response, next: NextF
 export const checkUserEmailorNoWaExists = async (req: Request, res: Response, next: NextFunction) => {
     const { email, noWa } = req.body;
 
-    const currentUser = res.locals.currentUserLogin as IUser; // get current user from res.locals
+    const currentUser = res.locals.login as IUser; // get current user from res.locals
     
     const skipUniqueCheckEmail: boolean = currentUser?.email === email as string; // if true, skip email uniqueness check
    

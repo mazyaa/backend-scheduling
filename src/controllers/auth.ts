@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as authServices from "../services/auth";
-import { Ilogin } from "../utils/interfaces";
+import { Ilogin, IUser } from "../utils/interfaces";
 
 export const login = async (req: Request, res: Response): Promise<void> => {
     const payload = req.body as Ilogin;
@@ -11,4 +11,4 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         message: "Login successful",
         data: result,
     });
-}
+};
