@@ -64,8 +64,10 @@ export interface ITraining extends ICreateTraining {
 export interface ICreateDetailSchedule {
   hari: Date;
   hariKe: number;
-  aktivitas?: Aktivitas;
-}
+  aktivitas?: Aktivitas | null;
+  instrukturId?: string | null;
+  asesorId?: string | null;
+} 
 
 export interface ICreateSchedule {
   trainingId: string;
@@ -73,9 +75,13 @@ export interface ICreateSchedule {
   duration: number;
   meetingLink: string;
   batch: string;
-  detailJadwal?: Omit<ICreateDetailSchedule, 'aktivitas'>[];
+  detailJadwal?: Omit<ICreateDetailSchedule, 'aktivitas' | 'instrukturId' | 'asesorId'>[];
 }
 
 export interface ISchedules extends ICreateSchedule {
+  id: string;
+}
+
+export interface IDetailSchedule extends ICreateDetailSchedule {
   id: string;
 }
