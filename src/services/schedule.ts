@@ -42,6 +42,8 @@ export const createSchedule = async (payload: ICreateSchedule) => {
     };
   });
 
+  console.log('Generated Details:', details);
+
   const newSchedule = await scheduleRepository.createSchedule({
     ...payload,
     detailJadwal: details,

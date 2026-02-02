@@ -1,7 +1,6 @@
 import * as scheduleServices from "../services/schedule";
 import { NextFunction, Request, Response } from "express";
 import { HttpError } from "../utils/error";
-import { ICreateSchedule } from "../utils/interfaces";
 
 export const checkScheduleIdExists = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { id } = req.params;
