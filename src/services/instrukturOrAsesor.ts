@@ -1,7 +1,5 @@
-import * as authRepository from '../repositories/auth';
 import * as instrukturOrAsesorRepository from '../repositories/instruturOrAsesor';
 import { generateRandomPassword } from '../utils/helper';
-import { HttpError } from '../utils/error';
 import {
   ICreateUser,
   IPaginationQuery,
