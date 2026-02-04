@@ -85,3 +85,18 @@ export interface ISchedules extends ICreateSchedule {
 export interface IDetailSchedule extends ICreateDetailSchedule {
   id: string;
 }
+
+export interface IMessageWhatsappPayload {
+  hari: Date;
+  hariKe: number;
+  nameTraining?: string | null;
+  instrukturName?: string | null;
+  insturkturNoWa?: string | null;
+  asesorName?: string | null;
+  asesorNoWa?: string | null;
+}
+
+export interface IDetailScheduleWithWaLinks extends IDetailSchedule {
+    waLinkInstruktur: string;
+    waLinkAsesor: string;
+}

@@ -6,7 +6,7 @@ const createInstrukturAndAsesorSchema = Joi.object({
     name: Joi.string().required(),
     email: Joi.string().email().required(),
     noWa: Joi.string()
-        .pattern(/^(\+[1-9][0-9]*|0[1-9][0-9]*)$/)
+        .pattern(/^(?:\+62|62|0)8[1-9][0-9]{6,}$/)
         .required(),
     role: Joi.string().valid('instruktur', 'asesor').required(),
     keahlian: Joi.string().required(),
@@ -16,7 +16,7 @@ const updateInstrukturAndAsesorSchema = Joi.object({
     name: Joi.string().optional(),
     email: Joi.string().email().optional(),
     noWa: Joi.string()
-        .pattern(/^(\+[1-9][0-9]*|0[1-9][0-9]*)$/)
+        .pattern(/^(?:\+62|62|0)8[1-9][0-9]{6,}$/)
         .optional(),
     role: Joi.string().valid('instruktur', 'asesor').optional(),
     keahlian: Joi.string().optional(),

@@ -12,9 +12,16 @@ export const createDetailSchedule = async (id: string, payload: Omit<ICreateDeta
     });
 };
 
-export const getDetailScheduleById = async (id: string): Promise<IDetailSchedule | null> => {
+export const getDetailScheduleById = async (id: string) => {
     return await prisma.detailJadwalTraining.findUnique({
         where: { id },
+        include: {
+            jadwalTraining: {
+                include: {
+                    training: true,
+                }
+            }
+        }
     });
 };
 
