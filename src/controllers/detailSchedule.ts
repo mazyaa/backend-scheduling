@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import * as detailScheduleServices from "../services/detailSchedule";
 
+
 export const createDetailSchedule = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     const{ trainingId } = res.locals.detailSchedule;
@@ -55,3 +56,4 @@ export const updateDetailSchedule = async (req: Request, res: Response): Promise
         data: newDetailSchedule,
     });
 };
+
