@@ -4,6 +4,7 @@ import instrukturOrAsesorRoutes from './instrukturOrAsesor';
 import trainingRoutes from './training';
 import { scheduleRoutes } from './schedule';
 import { detailScheduleRoutes } from './detailSchedule';
+import { notificationRoutes } from './notification';
 
 
 const routes = (app: Application): void => {
@@ -18,6 +19,7 @@ const routes = (app: Application): void => {
   trainingRoutes(router);
   scheduleRoutes(router);
   detailScheduleRoutes(router);
+  notificationRoutes(router);
 };
 
 export default routes;

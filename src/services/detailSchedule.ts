@@ -1,14 +1,12 @@
-import { IDetailSchedule, IDetailScheduleWithWaLinks, IPaginationQuery, IResultPagination } from "../utils/interfaces";
+import { IDetailSchedule, IPaginationQuery, IResultPagination } from "../utils/interfaces";
 import { HttpError } from "../utils/error";
-import { generateMessageWhatsapp } from "../utils/helper";
-import * as instrukturOrAsesorRepository from "../repositories/instruturOrAsesor";
 import * as detailScheduleRepository from "../repositories/detailSchedule";
 
-export const createDetailSchedule = async (id: string, payload: IDetailSchedule, trainingId: string): Promise<IDetailScheduleWithWaLinks> => {
+export const createDetailSchedule = async (id: string, payload: IDetailSchedule, trainingId: string): Promise<IDetailSchedule> => {
     const { aktivitas, instrukturId, asesorId } = payload;
 
     const getDetailSchedule = await detailScheduleRepository.getDetailScheduleById(id);
-    const getLastDay = await detailScheduleRepository.getMaxHariKe(trainingId);
+    const getLastDay = await detailScheduleRepository.getMaxHariKe(trainingId); // last day of the training
 
    // for validating instructor and assessor assignment
    if (getLastDay !== null && getDetailSchedule !== null) { // validate if data exists
@@ -27,34 +25,7 @@ export const createDetailSchedule = async (id: string, payload: IDetailSchedule,
         asesorId,
     });
 
-    const getInstruktur = await instrukturOrAsesorRepository.getInstrukturOrAsesorById(instrukturId ?? "");
-    const getAsesor = await instrukturOrAsesorRepository.getInstrukturOrAsesorById(asesorId ?? "");
-    const nameTraining = getDetailSchedule?.jadwalTraining?.training.namaTraining || "";
-
-    const pesan = generateMessageWhatsapp({
-        hari: data.hari,
-        hariKe: data.hariKe,
-        nameTraining,
-        instrukturName: getInstruktur?.name,
-        insturkturNoWa: getInstruktur?.noWa,
-        asesorName: getAsesor?.name,
-        asesorNoWa: getAsesor?.noWa,
-    });
-
-    let waLinkInstruktur = "";
-    let waLinkAsesor = "";
-
-    if (getInstruktur && instrukturId) {
-        waLinkInstruktur = `https://wa.me/${getInstruktur.noWa}?text=${encodeURIComponent(pesan.messageForInstruktur)}`;
-    };
-
-    if (getAsesor && asesorId) {
-        waLinkAsesor = `https://wa.me/${getAsesor.noWa}?text=${encodeURIComponent(pesan.messageForAsesor)}`;
-    ;}
-
-
-
-    return { ...data, waLinkInstruktur, waLinkAsesor } as IDetailScheduleWithWaLinks;
+    return data;
 }
 
 export const getDetailScheduleById = async (id: string): Promise<IDetailSchedule | null> => {

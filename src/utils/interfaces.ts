@@ -86,7 +86,20 @@ export interface IDetailSchedule extends ICreateDetailSchedule {
   id: string;
 }
 
-export interface IMessageWhatsappPayload {
+export interface IGenerateWaLinksPayload {
+    instrukturId?: string | null;
+    asesorId?: string | null;
+    hari: Date;
+    hariKe: number;
+    nameTraining: string;
+}
+
+export interface IWaLinks {
+    waLinkInstruktur: string;
+    waLinkAsesor: string;
+}
+
+export interface IMessageWhatsappPayload { // for util/helper.ts
   hari: Date;
   hariKe: number;
   nameTraining?: string | null;
@@ -94,9 +107,4 @@ export interface IMessageWhatsappPayload {
   insturkturNoWa?: string | null;
   asesorName?: string | null;
   asesorNoWa?: string | null;
-}
-
-export interface IDetailScheduleWithWaLinks extends IDetailSchedule {
-    waLinkInstruktur: string;
-    waLinkAsesor: string;
 }
