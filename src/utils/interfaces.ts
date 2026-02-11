@@ -86,7 +86,7 @@ export interface IDetailSchedule extends ICreateDetailSchedule {
   id: string;
 }
 
-export interface IGenerateWaLinksPayload {
+export interface IGenerateNotificationPayload {
     instrukturId?: string | null;
     asesorId?: string | null;
     hari: Date;
@@ -94,12 +94,22 @@ export interface IGenerateWaLinksPayload {
     nameTraining: string;
 }
 
-export interface IWaLinks {
-    waLinkInstruktur: string;
-    waLinkAsesor: string;
+export interface IGenerateCredentialPayload {
+    instrukturId?: string | null;
+    asesorId?: string | null;
 }
 
-export interface IMessageWhatsappPayload { // for util/helper.ts
+export interface INotification {
+    generatedNotificationForInstruktur: string;
+    generatedNotificationForAsesor: string;
+}
+
+export interface ICredential {
+    generatedCredentialForInstruktur: string;
+    generatedCredentialForAsesor: string;
+}
+
+export interface INotificationPayload { // for util/helper.ts
   hari: Date;
   hariKe: number;
   nameTraining?: string | null;
@@ -107,4 +117,14 @@ export interface IMessageWhatsappPayload { // for util/helper.ts
   insturkturNoWa?: string | null;
   asesorName?: string | null;
   asesorNoWa?: string | null;
+  instrukutrEmail?: string | null;
+}
+
+export interface ICredentialPayload extends Omit<INotificationPayload, 'hari'| 'hariKe'> { // for util/helper.ts
+  instrukturEmail?: string | null;
+  instrukturPassword?: string | null;
+  asesorEmail?: string | null;
+  asesorPassword?: string | null;
+  instrukturRole?: string | null;
+  asesorRole?: string | null;
 }

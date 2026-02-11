@@ -1,16 +1,16 @@
-import { generateMessageWhatsapp } from "../utils/helper";
+import { generateNotificationMessage } from "../utils/helper";
 import * as instrukturOrAsesorRepository from "../repositories/instruturOrAsesor";
 import * as detailScheduleRepository from "../repositories/detailSchedule";
 import { HttpError } from "../utils/error";
-import { IGenerateWaLinksPayload, IWaLinks } from "../utils/interfaces";
+import { IGenerateNotificationPayload, INotification } from "../utils/interfaces";
 
-export const generateWaLinks = async (payload: IGenerateWaLinksPayload): Promise<IWaLinks> => {
+export const generateNotification = async (payload: IGenerateNotificationPayload): Promise<INotification> => {
     const { instrukturId, asesorId, hari, hariKe, nameTraining } = payload;
 
     const getInstruktur = await instrukturOrAsesorRepository.getInstrukturOrAsesorById(instrukturId ?? "");
     const getAsesor = await instrukturOrAsesorRepository.getInstrukturOrAsesorById(asesorId ?? "");
 
-    const pesan = generateMessageWhatsapp({
+    const pesan = generateNotificationMessage({
         hari,
         hariKe,
         nameTraining,
@@ -20,21 +20,21 @@ export const generateWaLinks = async (payload: IGenerateWaLinksPayload): Promise
         asesorNoWa: getAsesor?.noWa,
     });
 
-    let waLinkInstruktur = "";
-    let waLinkAsesor = "";
+    let generatedNotificationForInstruktur = "";
+    let generatedNotificationForAsesor = "";
 
     if (getInstruktur && instrukturId) {
-        waLinkInstruktur = `https://wa.me/${getInstruktur.noWa}?text=${encodeURIComponent(pesan.messageForInstruktur)}`;
+        generatedNotificationForInstruktur = `https://wa.me/${getInstruktur.noWa}?text=${encodeURIComponent(pesan.notificationForInstruktur)}`;
     }
 
     if (getAsesor && asesorId) {
-        waLinkAsesor = `https://wa.me/${getAsesor.noWa}?text=${encodeURIComponent(pesan.messageForAsesor)}`;
+        generatedNotificationForAsesor = `https://wa.me/${getAsesor.noWa}?text=${encodeURIComponent(pesan.notificationForAsesor)}`;
     }
 
-    return { waLinkInstruktur, waLinkAsesor };
+    return { generatedNotificationForInstruktur, generatedNotificationForAsesor };
 };
 
-export const sendNotificationForDetailSchedule = async (detailScheduleId: string): Promise<IWaLinks> => {
+export const sendNotificationForDetailSchedule = async (detailScheduleId: string): Promise<INotification> => {
     const detail = await detailScheduleRepository.getDetailScheduleById(detailScheduleId);
 
     if (!detail) {
@@ -47,7 +47,7 @@ export const sendNotificationForDetailSchedule = async (detailScheduleId: string
 
     const nameTraining = detail.jadwalTraining?.training?.namaTraining || ""; // get training name
 
-    const waLinks = await generateWaLinks({
+    const waLinks = await generateNotification({
         instrukturId: detail.instrukturId ?? undefined,
         asesorId: detail.asesorId ?? undefined,
         hari: detail.hari,
