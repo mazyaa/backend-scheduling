@@ -5,6 +5,7 @@ import trainingRoutes from './training';
 import { scheduleRoutes } from './schedule';
 import { detailScheduleRoutes } from './detailSchedule';
 import { notificationRoutes } from './notification';
+import { credentialRoutes } from './credential';
 
 
 const routes = (app: Application): void => {
@@ -20,6 +21,7 @@ const routes = (app: Application): void => {
   scheduleRoutes(router);
   detailScheduleRoutes(router);
   notificationRoutes(router);
+  credentialRoutes(router)
 };
 
 export default routes;
