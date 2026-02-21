@@ -14,7 +14,9 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const getUserInfo = async (_req: Request, res: Response): Promise<void> => {
-    const result: IUser = res.locals.currentUserLogin;
+    const data: IUser = res.locals.currentUserLogin;
+
+    const { password, ...result } = data;
 
     res.status(200).json({
         message: "User info retrieved successfully",
