@@ -2,12 +2,12 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
-import { FRONTEND_URL } from '../utils/env';
+import { FRONTEND_URL, FRONTEND_URL_PRODUCTION } from '../utils/env';
 import { Application } from 'express'; // type inside application express is a object with free structure (key: string, value: any) 
 
 const loadMiddlewares = (app: Application): void => {
     app.use(cors({ 
-        origin: FRONTEND_URL, // allow requests from this origin
+        origin: [FRONTEND_URL, FRONTEND_URL_PRODUCTION].filter(Boolean), // allow requests from this origin
         credentials: true // allow cookies to be sent with requests
     }));
 
