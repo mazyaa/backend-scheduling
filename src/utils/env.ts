@@ -6,6 +6,9 @@ export const NODE_ENV: string = process.env.NODE_ENV || '';
 export const DATABASE_URL: string = process.env.DATABASE_URL || '';
 export const FRONTEND_URL: string = process.env.FRONTEND_URL || '';
 
+// production database environment variables
+export const DATABASE_URL_PRODUCTION: string = process.env.DATABASE_URL_PRODUCTION || '';
+
 // user roles credentials
 export const ADMIN_EMAIL: string = process.env.ADMIN_EMAIL || '';
 export const ADMIN_NOWA: string = process.env.ADMIN_NOWA || '';
