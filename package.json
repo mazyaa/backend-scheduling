@@ -3,19 +3,19 @@
   "version": "1.0.0",
   "description": "backend for web app scheduling and e-certificate issuance",
   "main": "index.js",
-  "scripts": {
-    "dev": "nodemon src/server.ts",
-    "postinstall": "prisma generate",
-    "build": "prisma generate && tsc",
-    "start": "prisma migrate deploy && node dist/utils/prisma/seed.js && node dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "db:init": "prisma migrate dev --name init",
-    "db:migrate": "prisma migrate dev",
-    "db:generate": "prisma generate",
-    "db:reset": "prisma migrate reset",
-    "db:status": "prisma migrate status",
-    "db:seed": "ts-node src/utils/prisma/seed.ts"
-  },
+"scripts": {
+  "dev": "nodemon src/server.ts",
+  "postinstall": "prisma generate",
+  "build": "tsc && prisma generate",
+  "start": "tsc && prisma migrate deploy && ts-node src/utils/prisma/seed.ts && node dist/index.js",
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "db:init": "prisma migrate dev --name init",
+  "db:migrate": "prisma migrate dev",
+  "db:generate": "prisma generate",
+  "db:reset": "prisma migrate reset",
+  "db:status": "prisma migrate status",
+  "db:seed": "ts-node src/utils/prisma/seed.ts"
+},
   "author": "mazyaa",
   "license": "ISC",
   "dependencies": {
