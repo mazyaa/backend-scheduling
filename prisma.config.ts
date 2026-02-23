@@ -3,9 +3,9 @@
 import { defineConfig } from "prisma/config";
 
 export default defineConfig({
-  schema: "src/utils/prisma/schema.prisma",
+  schema: "prisma/schema.prisma",
   migrations: {
-    path: "src/utils/prisma/migrations",
+    path: "prisma/migrations",
   },
   datasource: {
     url: process.env.DATABASE_URL, // use environment variable for database connection string
