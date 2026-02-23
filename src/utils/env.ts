@@ -7,8 +7,6 @@ export const DATABASE_URL: string = process.env.DATABASE_URL || '';
 export const FRONTEND_URL: string = process.env.FRONTEND_URL || '';
 export const FRONTEND_URL_PRODUCTION: string = process.env.FRONTEND_URL_PRODUCTION || '';
 
-// production database environment variables
-export const DATABASE_URL_PRODUCTION: string = process.env.DATABASE_URL_PRODUCTION || '';
 
 // user roles credentials
 export const ADMIN_EMAIL: string = process.env.ADMIN_EMAIL || '';
