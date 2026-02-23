@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "nodemon src/server.ts",
     "postinstall": "prisma generate",
-    "build": "prisma migrate deploy && prisma generate && tsc && node dist/utils/prisma/seed.js",
-    "start": "prisma migrate deploy && node dist/utils/prisma/seed.js && node dist/server.js",
+    "build": "prisma generate && tsc",
+    "start": "prisma migrate deploy && node dist/utils/prisma/seed.js && node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "db:init": "prisma migrate dev --name init",
     "db:migrate": "prisma migrate dev",
