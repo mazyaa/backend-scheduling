@@ -4,7 +4,7 @@
   "description": "backend for web app scheduling and e-certificate issuance",
   "main": "index.js",
 "scripts": {
-  "dev": "nodemon src/server.ts",
+  "dev": "nodemon src/index.ts",
   "postinstall": "prisma generate",
   "build": "tsc && prisma generate",
   "start": "tsc && prisma migrate deploy && ts-node src/utils/prisma/seed.ts && node dist/index.js",

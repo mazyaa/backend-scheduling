@@ -63,7 +63,7 @@ async function seedUsers() {
 
     for (const user of users) { // loop users array using for...of
         await prisma.user.upsert({ // use upsert to avoid duplicate entries (update if exists, insert if not exists)
-            where: { id: user.email }, // use email as unique identifier
+            where: { email: user.email }, // use email as unique identifier
             update: {}, // if user exists, do nothing (empty update) because we don't want to change existing data
             create: user, // create new user
         });

@@ -10,15 +10,16 @@ import { credentialRoutes } from './credential';
 const routes = (app: Application): void => {
   const router = Router(); // this value is null at the beginning
 
-  // to read it, if user access routes with /api, it will use this router
-  app.use('/api', router); // second params is use for registering all routes to /api path
-
-  app.use('/', (_req: Request, res: Response) => {
+  app.get('/', (_req: Request, res: Response) => {
     res.status(200).json({
       message: 'Welcome to the API SCHEDULING and E-CERTIFICATE!',
       data: null,
     });
   });
+
+  // to read it, if user access routes with /api, it will use this router
+  app.use('/api', router); // second params is use for registering all routes to /api path
+
 
   // registering all routes to router
   authRoutes(router);
