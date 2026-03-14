@@ -6,6 +6,7 @@ import { scheduleRoutes } from './schedule';
 import { detailScheduleRoutes } from './detailSchedule';
 import { notificationRoutes } from './notification';
 import { credentialRoutes } from './credential';
+import mediaRoutes from './media';
 
 const routes = (app: Application): void => {
   const router = Router(); // this value is null at the beginning
@@ -29,6 +30,7 @@ const routes = (app: Application): void => {
   detailScheduleRoutes(router);
   notificationRoutes(router);
   credentialRoutes(router);
+  mediaRoutes(router);
 };
 
 export default routes;

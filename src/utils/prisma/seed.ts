@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { prisma } from '../client';
 import bcrypt from 'bcrypt';
 import { RoleUser } from '@prisma/client';
@@ -24,6 +25,7 @@ async function seedUsers() {
     const users: ICreateUser[] = [
         {
             name: 'Admin',
+            image: null,
             email: ADMIN_EMAIL,
             noWa: ADMIN_NOWA,
             role: RoleUser.admin,
@@ -31,6 +33,7 @@ async function seedUsers() {
         },
         {
             name: 'Peserta',
+            image: null,
             email: PESERTA_EMAIL,
             noWa: PESERTA_NOWA,
             role: RoleUser.peserta,
@@ -38,6 +41,7 @@ async function seedUsers() {
         },
         {
             name: 'Instruktur',
+            image: 'https://res.cloudinary.com/dfu2sm1dv/image/upload/v1773504142/engineer_fxk5ta.png',
             email: INSTRUKTUR_EMAIL,
             noWa: INSTRUKTUR_NOWA,
             role: RoleUser.instruktur,
@@ -46,6 +50,7 @@ async function seedUsers() {
         },
         {
             name: 'Asesor',
+            image: 'https://res.cloudinary.com/dfu2sm1dv/image/upload/v1773504142/engineer_fxk5ta.png',
             email: ASESOR_EMAIL,
             noWa: ASESOR_NOWA,
             role: RoleUser.asesor,
@@ -54,6 +59,7 @@ async function seedUsers() {
         },
         {
             name: 'Direktur',
+            image: null,
             email: DIREKTUR_EMAIL,
             noWa: DIREKTUR_NOWA,
             role: RoleUser.direktur,
