@@ -2,6 +2,7 @@ import type { RoleUser, Aktivitas } from '@prisma/client';
 
 export interface ICreateUser {
   name: string;
+  image?: string | null;
   email: string;
   noWa: string;
   role: RoleUser;
