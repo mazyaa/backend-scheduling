@@ -40,17 +40,6 @@ export async function singleUpload(file: Express.Multer.File) {
   return result;
 }
 
-export async function multipleUpload(files: Express.Multer.File[]) {
-  // map files to an array of promises for each upload
-  const uploadBatch = files.map((item) => {
-    const result = singleUpload(item);
-    return result;
-  });
-
-  const results = await Promise.all(uploadBatch); // use Promise.all to wait for all uploads to complete
-  return results;
-}
-
 export async function remove(fileUrl: string) {
   const publicId = getPublicIdFromFileUrl(fileUrl);
   const result = await cloudinary.uploader.destroy(publicId);
