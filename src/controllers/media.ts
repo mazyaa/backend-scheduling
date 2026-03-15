@@ -24,3 +24,22 @@ export const single = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const remove = async (req: Request, res: Response) => {
+  try {
+    const { fileUrl } = req.body as { fileUrl: string };
+    const result = await uploader.remove(fileUrl);
+
+    res.status(200).json({
+      message: 'File Removed Successfully!',
+      data: result,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: 'Failed to remove file',
+      error: error,
+    });
+  }
+
+}

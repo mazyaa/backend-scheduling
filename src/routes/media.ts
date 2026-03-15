@@ -16,6 +16,13 @@ const mediaRoutes = (router: Router): void => {
         mediaMiddleware.single('file'),
         mediaController.single,
     );
+
+    mediaRouter.delete(
+        '/remove',
+        authMiddleware.isAuthorized,
+        aclMiddleware.isAdmin,
+        mediaController.remove,
+    )
 }
 
 export default mediaRoutes;
