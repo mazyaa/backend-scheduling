@@ -4,11 +4,13 @@ import { Request, Response, NextFunction } from "express";
 
 const createTrainingSchema = Joi.object({
     namaTraining: Joi.string().required(),
+    image: Joi.string().required(),
     description: Joi.string().required(),
 });
 
 const updateTrainingSchema = Joi.object({
     namaTraining: Joi.string().optional(),
+    image: Joi.string().optional(),
     description: Joi.string().optional(),
 });
 
