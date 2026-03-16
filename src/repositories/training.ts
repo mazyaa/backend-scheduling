@@ -5,6 +5,7 @@ export const createTraining = async (payload: ICreateTraining): Promise<ITrainin
     return prisma.training.create({
         data: {
             namaTraining: payload.namaTraining,
+            image: payload.image,
             description: payload.description,
         }
     });
