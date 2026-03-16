@@ -55,6 +55,7 @@ export interface IResultPagination {
 
 export interface ICreateTraining {
   namaTraining: string;
+  image: string | null;
   description: string | null;
 }
 
