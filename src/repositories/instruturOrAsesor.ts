@@ -5,6 +5,7 @@ export const createInstrukturOrAsesor = async (payload: ICreateUser): Promise<IU
     return await prisma.user.create({
         data: {
             name: payload.name,
+            image: payload.image,
             email: payload.email,
             noWa: payload.noWa,
             role: payload.role ?? "peserta", // set default role to "user" if not provided
@@ -26,6 +27,7 @@ export const updateInstrukturOrAsesor = async (id: string, payload: ICreateUser)
         data: { 
             // use spread operator to conditionally update fields only if they are provided in the payload
             ...(payload.name && { name: payload.name }), // if payload.name exists, update name
+            ...(payload.image && { image: payload.image }),
             ...(payload.email && { email: payload.email }),
             ...(payload.noWa && { noWa: payload.noWa }),
             ...(payload.role && { role: payload.role }),
