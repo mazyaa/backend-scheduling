@@ -8,12 +8,13 @@ import {
 } from '../utils/interfaces';
 
 export const createInstrukturAndAsesor = async (payload: ICreateUser): Promise<Omit<IUser, 'password'>> => {
-  const { name, email, noWa, role, keahlian } = payload;
+  const { name, image, email, noWa, role, keahlian } = payload;
 
   const randomPassword = generateRandomPassword(12);
 
   const newUser: ICreateUser = {
     name,
+    image,
     email,
     noWa,
     role,
