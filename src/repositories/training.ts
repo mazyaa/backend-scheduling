@@ -28,6 +28,7 @@ export const updateTraining = async (id: string, payload: Partial<ICreateTrainin
         where: { id },
         data: { 
             ...(payload.namaTraining && { namaTraining: payload.namaTraining }),
+            ...(payload.image && { image: payload.image }),
             ...(payload.description !== undefined && { description: payload.description }),
          },
     });
