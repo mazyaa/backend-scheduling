@@ -4,6 +4,7 @@ import { Request, Response, NextFunction } from "express";
 
 const createInstrukturAndAsesorSchema = Joi.object({
     name: Joi.string().required(),
+    image: Joi.string().uri().required(),
     email: Joi.string().email().required(),
     noWa: Joi.string()
         .pattern(/^(?:\+62|62|0)8[1-9][0-9]{6,}$/)
@@ -14,6 +15,7 @@ const createInstrukturAndAsesorSchema = Joi.object({
 
 const updateInstrukturAndAsesorSchema = Joi.object({
     name: Joi.string().optional(),
+    image: Joi.string().uri().optional(),
     email: Joi.string().email().optional(),
     noWa: Joi.string()
         .pattern(/^(?:\+62|62|0)8[1-9][0-9]{6,}$/)
