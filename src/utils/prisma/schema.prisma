@@ -78,7 +78,7 @@ model Training {
 model JadwalTraining {
   id          String   @id @default(uuid())
   trainingId  String   @map("training_id")
-  startDate   DateTime @map("start_date")
+  startDate   DateTime @db.Date @map("start_date")
   duration    Int
   meetingLink String   @map("meeting_link")
   batch       String   @db.VarChar(100)
@@ -98,7 +98,7 @@ model JadwalTraining {
 model DetailJadwalTraining {
   id               String     @id @default(uuid())
   jadwalTrainingId String     @map("jadwal_training_id")
-  hari             DateTime
+  hari             DateTime   @db.Date
   hariKe           Int        @map("hari_ke")
   aktivitas        Aktivitas?
 
