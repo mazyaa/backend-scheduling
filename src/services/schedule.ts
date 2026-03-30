@@ -112,18 +112,6 @@ export const updateSchedule = async (
 ) => {
   const { trainingId, startDate, duration, batch } = payload;
 
-  const checkConflict = await scheduleRepository.checkConflictSchedule(
-    trainingId!,
-    batch!,
-  );
-
-  if (checkConflict) {
-    throw new HttpError(
-      'Schedule with the same training and batch already exists',
-      409,
-    );
-  }
-
    // main feature: generate detailJadwal based on startDate and duration
   const details = Array.from({ length: (duration || existingSchedule.duration) }).map((_, i) => {
     // use Array.from to create an array with length of duration ex: duration = 3 -> [undefined, undefined, undefined]
