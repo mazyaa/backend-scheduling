@@ -5,7 +5,7 @@ import trainingRoutes from './training';
 import { scheduleRoutes } from './schedule';
 import { detailScheduleRoutes } from './detailSchedule';
 import { notificationRoutes } from './notification';
-import { credentialRoutes } from './credential';
+// import { credentialRoutes } from './credential';
 import mediaRoutes from './media';
 
 const routes = (app: Application): void => {
@@ -29,7 +29,7 @@ const routes = (app: Application): void => {
   scheduleRoutes(router);
   detailScheduleRoutes(router);
   notificationRoutes(router);
-  credentialRoutes(router);
+  // credentialRoutes(router);
   mediaRoutes(router);
 };
 

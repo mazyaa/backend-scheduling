@@ -43,7 +43,7 @@ model User {
   email    String   @unique @db.VarChar(150)
   noWa     String   @unique @map("no_wa") @db.VarChar(20) // use @map("column_name") to map to different column name in database
   role     RoleUser
-  password String   @db.VarChar(255)
+  password String?   @db.VarChar(255)
   keahlian String?  @db.VarChar(255) // use ? (optional chain) to make a field optional (nullable in database)
 
   createdAt DateTime @default(now()) @map("created_at") // use @default(now()) to set default value to current timestamp
@@ -57,8 +57,23 @@ model User {
   sertifikat       Sertifikat[]
   instrukturJadwal DetailJadwalTraining[] @relation("instruktur_relation")
   asesorJadwal     DetailJadwalTraining[] @relation("asesor_relation")
+  passwordReset    PasswordReset[]
 
   @@map("users")
+  @@index([name])
+}
+
+model PasswordReset {
+  id         String   @id @default(uuid())
+  token      String   @unique
+  userId     String
+  expiredAt  DateTime
+  isUsed     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token]) // indexing token for scalable if search token
 }
 
 model Training {
@@ -73,6 +88,7 @@ model Training {
   jadwalTraining JadwalTraining[]
 
   @@map("training")
+  @@index([namaTraining])
 }
 
 model JadwalTraining {
@@ -169,6 +185,7 @@ model MateriTraining {
   uploader User @relation(fields: [diuploadOleh], references: [id], onDelete: Cascade)
 
   @@map("materi_training")
+  @@index([judul])
 }
 
 model Penilaian {
@@ -202,4 +219,5 @@ model Sertifikat {
   jadwalTraining JadwalTraining @relation(fields: [jadwalTrainingId], references: [id], onDelete: Cascade)
 
   @@map("sertifikat")
+  @@index([nomorSertifikat])
 }

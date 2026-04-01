@@ -6,21 +6,24 @@ export interface ICreateUser {
   email: string;
   noWa: string;
   role: RoleUser;
-  password: string;
+  password?: string | null;
   keahlian?: string | null;
 }
 
+export interface IUserWithoutPassword extends Omit<ICreateUser, 'password'> {
+  id: string;
+}
+
 export interface IUser extends ICreateUser {
-  // use Omit to exclude keahlian from IUser and recreate type keahlian to Ilogin
   id: string;
+  password?: string | null;
 }
 
-export interface ITokenPayload extends Pick<ICreateUser, 'email'> {
-  // use Pick to select only email from IUser so if have pick, not neet to rewrite type again
-  id: string;
+export interface ITokenPayload {
+  userId: string;
 }
 
-export interface IToken {
+export interface IResultLogin {
   name: string;
   role: string;
   token: string;
@@ -122,11 +125,13 @@ export interface INotificationPayload { // for util/helper.ts
   instrukutrEmail?: string | null;
 }
 
-export interface ICredentialPayload extends Omit<INotificationPayload, 'hari'| 'hariKe'> { // for util/helper.ts
-  instrukturEmail?: string | null;
-  instrukturPassword?: string | null;
-  asesorEmail?: string | null;
-  asesorPassword?: string | null;
-  instrukturRole?: string | null;
-  asesorRole?: string | null;
+export interface ICredentialPayload {
+  token: string;
+  userId: string;
+  expiredAt: Date;
+  used: boolean;
+}
+
+export interface ICredential extends ICredentialPayload {
+  id: string;
 }
