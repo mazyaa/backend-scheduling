@@ -1,7 +1,7 @@
 import { prisma } from "../utils/client";
-import { ICreateUser, IPagination, IUser } from "../utils/interfaces";
+import { ICreateUser, IPagination, IUser, IUserWithoutPassword } from "../utils/interfaces";
 
-export const createInstrukturOrAsesor = async (payload: ICreateUser): Promise<IUser> => {
+export const createInstrukturOrAsesor = async (payload: Omit<ICreateUser, 'password'>): Promise<IUser> => {
     return await prisma.user.create({
         data: {
             name: payload.name,
@@ -9,7 +9,6 @@ export const createInstrukturOrAsesor = async (payload: ICreateUser): Promise<IU
             email: payload.email,
             noWa: payload.noWa,
             role: payload.role ?? "peserta", // set default role to "user" if not provided
-            password: payload.password,
             keahlian: payload.keahlian,
         },
     });
@@ -21,7 +20,7 @@ export const getInstrukturOrAsesorById = async (id: string): Promise<IUser | nul
     });
 }
 
-export const updateInstrukturOrAsesor = async (id: string, payload: ICreateUser): Promise<IUser> => { 
+export const updateInstrukturOrAsesor = async (id: string, payload: Omit<ICreateUser, 'password'>): Promise<IUser> => { 
     return await prisma.user.update({
         where: { id },
         data: { 
@@ -36,13 +35,20 @@ export const updateInstrukturOrAsesor = async (id: string, payload: ICreateUser)
     });
 }
 
+export const updatePasswordInstrukturOrAsesor = async (id: string, password: string): Promise<IUserWithoutPassword> => {
+    return await prisma.user.update({
+        where: { id },
+        data: { password }
+    });
+}
+
 export const deleteInstrukturOrAsesor = async (id: string): Promise<IUser> => {
     return await prisma.user.delete({
         where: { id }
     });
 };
 
-export const getAllInstrukturOrAsesor = async (payload: IPagination): Promise<IUser[]> => {
+export const getAllInstrukturOrAsesor = async (payload: IPagination): Promise<IUserWithoutPassword[]> => {
     const { skip, take, where = {}, orderBy } = payload;
 
     return await prisma.user.findMany({

@@ -1,45 +1,36 @@
 import * as instrukturOrAsesorRepository from '../repositories/instruturOrAsesor';
-import { generateRandomPassword } from '../utils/helper';
 import {
   ICreateUser,
   IPaginationQuery,
   IResultPagination,
   IUser,
+  IUserWithoutPassword,
 } from '../utils/interfaces';
 
-export const createInstrukturAndAsesor = async (payload: ICreateUser): Promise<Omit<IUser, 'password'>> => {
-  const { name, image, email, noWa, role, keahlian } = payload;
+export const createInstrukturAndAsesor = async (payload: Omit<ICreateUser, 'password'>): Promise<IUser> => {
+  const data = await instrukturOrAsesorRepository.createInstrukturOrAsesor(payload);
 
-  const randomPassword = generateRandomPassword(12);
-
-  const newUser: ICreateUser = {
-    name,
-    image,
-    email,
-    noWa,
-    role,
-    password: randomPassword,
-    keahlian,
-  };
-
-  const data = await instrukturOrAsesorRepository.createInstrukturOrAsesor(newUser);
-  const { password, ...result } = data; // exclude password from result
+ const { password, ...result } = data;
 
   return result;
 };
 
-export const getInstrukturOrAsesorById = async (id: string): Promise<Omit<IUser, 'password'>> => {
+export const getInstrukturOrAsesorById = async (id: string): Promise<IUser | null> => {
   const data = await instrukturOrAsesorRepository.getInstrukturOrAsesorById(id);
 
-  const { password, ...result } = data as IUser; // exclude password from result
+  if (data !== null) {
+    const { password, ...result } = data;
 
-  return result;
+    return result;
+  }
+
+  return null;
 };
 
 export const getAllInstrukturOrAsesor = async (
   payload: IPaginationQuery,
 ): Promise<{
-  data: Omit<IUser, 'password'>[];
+  data: IUserWithoutPassword[];
   pagination: IResultPagination;
 }> => {
   const { page, limit, search } = payload;
@@ -69,7 +60,7 @@ export const getAllInstrukturOrAsesor = async (
     instrukturOrAsesorRepository.countInstrukturOrAsesor(where),
   ]);
 
-  const result = (data as IUser[]).map(({ password, ...rest }) => rest); // exclude password from each result
+  const result = (data as IUser[]).map(({ password, ...result }) => result);
 
   const totalPages = Math.ceil(total / limit); // use Math.ceil to round up the total pages ex: 95/10 = 9.5 => 10 pages
 
@@ -88,19 +79,19 @@ export const getAllInstrukturOrAsesor = async (
 
 export const updateInstrukturAndAsesor = async (
   id: string,
-  payload: ICreateUser, 
-): Promise<Omit<IUser, 'password'>> => {
+  payload: Omit<ICreateUser, 'password'>, 
+): Promise<IUser> => {
   const data = await instrukturOrAsesorRepository.updateInstrukturOrAsesor(id, payload);
 
-  const { password, ...result } = data as IUser; // exclude password from result
+  const { password, ...result } = data;
 
   return result;
 };
 
-export const deleteInstrukturAndAsesor = async (id: string): Promise<Omit<IUser, 'password'>> => {
+export const deleteInstrukturAndAsesor = async (id: string): Promise<IUser> => {
   const data = await instrukturOrAsesorRepository.deleteInstrukturOrAsesor(id);
 
-  const { password, ...result } = data as IUser; // exclude password from result
+  const { password, ...result } = data;
 
   return result;
 };

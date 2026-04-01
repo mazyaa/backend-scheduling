@@ -1,9 +1,9 @@
 import * as instrukturOrAsesorServices from '../services/instrukturOrAsesor';
 import { Request, Response } from 'express';
-import { ICreateUser, IUser } from '../utils/interfaces';
+import { ICreateUser } from '../utils/interfaces';
 
 export const createInstrukturAndAsesor = async (req: Request, res: Response): Promise<void> => {
-    const payload = req.body as ICreateUser;
+    const payload = req.body as Omit<ICreateUser, 'password'>;
 
     const result = await instrukturOrAsesorServices.createInstrukturAndAsesor(payload);
 
@@ -44,7 +44,7 @@ export const getAllInstrukturAndAsesor = async (req: Request, res: Response): Pr
 
 export const updateInstrukturAndAsesor = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-   const payload = req.body as ICreateUser;
+   const payload = req.body as Omit<ICreateUser, 'password'>;
 
     const result = await instrukturOrAsesorServices.updateInstrukturAndAsesor(id, payload);
 

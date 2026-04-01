@@ -2,8 +2,8 @@ import * as authRepository from "../repositories/auth";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { HttpError } from "../utils/error";
-import { generateToken, verifyToken } from "../utils/jwt";
-import { Ilogin, IToken, IUser } from "../utils/interfaces";
+import { generateToken, TOKEN_EXPIRATION_TIME, verifyToken } from "../utils/jwt";
+import { ICreateUser, Ilogin, IResultLogin, IUserWithoutPassword } from "../utils/interfaces";
 
 export const isPasswordMatch = async (password: string, hashedPassword: string): Promise<boolean> => {
     const isMatch = await bcrypt.compare(password, hashedPassword);
@@ -11,13 +11,17 @@ export const isPasswordMatch = async (password: string, hashedPassword: string):
     return isMatch;
 }
 
-export const login = async (payload: Ilogin): Promise<IToken> => {
+export const login = async (payload: Ilogin): Promise<IResultLogin> => {
     const { email, password } = payload;
 
     const user = await authRepository.getUserByEmail(email);
 
     if (!user) {
         throw new HttpError("User not found!", 404);
+    }
+
+    if (!user.password) {
+        throw new HttpError("Please set your password first!", 400);
     }
 
     const isPasswordValid = await isPasswordMatch(password, user.password);
@@ -27,9 +31,8 @@ export const login = async (payload: Ilogin): Promise<IToken> => {
     }
 
     const token = generateToken({
-        id: user.id, // assigning id from user to payload
-        email: user.email, // assigning email from user to payload
-    });
+        userId: user.id
+    }, TOKEN_EXPIRATION_TIME.AUTH);
 
     return {
         name: user.name,
@@ -38,11 +41,11 @@ export const login = async (payload: Ilogin): Promise<IToken> => {
     };
 }
 
-export const verifyTokenAndUser = async (token: string): Promise<IUser> => {
+export const verifyTokenAndUser = async (token: string): Promise<IUserWithoutPassword> => {
     try {
-        const { id } = verifyToken(token); // destructuring id from payload returned by verifyToken function
+        const { userId } = verifyToken(token); // destructuring id from payload returned by verifyToken function
 
-        const user = await authRepository.getUserById(id);
+        const user = await authRepository.getUserById(userId);
        
         if (!user) {
             throw new HttpError("User not found!", 404);
@@ -58,20 +61,20 @@ export const verifyTokenAndUser = async (token: string): Promise<IUser> => {
     } 
 }
 
-export const getUserById = async (id: string): Promise<IUser | null> => {
+export const getUserById = async (id: string): Promise<IUserWithoutPassword | null> => {
     const data = await authRepository.getUserById(id);
 
     return data;
 }
 
 
-export const getUserByEmail = async (email: string): Promise<IUser | null> => {
+export const getUserByEmail = async (email: string): Promise<ICreateUser | null> => {
     const data = await authRepository.getUserByEmail(email);
 
     return data;
 }
 
-export const getUserByNumberWhatsapp = async (noWa: string): Promise<IUser | null> => {
+export const getUserByNumberWhatsapp = async (noWa: string): Promise<IUserWithoutPassword | null> => {
     const data = await authRepository.getUserByNumberWhatsapp(noWa); 
 
     return data;
