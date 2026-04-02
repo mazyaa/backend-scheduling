@@ -21,6 +21,7 @@ export interface IUser extends ICreateUser {
 
 export interface ITokenPayload {
   userId: string;
+  role?: RoleUser;
 }
 
 export interface IResultLogin {
@@ -125,13 +126,20 @@ export interface INotificationPayload { // for util/helper.ts
   instrukutrEmail?: string | null;
 }
 
-export interface ICredentialPayload {
+export interface ISetPasswordPayload {
   token: string;
   userId: string;
   expiredAt: Date;
-  used: boolean;
+  isUsed: boolean;
 }
 
-export interface ICredential extends ICredentialPayload {
+export interface ISetPassword extends ISetPasswordPayload {
   id: string;
+}
+
+export interface ICredentialPayload {
+  name: string;
+  role: string;
+  email: string;
+  setPasswordLink: string;
 }

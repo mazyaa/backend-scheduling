@@ -6,8 +6,8 @@ export const createDetailSchedule = async (id: string, payload: Omit<ICreateDeta
         where: { id },
         data: {
             ...(payload.aktivitas && { aktivitas: payload.aktivitas }),
-            ...(payload.instrukturId && { instrukturId: payload.instrukturId }),
-            ...(payload.asesorId && { asesorId: payload.asesorId }),
+            ...(payload?.instrukturId && { instrukturId: payload.instrukturId }),
+            ...(payload?.asesorId && { asesorId: payload.asesorId }),
         }
     });
 };

@@ -47,26 +47,3 @@ export const generateNotificationMessage = (payload: INotificationPayload) => {
     notificationForAsesor,
   };
 };
-
-// export const generateCredetialMessage = (payload: ICredentialPayload) => {
-//   const messageCredentialForInstruktur =
-//     `Yth. Bapak/Ibu. ${payload.instrukturName},\n\n` +
-//     `Dikarenakan Bapak/Ibu bersedia untuk menjadi ${payload.instrukturRole} pada kegiatan kami, berikut adalah kredensial akun Bapak/Ibu:\n\n` +
-//     `Email    : ${payload.instrukutrEmail}\n` +
-//     `Password : ${payload.instrukturPassword}\n\n` +
-//     `Silakan login dan segera ganti kata sandi Bapak/Ibu di halaman profil demi keamanan akun.\n\n` +
-//     `Salam,\nAdmin PT. Veritrust Global Solusindo`;
-
-//   const messageCredentialForAsesor =
-//     `Yth. Bapak/Ibu. ${payload.asesorName},\n\n` +
-//     `Dikarenakan Bapak/Ibu bersedia untuk menjadi ${payload.asesorRole} pada kegiatan kami, berikut adalah kredensial akun Bapak/Ibu:\n\n` +
-//     `Email    : ${payload.asesorEmail}\n` +
-//     `Password : ${payload.asesorPassword}\n\n` +
-//     `Silakan login dan segera ganti kata sandi Bapak/Ibu di halaman profil demi keamanan akun.\n\n` +
-//     `Salam,\nAdmin PT. Veritrust Global Solusindo`;
-
-//   return {
-//     messageCredentialForInstruktur,
-//     messageCredentialForAsesor,
-//   };
-// };

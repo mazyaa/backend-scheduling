@@ -1,13 +1,13 @@
-// import * as credentialServices from "../services/credential";
-// import { Request, Response } from "express";
+import * as credentialServices from "../services/credential";
+import { Request, Response } from "express";
 
-// export const sendCredentialInstrukturOrAsesor = async (req: Request, res: Response): Promise<void> => {
-//     const { id } = req.params;
+export const sendCredential = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
 
-//     const link = await credentialServices.sendCredentialInstrukturOrAsesor(id);
+    const link = await credentialServices.sendSetPasswordLink(id);
 
-//     res.status(200).json({
-//         message: "Link sent successfully",
-//         data: link,
-//     });
-// };
+    res.status(201).json({
+        message: "Link created successfully!",
+        data: link,
+    });
+};
