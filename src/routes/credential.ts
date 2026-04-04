@@ -15,7 +15,6 @@ export const credentialRoutes = (router: Router): void => {
         authMiddlewares.isAuthorized,
         aclMiddlewares.isAdmin,
         commonValidationMiddleware.validateIdParams,
-        // detailScheduleMiddlewares.checkDeatailScheduleIdExists,
         credentialController.sendCredential,
     );
 }

@@ -31,8 +31,6 @@ export const detailScheduleRoutes = (router: Router): void => {
         detailScheduleController.getDetailScheduleById,
     );
 
-
-
     detailScheduleRouter.get(
         '/',
         authMiddlewares.isAuthorized,

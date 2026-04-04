@@ -100,19 +100,9 @@ export interface IGenerateNotificationPayload {
     nameTraining: string;
 }
 
-export interface IGenerateCredentialPayload {
-    instrukturId?: string | null;
-    asesorId?: string | null;
-}
-
 export interface INotification {
     generatedNotificationForInstruktur: string;
     generatedNotificationForAsesor: string;
-}
-
-export interface ICredential {
-    generatedCredentialForInstruktur: string;
-    generatedCredentialForAsesor: string;
 }
 
 export interface INotificationPayload { // for util/helper.ts
@@ -126,20 +116,18 @@ export interface INotificationPayload { // for util/helper.ts
   instrukutrEmail?: string | null;
 }
 
-export interface ISetPasswordPayload {
+export interface ICredentialPayload {
   token: string;
   userId: string;
   expiredAt: Date;
   isUsed: boolean;
 }
 
-export interface ISetPassword extends ISetPasswordPayload {
+export interface ICredential extends ICredentialPayload {
   id: string;
 }
 
-export interface ICredentialPayload {
-  name: string;
-  role: string;
-  email: string;
-  setPasswordLink: string;
+export interface ISetPasswordPayload {
+  token: string;
+  password: string;
 }
