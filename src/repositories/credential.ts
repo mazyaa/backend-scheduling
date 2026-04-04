@@ -1,7 +1,7 @@
 import { prisma } from "../utils/client";
-import { ISetPassword, ISetPasswordPayload } from "../utils/interfaces";
+import { ICredential, ICredentialPayload } from "../utils/interfaces";
 
-export const createToken = async (payload: ISetPasswordPayload): Promise<ISetPassword> => {
+export const createToken = async (payload: ICredentialPayload): Promise<ICredential> => {
     return await prisma.passwordReset.create({
         data: {
             token: payload.token,
@@ -12,7 +12,7 @@ export const createToken = async (payload: ISetPasswordPayload): Promise<ISetPas
     });
 };
 
-export const findTokenHashed = async (tokenHash: string): Promise<Pick<ISetPassword, 'token'> | null> => {
+export const findTokenHashed = async (tokenHash: string): Promise<Pick<ICredential, 'token'> | null> => {
     return await prisma.passwordReset.findUnique({
         where: {
             token: tokenHash
@@ -20,7 +20,7 @@ export const findTokenHashed = async (tokenHash: string): Promise<Pick<ISetPassw
     });
 };
 
-export const markAsUsedToken = async (id: string): Promise<Pick<ISetPassword, 'isUsed'>> => {
+export const markAsUsedToken = async (id: string): Promise<ICredential> => {
     return await prisma.passwordReset.update({
         where: {
             id

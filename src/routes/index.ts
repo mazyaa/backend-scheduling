@@ -7,6 +7,7 @@ import { detailScheduleRoutes } from './detailSchedule';
 import { notificationRoutes } from './notification';
 import { credentialRoutes } from './credential';
 import mediaRoutes from './media';
+import { setPasswordRoutes } from './setPassword';
 
 const routes = (app: Application): void => {
   const router = Router(); // this value is null at the beginning
@@ -30,6 +31,7 @@ const routes = (app: Application): void => {
   detailScheduleRoutes(router);
   notificationRoutes(router);
   credentialRoutes(router);
+  setPasswordRoutes(router);
   mediaRoutes(router);
 };
 

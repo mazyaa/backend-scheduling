@@ -2,7 +2,7 @@ import * as userRepository from "../repositories/user";
 import * as credentialRepository from "../repositories/credential";
 import { HttpError } from "../utils/error";
 import { generateExpiry, generateToken, hashToken, TOKEN_EXPIRATION_TIME } from "../utils/jwt";
-import { ISetPasswordPayload } from "../utils/interfaces";
+import { ICredentialPayload } from "../utils/interfaces";
 export const sendSetPasswordLink = async (id: string) => {
     const getUser = await userRepository.getUserById(id);
 
@@ -22,7 +22,7 @@ export const sendSetPasswordLink = async (id: string) => {
         userId: getUser.id,
         expiredAt: generateExpiry(60),
         isUsed: false
-    }) as ISetPasswordPayload;
+    }) as ICredentialPayload;
 
     const generateLink = `${process.env.FRONTEND_URL}/set-password?token=${token}`;
 
