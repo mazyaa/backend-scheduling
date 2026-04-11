@@ -28,10 +28,6 @@ export const createSchedule = async (payload: ICreateSchedule): Promise<ISchedul
 export const getScheduleById = async (id: string): Promise<ISchedules| null> => {
     return await prisma.jadwalTraining.findUnique({ // if using findUnique attribute must be unique (id is unique)
         where: { id },
-        include: {
-            training: true,
-            detailJadwal: true,
-        }
     })
 }
 
