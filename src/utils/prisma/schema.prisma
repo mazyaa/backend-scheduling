@@ -22,13 +22,6 @@ enum RoleUser {
   @@map("role_user")
 }
 
-enum Aktivitas {
-  materi
-  uji_kompetensi
-
-  @@map("aktivitas")
-}
-
 enum StatusKompetensi {
   kompeten
   belum_kompeten
@@ -116,7 +109,6 @@ model DetailJadwalTraining {
   jadwalTrainingId String     @map("jadwal_training_id")
   hari             DateTime   @db.Date
   hariKe           Int        @map("hari_ke")
-  aktivitas        Aktivitas?
 
   instrukturId String? @map("instruktur_id")
   asesorId     String? @map("asesor_id")
@@ -131,8 +123,28 @@ model DetailJadwalTraining {
   asesor     User? @relation("asesor_relation", fields: [asesorId], references: [id])
 
   materiTraining MateriTraining[]
+  sesiJadwalTraining SesiJadwalTraining[]
 
   @@map("detail_jadwal_training")
+}
+
+model SesiJadwalTraining {
+  id                      String   @id @default(uuid())
+  detailJadwalTrainingId  String   @map("detail_jadwal_training_id")
+
+  jamMulai   DateTime @map("jam_mulai") @db.Time
+  jamSelesai DateTime @map("jam_selesai") @db.Time
+
+  aktivitas  String   @db.VarChar(100)
+  urutan     Int
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  detailJadwalTraining DetailJadwalTraining @relation(fields: [detailJadwalTrainingId], references: [id], onDelete: Cascade)
+
+  @@map("sesi_jadwal_training")
+  @@index([detailJadwalTrainingId])
 }
 
 model ProfilPeserta {
