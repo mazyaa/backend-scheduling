@@ -1,4 +1,4 @@
-import type { RoleUser, Aktivitas } from '@prisma/client';
+import type { RoleUser } from '@prisma/client';
 
 export interface ICreateUser {
   name: string;
@@ -70,7 +70,6 @@ export interface ITraining extends ICreateTraining {
 export interface ICreateDetailSchedule {
   hari: Date;
   hariKe: number;
-  aktivitas?: Aktivitas | null;
   instrukturId?: string | null;
   asesorId?: string | null;
 } 
@@ -130,4 +129,15 @@ export interface ICredential extends ICredentialPayload {
 export interface ISetPasswordPayload {
   token: string;
   password: string;
+}
+
+export interface ICreateSessionDetailTraining {
+  detailJadwalTrainingId: string;
+  jamMulai: Date;
+  jamSelesai: Date;
+  aktivitas: string;
+}
+
+export interface ISessionDetailTraining extends ICreateSessionDetailTraining {
+  id: string;
 }

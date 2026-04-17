@@ -5,7 +5,6 @@ export const createDetailSchedule = async (id: string, payload: Omit<ICreateDeta
     return await prisma.detailJadwalTraining.update({ // use update because data is provided
         where: { id },
         data: {
-            ...(payload.aktivitas && { aktivitas: payload.aktivitas }),
             ...(payload?.instrukturId && { instrukturId: payload.instrukturId }),
             ...(payload?.asesorId && { asesorId: payload.asesorId }),
         }
@@ -29,7 +28,6 @@ export const updateDetailScheduleById = async (id: string, payload: Omit<ICreate
     return await prisma.detailJadwalTraining.update({
         where: { id },
         data: {
-            ...(payload.aktivitas && { aktivitas: payload.aktivitas }),
             ...(payload.instrukturId && { instrukturId: payload.instrukturId }),
             ...(payload.asesorId && { asesorId: payload.asesorId }),
         }

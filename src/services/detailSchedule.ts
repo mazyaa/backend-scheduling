@@ -10,9 +10,9 @@ import * as instrukturAsesorRepository from '../repositories/instruturOrAsesor';
 export const createDetailSchedule = async (
   id: string,
   payload: IDetailSchedule,
-  trainingId: string,
+  scheduleId: string,
 ): Promise<IDetailSchedule> => {
-  const { aktivitas, instrukturId, asesorId } = payload;
+  const { instrukturId, asesorId } = payload;
 
   let instruktur = null;
   let asesor = null;
@@ -27,7 +27,7 @@ export const createDetailSchedule = async (
       await instrukturAsesorRepository.getInstrukturOrAsesorById(asesorId);
   }
 
-  if (instrukturId && !instruktur) {
+  if (instrukturId && !instruktur) { // if paylod avoid and on database not avoid
     throw new HttpError('Instruktur not found', 404);
   }
 
@@ -37,7 +37,7 @@ export const createDetailSchedule = async (
 
   const getDetailSchedule =
     await detailScheduleRepository.getDetailScheduleById(id);
-  const getLastDay = await detailScheduleRepository.getMaxHariKe(trainingId); // last day of the training
+  const getLastDay = await detailScheduleRepository.getMaxHariKe(scheduleId); // last day of the training
 
   // for validating instructor and assessor assignment
   if (getLastDay !== null && getDetailSchedule !== null) {
@@ -56,11 +56,10 @@ export const createDetailSchedule = async (
       );
     }
   } else {
-    throw new HttpError('Detail Schedule or Training not found', 404);
+    throw new HttpError('Detail Schedule not found', 404);
   }
 
   const data = await detailScheduleRepository.createDetailSchedule(id, {
-    aktivitas,
     instrukturId,
     asesorId,
   });
@@ -130,7 +129,7 @@ export const updateDetailScheduleById = async (
   payload: IDetailSchedule,
   trainingId: string,
 ): Promise<IDetailSchedule> => {
-  const { aktivitas, instrukturId, asesorId } = payload;
+  const { instrukturId, asesorId } = payload;
 
   const getDetailSchedule =
     await detailScheduleRepository.getDetailScheduleById(id);
@@ -156,7 +155,6 @@ export const updateDetailScheduleById = async (
   }
 
   const data = await detailScheduleRepository.updateDetailScheduleById(id, {
-    aktivitas,
     instrukturId,
     asesorId,
   });

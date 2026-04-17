@@ -4,10 +4,10 @@ import * as detailScheduleServices from "../services/detailSchedule";
 
 export const createDetailSchedule = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-    const{ trainingId } = res.locals.detailSchedule;
+    const scheduleId = res.locals.schedule;
     const payload = req.body;
 
-    const newDetailSchedule = await detailScheduleServices.createDetailSchedule(id, payload, trainingId);
+    const newDetailSchedule = await detailScheduleServices.createDetailSchedule(id, payload, scheduleId);
 
     res.status(201).json({
         message: "Detail schedule created successfully",
