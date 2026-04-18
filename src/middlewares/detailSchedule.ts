@@ -4,8 +4,9 @@ import { HttpError } from "../utils/error";
 
 export const checkDeatailScheduleIdExists = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { id } = req.params;
+    console.log('id middleware', id);
     const detailSchedule = await detailScheduleServices.getDetailScheduleById(id);
-
+    
     if (!detailSchedule) {
         throw new HttpError("Detail Schedule not found", 404);
     }

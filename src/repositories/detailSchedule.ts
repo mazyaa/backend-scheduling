@@ -12,6 +12,7 @@ export const createDetailSchedule = async (id: string, payload: Omit<ICreateDeta
 };
 
 export const getDetailScheduleById = async (id: string) => {
+    console.log('id repo', id);
     return await prisma.detailJadwalTraining.findUnique({
         where: { id },
         include: {

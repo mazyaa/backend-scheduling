@@ -142,6 +142,7 @@ model SesiJadwalTraining {
 
   detailJadwalTraining DetailJadwalTraining @relation(fields: [detailJadwalTrainingId], references: [id], onDelete: Cascade)
 
+  @@unique([detailJadwalTrainingId, jamMulai, jamSelesai])
   @@map("sesi_jadwal_training")
   @@index([detailJadwalTrainingId])
 }

@@ -46,6 +46,7 @@ export interface IPaginationQuery {
   page: number;
   limit: number;
   search?: string;
+  filter?: string;
 }
 
 export interface IResultPagination {
@@ -131,13 +132,18 @@ export interface ISetPasswordPayload {
   password: string;
 }
 
-export interface ICreateSessionDetailTraining {
+export interface ICreateSessionDetailSchedule {
   detailJadwalTrainingId: string;
-  jamMulai: Date;
-  jamSelesai: Date;
+  jamMulai: string;
+  jamSelesai: string;
   aktivitas: string;
 }
 
-export interface ISessionDetailTraining extends ICreateSessionDetailTraining {
+export interface ISessionDetailSchedule extends ICreateSessionDetailSchedule {
   id: string;
+}
+
+export interface ISessionDetailScheduleRepository extends Omit<ISessionDetailSchedule, 'jamMulai' | 'jamSelesai'> {
+  jamMulai: Date;
+  jamSelesai: Date;
 }

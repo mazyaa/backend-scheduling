@@ -47,3 +47,14 @@ export const generateNotificationMessage = (payload: INotificationPayload) => {
     notificationForAsesor,
   };
 };
+
+export const toTimeDate = (time: string): Date =>
+  new Date(`1970-01-01T${time}:00Z`);
+
+export const toTimeString = (date: Date): string =>
+  date.toISOString().slice(11, 16);
+
+export const toMinutes = (time: string): number => {
+  const [h, m] = time.split(":").map(Number);
+  return h * 60 + m;
+};
