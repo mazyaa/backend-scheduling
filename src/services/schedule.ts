@@ -68,11 +68,11 @@ export const getAllSchedules = async (
 
   const skip = (page - 1) * limit; //skipping data
 
-  const where = search
+  const where = search?.trim()
     ? {
         training: { // join to training table to search by namaTraining
             namaTraining: {
-                contains: search,
+                contains: search.trim(), // for searching data ex: "JavaScript", and remove whitespace 
                 mode: 'insensitive',
             },
         }

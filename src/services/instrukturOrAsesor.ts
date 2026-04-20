@@ -38,10 +38,10 @@ export const getAllInstrukturOrAsesor = async (
   const skip = (page - 1) * limit; // for skipping data ex: page 2 => (2-1)*10 = 10 data will be skipped
 
   // search filter
-  const where = search
+  const where = search?.trim()
     ? {
         name: {
-          contains: search, // contains is like operator in SQL so it will search for name that contains the search keyword
+          contains: search.trim(), // for searching data ex: "John", and remove whitespace with trim() => "John" will match "John Doe", "Johnny", etc
           mode: 'insensitive', // case insensitive ex: "John" = "john"
         },
       }

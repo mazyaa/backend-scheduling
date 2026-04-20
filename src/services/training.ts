@@ -35,10 +35,10 @@ export const getAllTraining = async (
 
   const skip = (page - 1) * limit; // for skipping data ex: page 2 => (2-1)*10 = 10 data will be skipped
 
-  const where = search
+  const where = search?.trim()
     ? {
         namaTraining: {
-          contains: search,
+          contains: search.trim(), // for searching data ex: "JavaScript", and remove whitespace
           mode: 'insensitive',
         },
       }

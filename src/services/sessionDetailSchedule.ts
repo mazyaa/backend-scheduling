@@ -174,16 +174,17 @@ export const getAllSessionDetailSchedule = async (
 
   const skip = (page - 1) * limit;
 
-  const where: any = {
-    ...(filter && {
-      detailJadwalTrainingId: filter,
-    }),
-    ...(search && {
-      aktivitas: {
-        contains: search,
-        mode: 'insensitive',
-      }
-    })
+  const where: any = {};
+
+  if (filter) {
+    where.detailJadwalTrainingId = filter;
+  }
+
+  if (search?.trim()) {
+    where.aktivitas = {
+      contains: search.trim(),
+      mode: 'insensitive',
+    };
   }
 
   const [data, total] = await Promise.all([

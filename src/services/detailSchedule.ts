@@ -82,22 +82,21 @@ export const getAllDetailSchedules = async (
   data: IDetailSchedule[];
   pagination: IResultPagination;
 }> => {
-  const { page, limit, search } = payload;
+  const { page, limit, search, filter } = payload;
 
   const skip = (page - 1) * limit;
 
-  const where = search
-    ? {
-        jadwalTraining: {
-          training: {
-            namaTraining: {
-              contains: search,
-              mode: 'insensitive',
-            },
-          },
-        },
-      }
-    : undefined;
+  const where: any = {};
+
+  if (filter) {
+    where.jadwalTrainingId = filter;
+  }
+
+  if (search?.trim()) {
+  where.hariKe = {
+    equals: Number(search.trim()),
+  };
+}
 
   const [data, total] = await Promise.all([
     detailScheduleRepository.getAllDetailSchedules({

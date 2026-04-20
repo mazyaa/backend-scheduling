@@ -73,6 +73,9 @@ export const getAllSchedules = async (payload: IPagination): Promise<ISchedules[
        skip,
        take,
        where,
+       include: {
+        training: true,
+       },
        orderBy,
     });
 }
