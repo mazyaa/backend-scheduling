@@ -42,11 +42,21 @@ export const getAllDetailSchedules = async (payload: IPagination): Promise<IDeta
         skip,
         take,
         where,
-        include: { // use include to join with jadwalTraining and training table
+        include: { 
             jadwalTraining: {
                 include: {
                     training: true,
                 }
+            },
+            instruktur: {
+                select: {
+                    name: true,
+                }
+            },
+            asesor: {
+                select: {
+                    name: true,
+                }   
             }
         },
         orderBy,
