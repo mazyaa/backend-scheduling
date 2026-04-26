@@ -103,7 +103,7 @@ export const getAllDetailSchedules = async (
       skip,
       take: limit,
       where,
-      orderBy: { createdAt: 'desc' },
+      orderBy: { hariKe: 'asc' },
     }),
 
     detailScheduleRepository.countDetailSchedule(where),

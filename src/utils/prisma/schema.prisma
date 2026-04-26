@@ -136,6 +136,7 @@ model SesiJadwalTraining {
   jamSelesai DateTime @map("jam_selesai") @db.Time
 
   aktivitas  String   @db.VarChar(100)
+  pic       String?  @db.VarChar(50)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
