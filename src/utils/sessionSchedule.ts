@@ -1,5 +1,5 @@
 type PicType = "MC" | "Instruktur" | "Asesor" | null;
-type SessionTemplate = {
+export type SessionTemplate = {
   jamMulai: string;
   jamSelesai: string;
   aktivitas: string;
