@@ -3,8 +3,9 @@ import {
   IPaginationQuery,
   IResultPagination,
   ISessionDetailSchedule,
+  ISessionDetailScheduleRepository,
 } from '../utils/interfaces';
-import { SESSION_TEMPLATE_BY_DAY } from '../utils/sessionSchedule';
+import { EXAM_DAY_TEMPLATE, REGULAR_DAY_TEMPLATE, SessionTemplate } from '../utils/sessionSchedule';
 import { HttpError } from '../utils/error';
 import * as sessionDetailScheduleRepository from '../repositories/sessionDetailSchedule';
 import * as detailScheduleRepository from '../repositories/detailSchedule';
@@ -20,7 +21,15 @@ export const generateSessionDetaiSchedules = async (
     throw new HttpError('Detail schedule not found', 404);
   }
 
-  const sessions = SESSION_TEMPLATE_BY_DAY[getDetailScheduleById.hariKe] || [];
+  const getMaxHariKe = await detailScheduleRepository.getMaxHariKe(getDetailScheduleById.id);
+
+  const sessions: SessionTemplate[] = [];
+
+  if (!getMaxHariKe) {
+    sessions.push(...REGULAR_DAY_TEMPLATE);
+  } else {
+    sessions.push(...EXAM_DAY_TEMPLATE);
+  }
 
   if (!sessions.length) return [];
   
