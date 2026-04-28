@@ -60,6 +60,7 @@ export const generateSessionDetaiSchedules = async (
         jamMulai: toTimeDate(session.jamMulai),
         jamSelesai: toTimeDate(session.jamSelesai),
         aktivitas: session.aktivitas,
+        pic: session.pic,
       }),
     ),
   );
