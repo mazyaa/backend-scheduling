@@ -15,6 +15,7 @@ export const createSessionDetailSchedule = async (
       jamMulai: payload.jamMulai,
       jamSelesai: payload.jamSelesai,
       aktivitas: payload.aktivitas,
+      pic: payload.pic,
     },
   });
 };
