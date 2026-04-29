@@ -32,7 +32,9 @@ export const updateSessionDetailSchedule = async (
     where: { id },
     data: {
       ...(payload?.jamMulai && { jamMulai: toTimeDate(payload.jamMulai) }),
-      ...(payload?.jamSelesai && { jamSelesai: toTimeDate(payload.jamSelesai) }),
+      ...(payload?.jamSelesai && {
+        jamSelesai: toTimeDate(payload.jamSelesai),
+      }),
       ...(payload?.aktivitas && { aktivitas: payload.aktivitas }),
     },
   });
@@ -53,6 +55,22 @@ export const getSessionDetailSchedules = async (
     skip,
     take,
     where,
+    include: {
+      detailJadwalTraining: {
+        include: {
+          instruktur: {
+            select: {
+              name: true,
+            },
+          },
+          asesor: {
+            select: {
+              name: true,
+            },
+          }
+        }
+      }
+    },
     orderBy,
   });
 };
@@ -64,12 +82,13 @@ export const countSessionDetailSchedule = async (
 };
 
 export const existingSessionDetailSchedule = async (
-  jamMulai: string, jamSelesai: string
+  jamMulai: string,
+  jamSelesai: string,
 ): Promise<ISessionDetailScheduleRepository | null> => {
   return await prisma.sesiJadwalTraining.findFirst({
-    where: { 
+    where: {
       jamMulai,
-      jamSelesai
-     },
+      jamSelesai,
+    },
   });
 };

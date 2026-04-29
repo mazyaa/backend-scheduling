@@ -2,14 +2,14 @@ import {
   ICreateSessionDetailSchedule,
   IPaginationQuery,
   IResultPagination,
-  ISessionDetailSchedule,
-  ISessionDetailScheduleRepository,
+  ISessionDetailSchedule
 } from '../utils/interfaces';
 import { EXAM_DAY_TEMPLATE, REGULAR_DAY_TEMPLATE, SessionTemplate } from '../utils/sessionSchedule';
 import { HttpError } from '../utils/error';
 import * as sessionDetailScheduleRepository from '../repositories/sessionDetailSchedule';
 import * as detailScheduleRepository from '../repositories/detailSchedule';
 import { toMinutes, toTimeDate, toTimeString } from '../utils/helper';
+import { getInstrukturOrAsesorById } from './instrukturOrAsesor';
 
 export const generateSessionDetaiSchedules = async (
   detailScheduleId: string,
@@ -30,16 +30,16 @@ export const generateSessionDetaiSchedules = async (
   } else {
     sessions.push(...EXAM_DAY_TEMPLATE);
   }
-
+  
   if (!sessions.length) return [];
   
-  const checkIfDetailSessionExists =
+  const checkIfDetailSessionExistsByTime =
     await sessionDetailScheduleRepository.existingSessionDetailSchedule(
       toTimeDate(sessions[0].jamMulai) as unknown as string,
       toTimeDate(sessions[0].jamSelesai) as unknown as string
     );
    
-  if (checkIfDetailSessionExists) {
+  if (checkIfDetailSessionExistsByTime) {
     throw new HttpError(
       `Detail session on day ${getDetailScheduleById.hariKe} has been created`,
       400,

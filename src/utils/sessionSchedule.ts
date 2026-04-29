@@ -1,9 +1,8 @@
-type PicType = "MC" | "Instruktur" | "Asesor" | null;
 export type SessionTemplate = {
   jamMulai: string;
   jamSelesai: string;
   aktivitas: string;
-  pic: PicType;
+  pic: string | null;
 };
 
 export const REGULAR_DAY_TEMPLATE: SessionTemplate[] = [
