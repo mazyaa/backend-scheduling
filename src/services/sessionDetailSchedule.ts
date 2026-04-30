@@ -2,9 +2,13 @@ import {
   ICreateSessionDetailSchedule,
   IPaginationQuery,
   IResultPagination,
-  ISessionDetailSchedule
+  ISessionDetailSchedule,
 } from '../utils/interfaces';
-import { EXAM_DAY_TEMPLATE, REGULAR_DAY_TEMPLATE, SessionTemplate } from '../utils/sessionSchedule';
+import {
+  EXAM_DAY_TEMPLATE,
+  REGULAR_DAY_TEMPLATE,
+  SessionTemplate,
+} from '../utils/sessionSchedule';
 import { HttpError } from '../utils/error';
 import * as sessionDetailScheduleRepository from '../repositories/sessionDetailSchedule';
 import * as detailScheduleRepository from '../repositories/detailSchedule';
@@ -15,13 +19,15 @@ export const generateSessionDetaiSchedules = async (
   detailScheduleId: string,
 ): Promise<ICreateSessionDetailSchedule[]> => {
   const getDetailScheduleById =
-  await detailScheduleRepository.getDetailScheduleById(detailScheduleId);
-  
+    await detailScheduleRepository.getDetailScheduleById(detailScheduleId);
+
   if (!getDetailScheduleById) {
     throw new HttpError('Detail schedule not found', 404);
   }
 
-  const getMaxHariKe = await detailScheduleRepository.getMaxHariKe(getDetailScheduleById.id);
+  const getMaxHariKe = await detailScheduleRepository.getMaxHariKe(
+    getDetailScheduleById.id,
+  );
 
   const sessions: SessionTemplate[] = [];
 
@@ -30,16 +36,16 @@ export const generateSessionDetaiSchedules = async (
   } else {
     sessions.push(...EXAM_DAY_TEMPLATE);
   }
-  
+
   if (!sessions.length) return [];
-  
+
   const checkIfDetailSessionExistsByTime =
     await sessionDetailScheduleRepository.existingSessionDetailSchedule(
       toTimeDate(sessions[0].jamMulai) as unknown as string,
-      toTimeDate(sessions[0].jamSelesai) as unknown as string
+      toTimeDate(sessions[0].jamSelesai) as unknown as string,
     );
-   
-  if (checkIfDetailSessionExistsByTime) {
+
+  if (checkIfDetailSessionExistsByTime?.detailJadwalTrainingId === getDetailScheduleById.id) {
     throw new HttpError(
       `Detail session on day ${getDetailScheduleById.hariKe} has been created`,
       400,
@@ -82,17 +88,17 @@ export const createSessionDetailSchedule = async (
       detailJadwalTrainingId,
     );
 
-  const checkIfDetailSessionExists =
-    await sessionDetailScheduleRepository.existingSessionDetailSchedule(
-      toTimeDate(jamMulai) as unknown as string,
-      toTimeDate(jamSelesai) as unknown as string
-    );
-
   if (!getDetailScheduleById) {
     throw new HttpError('Detail schedule not found', 404);
   }
 
-  if (checkIfDetailSessionExists) {
+  const checkIfDetailSessionExistsByTime =
+    await sessionDetailScheduleRepository.existingSessionDetailSchedule(
+      toTimeDate(jamMulai) as unknown as string,
+      toTimeDate(jamSelesai) as unknown as string,
+    );
+
+  if (checkIfDetailSessionExistsByTime) {
     throw new HttpError(
       `Detail session on day ${getDetailScheduleById.hariKe} at ${jamMulai} - ${jamSelesai} has been created`,
       400,
@@ -202,7 +208,7 @@ export const getAllSessionDetailSchedule = async (
       skip,
       take: limit,
       where,
-      orderBy: { createdAt: 'desc' },
+      orderBy: [{ jamMulai: 'asc' }, { jamSelesai: 'asc' }],
     }),
     sessionDetailScheduleRepository.countSessionDetailSchedule(where),
   ]);
