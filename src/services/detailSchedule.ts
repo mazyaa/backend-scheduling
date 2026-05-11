@@ -70,7 +70,6 @@ export const createDetailSchedule = async (
 export const getDetailScheduleById = async (
   id: string,
 ): Promise<IDetailSchedule | null> => {
-  console.log('id services', id);
   const data = await detailScheduleRepository.getDetailScheduleById(id);
 
   return data;
