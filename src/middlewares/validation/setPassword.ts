@@ -4,7 +4,7 @@ import { generateJoiErrorMessage } from "../../utils/helper";
 
 const setPasswordSchema = Joi.object({
     token: Joi.string().required(),
-    password: Joi.string().min(8).required(),
+    password: Joi.string().min(6).required(),
 });
 
 export const setPasswordValidation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {

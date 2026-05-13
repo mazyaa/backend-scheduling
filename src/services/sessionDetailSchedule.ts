@@ -13,7 +13,6 @@ import { HttpError } from '../utils/error';
 import * as sessionDetailScheduleRepository from '../repositories/sessionDetailSchedule';
 import * as detailScheduleRepository from '../repositories/detailSchedule';
 import { toMinutes, toTimeDate, toTimeString } from '../utils/helper';
-import { getInstrukturOrAsesorById } from './instrukturOrAsesor';
 
 export const generateSessionDetaiSchedules = async (
   detailScheduleId: string,
@@ -41,6 +40,7 @@ export const generateSessionDetaiSchedules = async (
 
   const checkIfDetailSessionExistsByTime =
     await sessionDetailScheduleRepository.existingSessionDetailSchedule(
+      detailScheduleId,
       toTimeDate(sessions[0].jamMulai) as unknown as string,
       toTimeDate(sessions[0].jamSelesai) as unknown as string,
     );
@@ -94,13 +94,14 @@ export const createSessionDetailSchedule = async (
 
   const checkIfDetailSessionExistsByTime =
     await sessionDetailScheduleRepository.existingSessionDetailSchedule(
+      detailJadwalTrainingId,
       toTimeDate(jamMulai) as unknown as string,
       toTimeDate(jamSelesai) as unknown as string,
     );
 
-  if (checkIfDetailSessionExistsByTime) {
+   if (checkIfDetailSessionExistsByTime?.detailJadwalTrainingId === getDetailScheduleById.id) {
     throw new HttpError(
-      `Detail session on day ${getDetailScheduleById.hariKe} at ${jamMulai} - ${jamSelesai} has been created`,
+      `Detail session on time ${jamMulai} - ${jamSelesai} has been created`,
       400,
     );
   }

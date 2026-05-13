@@ -11,7 +11,7 @@ const createSessionDetailScheduleSchema = Joi.object({
     .pattern(/^([01]\d|2[0-3]):([0-5]\d)(:[0-5]\d)?$/)
     .required(),
   aktivitas: Joi.string().required(),
-  pic: Joi.string().required(),
+  pic: Joi.string().optional().allow(""),
 });
 
 const updateSessionDetailScheduleSchema = Joi.object({
@@ -23,7 +23,7 @@ const updateSessionDetailScheduleSchema = Joi.object({
     .pattern(/^([01]\d|2[0-3]):([0-5]\d)(:[0-5]\d)?$/)
     .optional(),
   aktivitas: Joi.string().optional(),
-  pic: Joi.string().optional(),
+  pic: Joi.string().optional().allow(""),
 });
 
 export const createSessionDetailScheduleValidation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
