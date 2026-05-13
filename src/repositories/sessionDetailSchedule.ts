@@ -83,11 +83,13 @@ export const countSessionDetailSchedule = async (
 };
 
 export const existingSessionDetailSchedule = async (
+  detailJadwalTrainingId: string,
   jamMulai: string,
   jamSelesai: string,
 ): Promise<ISessionDetailScheduleRepository | null> => {
   return await prisma.sesiJadwalTraining.findFirst({
     where: {
+      detailJadwalTrainingId,
       jamMulai,
       jamSelesai,
     },

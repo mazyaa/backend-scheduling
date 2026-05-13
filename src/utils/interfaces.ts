@@ -137,7 +137,7 @@ export interface ICreateSessionDetailSchedule {
   jamMulai: string;
   jamSelesai: string;
   aktivitas: string;
-  pic: string | null;
+  pic?: string | null;
 }
 
 export interface ISessionDetailSchedule extends ICreateSessionDetailSchedule {
