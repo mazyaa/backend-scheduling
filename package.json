@@ -38,6 +38,7 @@
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
     "eslint": "^9.39.2",
+    "exceljs": "^4.4.0",
     "express": "^5.2.1",
     "joi": "^18.0.2",
     "jsonwebtoken": "^9.0.3",

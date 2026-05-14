@@ -9,6 +9,7 @@ import { credentialRoutes } from './credential';
 import mediaRoutes from './media';
 import { setPasswordRoutes } from './setPassword';
 import { sessionDetailScheduleRouter } from './sessionDetailSchedule';
+import participantImportRoutes from './participantImport';
 
 const routes = (app: Application): void => {
   const router = Router(); // this value is null at the beginning
@@ -35,6 +36,7 @@ const routes = (app: Application): void => {
   setPasswordRoutes(router);
   mediaRoutes(router);
   sessionDetailScheduleRouter(router);
+  participantImportRoutes(router);
 };
 
 export default routes;
