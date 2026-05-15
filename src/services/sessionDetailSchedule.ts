@@ -59,23 +59,22 @@ export const generateSessionDetaiSchedules = async (
     );
   }
 
-  const results = await Promise.all(
-    sessions.map((session) =>
-      sessionDetailScheduleRepository.createSessionDetailSchedule({
-        detailJadwalTrainingId: getDetailScheduleById.id,
-        jamMulai: toTimeDate(session.jamMulai),
-        jamSelesai: toTimeDate(session.jamSelesai),
-        aktivitas: session.aktivitas,
-        pic: session.pic,
-      }),
-    ),
-  );
 
-  return results.map((item) => ({
+  const payloads = sessions.map((session) => ({
+    detailJadwalTrainingId: getDetailScheduleById.id,
+    jamMulai: toTimeDate(session.jamMulai),
+    jamSelesai: toTimeDate(session.jamSelesai),
+    aktivitas: session.aktivitas,
+    pic: session.pic,
+  }));
+
+  await sessionDetailScheduleRepository.createManySessionDetailSchedule(payloads);
+
+  return payloads.map((item) => ({
     ...item,
     jamMulai: toTimeString(item.jamMulai),
     jamSelesai: toTimeString(item.jamSelesai),
-  }));
+  })) as ICreateSessionDetailSchedule[];
 };
 
 export const createSessionDetailSchedule = async (

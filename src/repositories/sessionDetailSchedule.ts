@@ -6,6 +6,21 @@ import {
   ISessionDetailScheduleRepository,
 } from '../utils/interfaces';
 
+
+export const createManySessionDetailSchedule = async (
+  payloads: Omit<ISessionDetailScheduleRepository, 'id'>[],
+) => {
+  return await prisma.sesiJadwalTraining.createMany({
+    data: payloads.map(p => ({
+      detailJadwalTrainingId: p.detailJadwalTrainingId,
+      jamMulai: p.jamMulai,
+      jamSelesai: p.jamSelesai,
+      aktivitas: p.aktivitas,
+      pic: p.pic,
+    })),
+  });
+};
+
 export const createSessionDetailSchedule = async (
   payload: Omit<ISessionDetailScheduleRepository, 'id'>,
 ): Promise<ISessionDetailScheduleRepository> => {
