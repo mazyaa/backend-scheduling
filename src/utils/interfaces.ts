@@ -47,6 +47,7 @@ export interface IPaginationQuery {
   limit: number;
   search?: string;
   filter?: string;
+  jadwalTrainingId?: string;
 }
 
 export interface IResultPagination {

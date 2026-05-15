@@ -1,0 +1,24 @@
+--- src/routes/participant.ts
++++ src/routes/participant.ts
+@@ -5,6 +5,7 @@
+ import * as aclMiddlewares from '../middlewares/acl';
+ import { validateIdParams } from '../middlewares/validation/common';
+ import { createPesertaValidation, updatePesertaValidation } from '../middlewares/validation/participant';
++import * as scheduleMiddlewares from '../middlewares/schedule';
+ 
+ const participantRoutes = (router: Router): void => {
+     const participantRouter = Router();
+@@ -23,6 +24,13 @@
+         participantController.getAllParticipant
+     );
+ 
++    participantRouter.get(
++        '/schedule/:id',
++        validateIdParams,
++        scheduleMiddlewares.checkScheduleIdExists,
++        participantController.getAllParticipant
++    );
++
+     participantRouter.get(
+         '/:id',
+         validateIdParams,

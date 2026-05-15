@@ -15,7 +15,7 @@ export async function parseExcelToObjects(buffer: Buffer): Promise<Array<{ row: 
   worksheet.eachRow((row, rowNumber) => {
     if (rowNumber === 1) {
       row.eachCell((cell, colNumber) => {
-        headers[colNumber] = cell.value ? cell.value.toString().trim() : '';
+        headers[colNumber] = cell.value ? cell.value.toString().trim() : ''; // Store header names based on column number
       });
     } else {
       const rowData: Record<string, any> = {};
@@ -24,7 +24,7 @@ export async function parseExcelToObjects(buffer: Buffer): Promise<Array<{ row: 
         if (header) {
           const val = cell.value;
           // Handle complex formula/rich text if needed
-          const finalVal = val && typeof val === 'object' && 'text' in val ? (val as any).text : val;
+          const finalVal = val && typeof val === 'object' && 'text' in val ? (val as any).text : val; // Get text value if it's a rich text object
           rowData[header] = finalVal;
         }
       });
