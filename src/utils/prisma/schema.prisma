@@ -29,6 +29,14 @@ enum StatusKompetensi {
   @@map("status_kompetensi") // map to snake_case table name in database
 }
 
+enum StatusRevisi {
+  pending
+  disetujui
+  ditolak
+
+  @@map("status_revisi")
+}
+
 model User {
   id       String   @id @default(uuid()) // use @id for primary key, and @default(uuid()) to auto-generate UUIDs
   name     String   @db.VarChar(150) //use @db.VarChar(length) to set the maximum length of a string, if not specified, defaults use type 'text'
@@ -51,6 +59,7 @@ model User {
   instrukturJadwal DetailJadwalTraining[] @relation("instruktur_relation")
   asesorJadwal     DetailJadwalTraining[] @relation("asesor_relation")
   passwordReset    PasswordReset[]
+  fileRevisi       RevisiFile[]
 
   @@map("users")
   @@index([name])
@@ -233,4 +242,22 @@ model Sertifikat {
 
   @@map("sertifikat")
   @@index([nomorSertifikat])
+}
+
+model RevisiFile {
+  id String @id @default(uuid())
+
+  userId String @map("user_id")
+
+  fileRevisi String @map("file_revisi")
+  catatan String?
+
+  status StatusRevisi @default(pending)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("revisi_file")
 }
