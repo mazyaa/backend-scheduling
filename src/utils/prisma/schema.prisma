@@ -44,7 +44,7 @@ model User {
   email    String   @unique @db.VarChar(150)
   noWa     String   @unique @map("no_wa") @db.VarChar(20) // use @map("column_name") to map to different column name in database
   role     RoleUser
-  password String?   @db.VarChar(255)
+  password String?  @db.VarChar(255)
   keahlian String?  @db.VarChar(255) // use ? (optional chain) to make a field optional (nullable in database)
 
   createdAt DateTime @default(now()) @map("created_at") // use @default(now()) to set default value to current timestamp
@@ -55,23 +55,21 @@ model User {
   pesertaTraining  PesertaTraining[] // one-to-many relation
   materiUploaded   MateriTraining[]
   penilaian        Penilaian[]
-  sertifikat       Sertifikat[]
   instrukturJadwal DetailJadwalTraining[] @relation("instruktur_relation")
   asesorJadwal     DetailJadwalTraining[] @relation("asesor_relation")
   passwordReset    PasswordReset[]
-  fileRevisi       RevisiFile[]
 
-  @@map("users")
   @@index([name])
+  @@map("users")
 }
 
 model PasswordReset {
-  id         String   @id @default(uuid())
-  token      String   @unique
-  userId     String
-  expiredAt  DateTime
-  isUsed     Boolean  @default(false)
-  createdAt  DateTime @default(now())
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiredAt DateTime
+  isUsed    Boolean  @default(false)
+  createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -89,14 +87,14 @@ model Training {
 
   jadwalTraining JadwalTraining[]
 
-  @@map("training")
   @@index([namaTraining])
+  @@map("training")
 }
 
 model JadwalTraining {
   id          String   @id @default(uuid())
   trainingId  String   @map("training_id")
-  startDate   DateTime @db.Date @map("start_date")
+  startDate   DateTime @map("start_date") @db.Date
   duration    Int
   meetingLink String   @map("meeting_link")
   batch       String   @db.VarChar(100)
@@ -108,16 +106,15 @@ model JadwalTraining {
   detailJadwal    DetailJadwalTraining[]
   pesertaTraining PesertaTraining[]
   penilaian       Penilaian[]
-  sertifikat      Sertifikat[]
 
   @@map("jadwal_training")
 }
 
 model DetailJadwalTraining {
-  id               String     @id @default(uuid())
-  jadwalTrainingId String     @map("jadwal_training_id")
-  hari             DateTime   @db.Date
-  hariKe           Int        @map("hari_ke")
+  id               String   @id @default(uuid())
+  jadwalTrainingId String   @map("jadwal_training_id")
+  hari             DateTime @db.Date
+  hariKe           Int      @map("hari_ke")
 
   instrukturId String? @map("instruktur_id")
   asesorId     String? @map("asesor_id")
@@ -131,21 +128,21 @@ model DetailJadwalTraining {
   instruktur User? @relation("instruktur_relation", fields: [instrukturId], references: [id])
   asesor     User? @relation("asesor_relation", fields: [asesorId], references: [id])
 
-  materiTraining MateriTraining[]
+  materiTraining     MateriTraining[]
   sesiJadwalTraining SesiJadwalTraining[]
 
   @@map("detail_jadwal_training")
 }
 
 model SesiJadwalTraining {
-  id                      String   @id @default(uuid())
-  detailJadwalTrainingId  String   @map("detail_jadwal_training_id")
+  id                     String @id @default(uuid())
+  detailJadwalTrainingId String @map("detail_jadwal_training_id")
 
   jamMulai   DateTime @map("jam_mulai") @db.Time
   jamSelesai DateTime @map("jam_selesai") @db.Time
 
-  aktivitas  String   @db.VarChar(100)
-  pic       String?  @db.VarChar(50)
+  aktivitas String  @db.VarChar(100)
+  pic       String? @db.VarChar(50)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -153,8 +150,8 @@ model SesiJadwalTraining {
   detailJadwalTraining DetailJadwalTraining @relation(fields: [detailJadwalTrainingId], references: [id], onDelete: Cascade)
 
   @@unique([detailJadwalTrainingId, jamMulai, jamSelesai])
-  @@map("sesi_jadwal_training")
   @@index([detailJadwalTrainingId])
+  @@map("sesi_jadwal_training")
 }
 
 model ProfilPeserta {
@@ -206,8 +203,8 @@ model MateriTraining {
 
   uploader User @relation(fields: [diuploadOleh], references: [id], onDelete: Cascade)
 
-  @@map("materi_training")
   @@index([judul])
+  @@map("materi_training")
 }
 
 model Penilaian {
@@ -223,41 +220,48 @@ model Penilaian {
   user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   jadwalTraining JadwalTraining @relation(fields: [jadwalTrainingId], references: [id], onDelete: Cascade)
 
+  revisiFile RevisiFile?
+  sertifikat Sertifikat?
+
   @@unique([userId, jadwalTrainingId])
   @@map("penilaian")
 }
 
 model Sertifikat {
-  id               String @id @default(uuid())
-  userId           String @map("user_id")
-  jadwalTrainingId String @map("jadwal_training_id")
-  nomorSertifikat  String @unique @map("nomor_sertifikat") @db.VarChar(150)
-  fileSertifikat   String @map("file_sertifikat")
+  id String @id @default(uuid())
+
+  penilaianId String @unique @map("penilaian_id")
+
+  nomorSertifikat String @unique @map("nomor_sertifikat") @db.VarChar(150)
+
+  fileSertifikat String @map("file_sertifikat")
 
   createdAt DateTime  @default(now()) @map("created_at")
   deletedAt DateTime? @map("deleted_at")
 
-  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  jadwalTraining JadwalTraining @relation(fields: [jadwalTrainingId], references: [id], onDelete: Cascade)
+  penilaian Penilaian @relation(fields: [penilaianId], references: [id], onDelete: Cascade)
 
-  @@map("sertifikat")
   @@index([nomorSertifikat])
+  @@map("sertifikat")
 }
 
 model RevisiFile {
   id String @id @default(uuid())
 
-  userId String @map("user_id")
+  penilaianId String @unique @map("penilaian_id")
 
-  fileRevisi String @map("file_revisi")
-  catatan String?
+  fileRevisiAdmin String? @map("file_revisi_admin")
+
+  fileRevisiPeserta String? @map("file_revisi_peserta")
 
   status StatusRevisi @default(pending)
 
   createdAt DateTime @default(now()) @map("created_at")
+
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  penilaian Penilaian @relation(fields: [penilaianId], references: [id], onDelete: Cascade)
 
+  @@index([status])
   @@map("revisi_file")
 }
