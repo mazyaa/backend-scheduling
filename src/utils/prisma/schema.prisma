@@ -197,7 +197,7 @@ model MateriTraining {
   diuploadOleh           String  @map("diupload_oleh")
 
   createdAt DateTime  @default(now()) @map("created_at")
-  deletedAt DateTime? @map("deleted_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
 
   detailJadwalTraining DetailJadwalTraining @relation(fields: [detailJadwalTrainingId], references: [id], onDelete: Cascade)
 
@@ -215,13 +215,13 @@ model Penilaian {
   catatan          String
 
   createdAt DateTime  @default(now()) @map("created_at")
-  deletedAt DateTime? @map("deleted_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
 
   user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   jadwalTraining JadwalTraining @relation(fields: [jadwalTrainingId], references: [id], onDelete: Cascade)
 
   revisiFile RevisiFile?
-  sertifikat Sertifikat?
+  sertifikat Sertifikat[]
 
   @@unique([userId, jadwalTrainingId])
   @@map("penilaian")
@@ -230,14 +230,15 @@ model Penilaian {
 model Sertifikat {
   id String @id @default(uuid())
 
-  penilaianId String @unique @map("penilaian_id")
+  penilaianId String @map("penilaian_id")
+  namaSertifikat String @map("nama_sertifikat") @db.VarChar(200)
 
   nomorSertifikat String @unique @map("nomor_sertifikat") @db.VarChar(150)
 
   fileSertifikat String @map("file_sertifikat")
 
   createdAt DateTime  @default(now()) @map("created_at")
-  deletedAt DateTime? @map("deleted_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
 
   penilaian Penilaian @relation(fields: [penilaianId], references: [id], onDelete: Cascade)
 

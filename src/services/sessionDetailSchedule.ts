@@ -25,12 +25,13 @@ export const generateSessionDetaiSchedules = async (
   }
 
   const getMaxHariKe = await detailScheduleRepository.getMaxHariKe(
-    getDetailScheduleById.id,
+    getDetailScheduleById.jadwalTrainingId,
   );
-
+  console.log('getMaxHariKe - ', getMaxHariKe);
+  
   const sessions: SessionTemplate[] = [];
 
-  if (!getMaxHariKe) {
+  if (getMaxHariKe !== null && getDetailScheduleById.hariKe < getMaxHariKe) {
     sessions.push(...REGULAR_DAY_TEMPLATE);
   } else {
     sessions.push(...EXAM_DAY_TEMPLATE);
