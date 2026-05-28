@@ -19,3 +19,16 @@ export const updatePasswordUser = async (id: string, password: string): Promise<
         }
     });
 }
+
+export const getUserIfExistsInSchedule = async (userId: string, jadwalTrainingId: string): Promise<IUser | null> => {
+    return await prisma.user.findFirst({
+        where: {
+            id: userId,
+            pesertaTraining: {
+                some: { // Ensure the user is linked to the specified training schedule
+                    jadwalTrainingId
+                }
+            }
+        }
+    });
+}

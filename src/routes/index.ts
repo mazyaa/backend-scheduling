@@ -11,6 +11,8 @@ import { setPasswordRoutes } from './setPassword';
 import { sessionDetailScheduleRouter } from './sessionDetailSchedule';
 import participantImportRoutes from './participantImport';
 import participantRoutes from './participant';
+import materiRoutes from './materi';
+import assesmentRoutes from './assesment';
 
 const routes = (app: Application): void => {
   const router = Router(); // this value is null at the beginning
@@ -39,6 +41,8 @@ const routes = (app: Application): void => {
   sessionDetailScheduleRouter(router);
   participantImportRoutes(router);
   participantRoutes(router);
+  materiRoutes(router);
+  assesmentRoutes(router);
 };
 
 export default routes;
