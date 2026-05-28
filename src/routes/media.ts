@@ -12,7 +12,7 @@ const mediaRoutes = (router: Router): void => {
     mediaRouter.post(
         '/upload-single',
         authMiddleware.isAuthorized,
-        aclMiddleware.isAdmin,
+        aclMiddleware.isAdminOrInstrukturOrAsesor,
         mediaMiddleware.single('file'),
         mediaController.single,
     );

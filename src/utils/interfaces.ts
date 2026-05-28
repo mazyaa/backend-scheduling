@@ -1,4 +1,4 @@
-import type { RoleUser } from '@prisma/client';
+import type { RoleUser, StatusKompetensi } from '@prisma/client';
 
 export interface ICreateUser {
   name: string;
@@ -148,4 +148,26 @@ export interface ISessionDetailSchedule extends ICreateSessionDetailSchedule {
 export interface ISessionDetailScheduleRepository extends Omit<ISessionDetailSchedule, 'jamMulai' | 'jamSelesai'> {
   jamMulai: Date;
   jamSelesai: Date;
+}
+
+export interface ICreateMateri {
+  detailJadwalTrainingId: string;
+  judul: string;
+  fileMateri?: string | null;
+  diuploadOleh: string;
+}
+
+export interface IMateri extends ICreateMateri {
+  id: string;
+}
+
+export interface ICreateAssesment {
+  userId: string;
+  jadwalTrainingId: string;
+  statusKompetensi: StatusKompetensi;
+  catatan: string;
+}
+
+export interface IAssesment extends ICreateAssesment {
+  id: string;
 }
