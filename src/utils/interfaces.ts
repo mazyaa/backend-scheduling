@@ -149,3 +149,23 @@ export interface ISessionDetailScheduleRepository extends Omit<ISessionDetailSch
   jamMulai: Date;
   jamSelesai: Date;
 }
+
+export interface ICreateParticipant {
+  name: string;
+  email: string;
+  noWa: string;
+  password?: string;
+  instansi: string;
+  fileCv: string;
+  fileIjazah: string;
+  fileSuratRekomendasi: string;
+  fileKtp: string;
+  fileFoto: string;
+  fileBuktiBayar: string;
+  fileBuktiFollow: string;
+  jadwalTrainingId: string;
+}
+
+export interface IParticipant extends ICreateParticipant {
+  id: string;
+}

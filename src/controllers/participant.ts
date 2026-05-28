@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import * as participantService from '../services/participant';
-import { IPaginationQuery } from '../utils/interfaces';
+import { ICreateParticipant, IPaginationQuery } from '../utils/interfaces';
 
 export const createPeserta = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const result = await participantService.createPeserta(req.body);
+        const payload = req.body as ICreateParticipant;
+        const result = await participantService.createPeserta(payload);
         res.status(201).json({
             message: 'Berhasil membuat participant',
             data: result
@@ -51,7 +52,8 @@ export const getAllParticipant = async (req: Request, res: Response, next: NextF
 export const updatePeserta = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
-        const result = await participantService.updatePeserta(id, req.body);
+        const payload = req.body as ICreateParticipant;
+        const result = await participantService.updatePeserta(id, payload);
         res.status(200).json({
             message: 'Berhasil mengubah participant',
             data: result

@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
 import * as participantRepo from '../repositories/participant';
-import { IPaginationQuery, IResultPagination } from '../utils/interfaces';
+import { ICreateParticipant, IPaginationQuery, IResultPagination } from '../utils/interfaces';
 
-export const createPeserta = async (payload: any) => {
+export const createPeserta = async (payload: ICreateParticipant) => {
     let hashedPassword = payload.password;
     if (payload.password) {
         hashedPassword = await bcrypt.hash(payload.password, 10);
@@ -76,7 +76,7 @@ export const getAllParticipant = async (query: IPaginationQuery) => {
     return { results: safeResults, pagination };
 };
 
-export const updatePeserta = async (id: string, payload: any) => {
+export const updatePeserta = async (id: string, payload: ICreateParticipant) => {
     const updateData = { ...payload };
     
     if (payload.password) {

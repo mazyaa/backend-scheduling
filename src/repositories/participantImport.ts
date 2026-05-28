@@ -1,5 +1,6 @@
 import { prisma } from '../utils/client';
 import { RoleUser } from '@prisma/client';
+import { ICreateParticipant } from '../utils/interfaces';
 
 export const findDuplicateUsers = async (emails: string[], noWas: string[]) => {
   return prisma.user.findMany({
@@ -13,7 +14,7 @@ export const findDuplicateUsers = async (emails: string[], noWas: string[]) => {
   });
 };
 
-export const commitImport = async (jadwalTrainingId: string, participants: any[]) => {
+export const commitImport = async (jadwalTrainingId: string, participants: ICreateParticipant[]) => {
   return prisma.$transaction(async (tx) => { // use transaction to ensure all-or-nothing import
     const createdUsers = [];
     for (const p of participants) {

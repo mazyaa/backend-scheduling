@@ -1,8 +1,8 @@
 import { prisma } from "../utils/client";
 import { RoleUser } from '@prisma/client';
-import { IPagination } from "../utils/interfaces";
+import { ICreateParticipant, IPagination, IParticipant } from "../utils/interfaces";
 
-export const createPeserta = async (payload: any) => {
+export const createPeserta = async (payload: ICreateParticipant) => {
     return await prisma.user.create({
         data: {
             name: payload.name,
@@ -10,7 +10,6 @@ export const createPeserta = async (payload: any) => {
             noWa: payload.noWa,
             role: RoleUser.peserta,
             password: payload.password,
-            keahlian: payload.keahlian,
             profilPeserta: {
                 create: {
                     instansi: payload.instansi || '-', // provide standard default if needed
@@ -49,7 +48,7 @@ export const getAllParticipant = async (params: IPagination) => {
         skip: params.skip,
         take: params.take,
         orderBy: params.orderBy || { createdAt: 'desc' },
-        include: { profilPeserta: true }
+        include: { profilPeserta: true, pesertaTraining: true }
     });
 };
 
@@ -59,7 +58,7 @@ export const countParticipant = async (where: any) => {
     });
 };
 
-export const updatePeserta = async (id: string, payload: any) => {
+export const updatePeserta = async (id: string, payload: ICreateParticipant) => {
     return await prisma.user.update({
         where: { id },
         data: {
@@ -67,7 +66,6 @@ export const updatePeserta = async (id: string, payload: any) => {
             email: payload.email,
             noWa: payload.noWa,
             password: payload.password,
-            keahlian: payload.keahlian,
             profilPeserta: {
                 upsert: {
                     create: {

@@ -36,6 +36,8 @@ export const updatePesertaSchema = Joi.object({
   fileFoto: Joi.string().allow(null, '').optional(),
   fileBuktiBayar: Joi.string().allow(null, '').optional(),
   fileBuktiFollow: Joi.string().allow(null, '').optional(),
+
+  jadwalTrainingId: Joi.string().uuid().allow(null, '').optional(),
 });
 
 export const createPesertaValidation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
