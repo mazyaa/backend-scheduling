@@ -202,6 +202,7 @@ model MateriTraining {
   detailJadwalTraining DetailJadwalTraining @relation(fields: [detailJadwalTrainingId], references: [id], onDelete: Cascade)
 
   uploader User @relation(fields: [diuploadOleh], references: [id], onDelete: Cascade)
+  sertifikat Sertifikat[]
 
   @@index([judul])
   @@map("materi_training")
@@ -231,7 +232,8 @@ model Sertifikat {
   id String @id @default(uuid())
 
   penilaianId String @map("penilaian_id")
-  namaSertifikat String @map("nama_sertifikat") @db.VarChar(200)
+
+  materiTrainingId String @map("materi_training_id")
 
   nomorSertifikat String @unique @map("nomor_sertifikat") @db.VarChar(150)
 
@@ -241,6 +243,7 @@ model Sertifikat {
   updatedAt DateTime  @updatedAt @map("updated_at")
 
   penilaian Penilaian @relation(fields: [penilaianId], references: [id], onDelete: Cascade)
+  materiTraining MateriTraining @relation(fields: [materiTrainingId], references: [id], onDelete: Cascade)
 
   @@index([nomorSertifikat])
   @@map("sertifikat")
