@@ -33,7 +33,7 @@ async function seedUsers() {
         },
         {
             name: 'Peserta',
-            image: null,
+            image: 'https://res.cloudinary.com/dfu2sm1dv/image/upload/v1773504142/engineer_fxk5ta.png',
             email: PESERTA_EMAIL,
             noWa: PESERTA_NOWA,
             role: RoleUser.peserta,

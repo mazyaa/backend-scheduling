@@ -13,6 +13,7 @@ import participantImportRoutes from './participantImport';
 import participantRoutes from './participant';
 import materiRoutes from './materi';
 import assesmentRoutes from './assesment';
+import eSertifikatRoutes from './e-sertifikat';
 
 const routes = (app: Application): void => {
   const router = Router(); // this value is null at the beginning
@@ -43,6 +44,7 @@ const routes = (app: Application): void => {
   participantRoutes(router);
   materiRoutes(router);
   assesmentRoutes(router);
+  eSertifikatRoutes(router);
 };
 
 export default routes;

@@ -51,11 +51,11 @@ const assesmentRoutes = (router: Router): void => {
     assesmentRouter.delete(
         '/:id',
         authMiddlewares.isAuthorized,
-        aclMiddlewares.isAdmin,
+        aclMiddlewares.isAdminOrAsesor,
         commonValidationMiddlewares.validateIdParams,
         assesmentMiddlewares.checkAssesmentIdExists,
         assesmentController.deleteAssesment,
     );
 }
-
+    
 export default assesmentRoutes;
