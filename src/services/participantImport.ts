@@ -2,6 +2,7 @@ import { parseExcelToObjects } from '../utils/participantImportParser';
 import { mapRowToPayload } from '../utils/participantImportMapper';
 import { participantImportRowSchema } from '../utils/participantImportValidator';
 import * as participantImportRepository from '../repositories/participantImport';
+import * as scheduleRepo from '../repositories/schedule';
 import { HttpError } from '../utils/error';
 
 export const previewImport = async (fileBuffer: Buffer) => {
@@ -125,6 +126,11 @@ export const commitImport = async (
 ) => {
   if (!jadwalTrainingId) {
     throw new HttpError('jadwalTrainingId dibutuhkan', 400);
+  }
+
+  const existingSchedule = await scheduleRepo.getScheduleById(jadwalTrainingId);
+  if (!existingSchedule) {
+    throw new HttpError('Jadwal Training tidak ditemukan', 404);
   }
 
   if (!participants || participants.length === 0) {

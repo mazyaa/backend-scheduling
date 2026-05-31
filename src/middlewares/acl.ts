@@ -24,3 +24,6 @@ export const isAdminOrDirektur = allowRoles(RoleUser.admin, RoleUser.direktur);
 export const isAdminOrInstruktur = allowRoles(RoleUser.admin, RoleUser.instruktur);
 export const isAdminOrAsesor = allowRoles(RoleUser.admin, RoleUser.asesor);
 export const isAdminOrInstrukturOrAsesor = allowRoles(RoleUser.admin, RoleUser.instruktur, RoleUser.asesor);
+export const isAdminOrPeserta = allowRoles(RoleUser.admin, RoleUser.peserta);
+export const isAdminOrInstrukturOrAsesorOrPeserta = allowRoles(RoleUser.admin, RoleUser.instruktur, RoleUser.asesor, RoleUser.peserta);
+export const isPesertaOrInstrukturOrAsesor = allowRoles(RoleUser.peserta, RoleUser.instruktur, RoleUser.asesor);

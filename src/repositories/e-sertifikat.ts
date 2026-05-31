@@ -1,4 +1,5 @@
 import { prisma } from '../utils/client';
+import { IPagination } from '../utils/interfaces';
 import { Prisma } from '@prisma/client';
 
 export const checkSertifikatExists = async (penilaianId: string): Promise<boolean> => {
@@ -41,4 +42,52 @@ export const getSertifikatByPenilaianId = async (penilaianId: string) => {
             materiTraining: true,
         },
     });
+};
+
+export const getAllPeserta = async (payload: IPagination) => {
+    const { skip, take, where, orderBy } = payload;
+
+    return await prisma.pesertaTraining.findMany({
+        skip,
+        take,
+        where,
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                },
+            },
+            jadwalTraining: {
+                include: {
+                    training: {
+                        select: {
+                            namaTraining: true,
+                        },
+                    },
+                    penilaian: {
+                        select: {
+                            id: true,
+                            statusKompetensi: true,
+                            revisiFile: {
+                                select: {
+                                    fileRevisiAdmin: true,
+                                },
+                            },
+                            sertifikat: {
+                                select: {
+                                    fileSertifikat: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+        orderBy,
+    });
+};
+
+export const countPeserta = async (where?: object): Promise<number> => {
+    return await prisma.pesertaTraining.count({ where });
 };
