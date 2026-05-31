@@ -9,8 +9,6 @@ export const createPeserta = async (payload: any) => {
             email: payload.email,
             noWa: payload.noWa,
             role: RoleUser.peserta,
-            password: payload.password,
-            keahlian: payload.keahlian,
             profilPeserta: {
                 create: {
                     instansi: payload.instansi || '-', // provide standard default if needed

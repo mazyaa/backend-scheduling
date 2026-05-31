@@ -14,6 +14,13 @@ import participantRoutes from './participant';
 import materiRoutes from './materi';
 import assesmentRoutes from './assesment';
 import eSertifikatRoutes from './e-sertifikat';
+import revisiRoutes from './revisi';
+import laporanRoutes from './laporan';
+import dashboardRoutes from './dashboard';
+import profileRoutes from './profile';
+import sertifikatRoutes from './sertifikat';
+import myTrainingRoutes from './myTraining';
+import penilaianRoutes from './penilaian';
 
 const routes = (app: Application): void => {
   const router = Router(); // this value is null at the beginning
@@ -45,6 +52,13 @@ const routes = (app: Application): void => {
   materiRoutes(router);
   assesmentRoutes(router);
   eSertifikatRoutes(router);
+  revisiRoutes(router);
+  laporanRoutes(router);
+  dashboardRoutes(router);
+  profileRoutes(router);
+  sertifikatRoutes(router);
+  myTrainingRoutes(router);
+  penilaianRoutes(router);
 };
 
 export default routes;

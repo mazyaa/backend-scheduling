@@ -3,30 +3,49 @@ import * as materiController from '../controllers/materi';
 import * as aclMiddlewares from '../middlewares/acl';
 import * as authMiddlewares from '../middlewares/auth';
 import * as materiMiddlewares from '../middlewares/materi';
-import * as materiValidationMiddlewares from '../middlewares/validation/materi';
 import * as commonValidationMiddlewares from '../middlewares/validation/common';
-import * as detailJadwalTrainingMiddlewares from '../middlewares/detailSchedule';
+import { singleMateri } from '../middlewares/uploadMateri';
 
 const materiRoutes = (router: Router): void => {
     const materiRouter = Router();
 
     router.use('/materi', materiRouter);
 
+    materiRouter.get(
+        '/all-materi',
+        authMiddlewares.isAuthorized,
+        aclMiddlewares.isAdminOrInstrukturOrAsesor,
+        materiController.getAllMateri,
+    );
+
+    materiRouter.get(
+        '/my-materi',
+        authMiddlewares.isAuthorized,
+        aclMiddlewares.isPeserta,
+        materiController.getMyMateri,
+    );
+
+    materiRouter.get(
+        '/:id/download',
+        authMiddlewares.isAuthorized,
+        aclMiddlewares.isAdminOrInstrukturOrAsesor,
+        commonValidationMiddlewares.validateIdParams,
+        materiController.downloadMateri,
+    );
+
+    materiRouter.post(
+        '/upload',
+        authMiddlewares.isAuthorized,
+        aclMiddlewares.isAdminOrInstruktur,
+        singleMateri,
+        materiController.uploadMateri,
+    );
+
     materiRouter.post(
         '/',
         authMiddlewares.isAuthorized,
         aclMiddlewares.isAdminOrInstruktur,
-        materiValidationMiddlewares.createMateriValidation,
         materiController.createMateri,
-    );
-
-    materiRouter.get(
-        '/:id/all-materi',
-        authMiddlewares.isAuthorized,
-        aclMiddlewares.isAdminOrInstrukturOrAsesor,
-        commonValidationMiddlewares.validateIdParams,
-        detailJadwalTrainingMiddlewares.checkDeatailScheduleIdExists,
-        materiController.getAllMateri,
     );
 
     materiRouter.get(
@@ -44,7 +63,6 @@ const materiRoutes = (router: Router): void => {
         aclMiddlewares.isAdminOrInstruktur,
         commonValidationMiddlewares.validateIdParams,
         materiMiddlewares.checkMateriIdExists,
-        materiValidationMiddlewares.updateMateriValidation,
         materiController.updateMateri,
     );
 

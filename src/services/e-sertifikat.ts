@@ -2,13 +2,14 @@ import path from 'path';
 import fs from 'fs';
 import ejs from 'ejs';
 import puppeteer from 'puppeteer';
-import archiver from 'archiver';
+const { ZipArchive } = require('archiver');
 import { Response } from 'express';
 
 import { HttpError } from '../utils/error';
 import { generateNomorSertifikat } from '../utils/sertifikat';
 import * as eSertifikatRepository from '../repositories/e-sertifikat';
 import * as assesmentRepository from '../repositories/assesment';
+import { RoleUser } from '@prisma/client';
 import { prisma } from '../utils/client';
 import { Prisma } from '@prisma/client';
 
@@ -234,12 +235,24 @@ export const publishSertifikat = async (penilaianId: string) => {
 
 export const downloadSertifikatZip = async (
   penilaianId: string,
+  currentUser: { id: string; role: string },
   res: Response,
 ) => {
   const assesment = await assesmentRepository.getAssesmentById(penilaianId);
 
   if (!assesment) {
     throw new HttpError('Penilaian not found', 404);
+  }
+
+  // Jika user bukan admin, dan id user tidak cocok dengan pemilik assesment, tolak!
+  if (
+    currentUser.role !== RoleUser.admin &&
+    assesment.userId !== currentUser.id
+  ) {
+    throw new HttpError(
+      'Forbidden: Anda tidak memiliki akses ke sertifikat peserta ini',
+      403,
+    );
   }
 
   const sertifikatList =
@@ -255,12 +268,8 @@ export const downloadSertifikatZip = async (
   res.setHeader('Content-Type', 'application/zip');
   res.setHeader('Content-Disposition', `attachment; filename="${zipFileName}"`);
 
-  const archive = archiver('zip', {
-    zlib: { level: 9 }, // max compression
-  });
-
-  archive.on('error', (err) => {
-    throw new HttpError(`Error creating ZIP: ${err.message}`, 500);
+  const archive = new ZipArchive({
+    zlib: { level: 9 },
   });
 
   archive.pipe(res);
@@ -278,4 +287,79 @@ export const downloadSertifikatZip = async (
   }
 
   await archive.finalize();
+};
+
+export const getAllPeserta = async (
+  jadwalTrainingId: string,
+  payload: {
+    page: number;
+    limit: number;
+    search?: string;
+  },
+) => {
+  const { page, limit, search } = payload;
+
+  const skip = (page - 1) * limit;
+
+  const where: any = {
+    jadwalTrainingId,
+  };
+
+  if (search?.trim()) {
+    where.user = {
+      name: {
+        contains: search.trim(),
+        mode: 'insensitive',
+      },
+    };
+  }
+
+  const [data, total] = await Promise.all([
+    eSertifikatRepository.getAllPeserta({
+      skip,
+      take: limit,
+      where,
+      orderBy: { createdAt: 'desc' },
+    }),
+    eSertifikatRepository.countPeserta(where),
+  ]);
+
+  const totalPages = Math.ceil(total / limit);
+
+  const mappedData = data.map((item) => {
+    const penilaian = item.jadwalTraining.penilaian[0];
+    const hasRevisi = !!penilaian?.revisiFile?.fileRevisiAdmin;
+    const hasSertifikat = !!penilaian?.sertifikat?.length;
+
+    const baseUrl = (process.env.BASE_URL || '').replace(/\/+$/, '');
+
+    const fileRevisi = hasRevisi
+      ? `http://${baseUrl}/e-sertifikat/${penilaian!.id}/revisi/download`
+      : null;
+
+    const fileSertifikat = hasSertifikat
+      ? `http://${baseUrl}/e-sertifikat/${penilaian!.id}/download`
+      : null;
+
+    return {
+      namaPeserta: item.user.name,
+      namaTraining: item.jadwalTraining.training.namaTraining,
+      batch: item.jadwalTraining.batch,
+      statusKompetensi: penilaian?.statusKompetensi ?? null,
+      fileRevisi,
+      fileSertifikat,
+    };
+  });
+
+  return {
+    data: mappedData,
+    pagination: {
+      total,
+      totalPages,
+      currentPage: page,
+      limit,
+      hasNext: page < totalPages,
+      hasPrevious: page > 1,
+    },
+  };
 };
