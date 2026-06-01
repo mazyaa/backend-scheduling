@@ -9,6 +9,13 @@ const penilaianRoutes = (router: Router): void => {
     router.use('/penilaian', penilaianRouter);
 
     penilaianRouter.get(
+        '/',
+        authMiddlewares.isAuthorized,
+        aclMiddlewares.isAdminOrAsesor,
+        penilaianController.getAllPenilaian,
+    );
+
+    penilaianRouter.get(
         '/my-status',
         authMiddlewares.isAuthorized,
         aclMiddlewares.isPeserta,

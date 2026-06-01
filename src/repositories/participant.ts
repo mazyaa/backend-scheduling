@@ -42,12 +42,20 @@ export const getPesertaById = async (id: string) => {
 };
 
 export const getAllParticipant = async (params: IPagination) => {
+    const { skip, take, where, orderBy } = params;
     return await prisma.user.findMany({
-        where: { ...params.where, role: RoleUser.peserta },
-        skip: params.skip,
-        take: params.take,
-        orderBy: params.orderBy || { createdAt: 'desc' },
-        include: { profilPeserta: true }
+        where: { ...where, role: RoleUser.peserta },
+        skip,
+        take,
+        include: { 
+            pesertaTraining: {
+                include: {
+                    jadwalTraining: true
+                }
+            },
+             profilPeserta: true
+         },
+        orderBy: orderBy,
     });
 };
 

@@ -59,7 +59,7 @@ export const getAllParticipant = async (query: IPaginationQuery) => {
       skip,
       take: limit,
       where,
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: 'desc', },
     }),
   ]);
 

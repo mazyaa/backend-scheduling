@@ -33,7 +33,6 @@ export const sessionDetailScheduleRouter = (router: Router): void => {
     sessionDetailScheduleRouter.get(
         '/:id',
         authMiddlewares.isAuthorized,
-        aclMiddlewares.isAdmin,
         commonValidationMiddlewares.validateIdParams,
         sessionDetailScheduleMiddlewares.checkSessionDetailScheduleIdExists,
         sessionDetailScheduleController.getSessionDetailScheduleById,
@@ -61,7 +60,6 @@ export const sessionDetailScheduleRouter = (router: Router): void => {
     sessionDetailScheduleRouter.get(
         '/:id/all',
         authMiddlewares.isAuthorized,
-        aclMiddlewares.isAdmin,
         commonValidationMiddlewares.validateIdParams,
         detailScheduleMiddlewares.checkDeatailScheduleIdExists,
         sessionDetailScheduleController.getAllSessionDetailSchedules,

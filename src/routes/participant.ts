@@ -12,7 +12,7 @@ const participantRoutes = (router: Router): void => {
 
     router.use('/participant', participantRouter);
 
-    participantRouter.use(authMiddlewares.isAuthorized, aclMiddlewares.isAdmin);
+    participantRouter.use(authMiddlewares.isAuthorized, aclMiddlewares.isAdminOrInstrukturOrAsesor);
 
     participantRouter.post(
         '/',

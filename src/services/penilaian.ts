@@ -102,3 +102,41 @@ export const getPenilaianPeserta = async (
         },
     };
 };
+
+export const getAllPenilaian = async (
+    page: number,
+    limit: number,
+    search?: string,
+) => {
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+        penilaianRepository.getAllPenilaian(skip, limit, search),
+        penilaianRepository.countAllPenilaian(search),
+    ]);
+
+    const totalPages = Math.ceil(total / limit);
+
+    const mappedData = data.map((item) => ({
+        namaPeserta: item.user.name,
+        training: item.jadwalTraining.training.namaTraining,
+        batch: item.jadwalTraining.batch,
+        statusKompetensi: item.statusKompetensi,
+        catatan: item.catatan,
+        fileRevisiAdmin: item.revisiFile?.fileRevisiAdmin ?? null,
+        statusRevisi: item.revisiFile?.status ?? null,
+        penilaianId: item.id,
+    }));
+
+    return {
+        data: mappedData,
+        pagination: {
+            total,
+            totalPages,
+            currentPage: page,
+            limit,
+            hasNext: page < totalPages,
+            hasPrevious: page > 1,
+        },
+    };
+};

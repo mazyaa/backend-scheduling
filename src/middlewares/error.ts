@@ -1,4 +1,5 @@
 import { HttpError } from "../utils/error";
+import { MulterError } from "multer";
 import { Request, Response, NextFunction, Application } from "express";
 
 // Middleware to handle 404 Not Found errors
@@ -11,6 +12,16 @@ const notFoundHandler = (req: Request, res: Response, next: NextFunction): void 
 const errorHandler = (err: unknown, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof HttpError) { // check if the error is an instance of HttpError
         res.status(err.statusCode).json({ message: err.message }); // send JSON response with status code and message
+        return;
+    }
+
+    if (err instanceof MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+            res.status(400).json({ message: 'Ukuran file materi maksimal 50MB.' });
+            return;
+        }
+
+        res.status(400).json({ message: err.message });
         return;
     }
 
