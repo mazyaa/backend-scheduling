@@ -12,6 +12,13 @@ const eSertifikatRoutes = (router: Router): void => {
     router.use('/e-sertifikat', eSertifikatRouter);
 
     eSertifikatRouter.get(
+        '/',
+        authMiddlewares.isAuthorized,
+        aclMiddlewares.isAdmin,
+        eSertifikatController.getAllSertifikat,
+    );
+
+    eSertifikatRouter.get(
         '/:id/all-peserta',
         authMiddlewares.isAuthorized,
         aclMiddlewares.isAdmin,

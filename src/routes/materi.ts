@@ -28,7 +28,7 @@ const materiRoutes = (router: Router): void => {
     materiRouter.get(
         '/:id/download',
         authMiddlewares.isAuthorized,
-        aclMiddlewares.isAdminOrInstrukturOrAsesor,
+        aclMiddlewares.isAdminOrInstrukturOrPeserta,
         commonValidationMiddlewares.validateIdParams,
         materiController.downloadMateri,
     );
@@ -39,13 +39,6 @@ const materiRoutes = (router: Router): void => {
         aclMiddlewares.isAdminOrInstruktur,
         singleMateri,
         materiController.uploadMateri,
-    );
-
-    materiRouter.post(
-        '/',
-        authMiddlewares.isAuthorized,
-        aclMiddlewares.isAdminOrInstruktur,
-        materiController.createMateri,
     );
 
     materiRouter.get(
@@ -63,6 +56,7 @@ const materiRoutes = (router: Router): void => {
         aclMiddlewares.isAdminOrInstruktur,
         commonValidationMiddlewares.validateIdParams,
         materiMiddlewares.checkMateriIdExists,
+        singleMateri,
         materiController.updateMateri,
     );
 

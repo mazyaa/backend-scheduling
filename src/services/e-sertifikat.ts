@@ -363,3 +363,54 @@ export const getAllPeserta = async (
     },
   };
 };
+
+export const getAllSertifikat = async (
+  page: number,
+  limit: number,
+  search?: string,
+) => {
+  const skip = (page - 1) * limit;
+
+  const [data, total] = await Promise.all([
+    eSertifikatRepository.getAllSertifikat(skip, limit, search),
+    eSertifikatRepository.countAllSertifikat(search),
+  ]);
+
+  const totalPages = Math.ceil(total / limit);
+
+  const baseUrl = (process.env.BASE_URL || '').replace(/\/+$/, '');
+
+  const mappedData = data.map((item) => {
+    const hasRevisi = !!item.revisiFile?.fileRevisiAdmin;
+    const hasSertifikat = !!item.sertifikat?.length;
+
+    const fileRevisi = hasRevisi
+      ? `http://${baseUrl}/e-sertifikat/${item.id}/revisi/download`
+      : null;
+
+    const fileSertifikat = hasSertifikat
+      ? `http://${baseUrl}/e-sertifikat/${item.id}/download`
+      : null;
+
+    return {
+      namaPeserta: item.user.name,
+      namaTraining: item.jadwalTraining.training.namaTraining,
+      batch: item.jadwalTraining.batch,
+      statusKompetensi: item.statusKompetensi,
+      fileRevisi,
+      fileSertifikat,
+    };
+  });
+
+  return {
+    data: mappedData,
+    pagination: {
+      total,
+      totalPages,
+      currentPage: page,
+      limit,
+      hasNext: page < totalPages,
+      hasPrevious: page > 1,
+    },
+  };
+};

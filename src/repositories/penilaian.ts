@@ -84,3 +84,59 @@ export const countPenilaianByJadwalTrainingId = async (
         where: { jadwalTrainingId },
     });
 };
+
+export const getAllPenilaian = async (
+    skip: number,
+    take: number,
+    search?: string,
+) => {
+    const where: any = {};
+
+    if (search?.trim()) {
+        where.user = {
+            name: { contains: search.trim(), mode: 'insensitive' },
+        };
+    }
+
+    return await prisma.penilaian.findMany({
+        skip,
+        take,
+        where,
+        include: {
+            user: {
+                select: { name: true, email: true, noWa: true },
+            },
+            jadwalTraining: {
+                include: {
+                    training: { select: { namaTraining: true } },
+                },
+            },
+            revisiFile: {
+                select: {
+                    id: true,
+                    fileRevisiAdmin: true,
+                    fileRevisiPeserta: true,
+                    status: true,
+                },
+            },
+            sertifikat: {
+                select: { id: true },
+            },
+        },
+        orderBy: { createdAt: 'desc' },
+    });
+};
+
+export const countAllPenilaian = async (search?: string): Promise<number> => {
+    const where: any = {};
+
+    if (search?.trim()) {
+        where.user = {
+            name: { contains: search.trim(), mode: 'insensitive' },
+        };
+    }
+
+    return await prisma.penilaian.count({
+        where,
+    });
+};

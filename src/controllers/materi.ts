@@ -2,22 +2,6 @@ import { Request, Response } from 'express';
 import * as materiServices from '../services/materi';
 import { ICreateMateri, IUserWithoutPassword } from '../utils/interfaces';
 
-export const createMateri = async (req: Request, res: Response): Promise<void> => {
-    const currentUser = res.locals.currentUserLogin as IUserWithoutPassword;
-
-    const payload: ICreateMateri = {
-        ...(req.body as Omit<ICreateMateri, 'diuploadOleh'>),
-        diuploadOleh: currentUser.id,
-    };
-
-    const result = await materiServices.createMateri(payload);
-
-    res.status(201).json({
-        message: 'Materi created successfully!',
-        data: result,
-    });
-}
-
 export const getMateriById = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
 
@@ -49,9 +33,10 @@ export const getAllMateri = async (req: Request, res: Response): Promise<void> =
 
 export const updateMateri = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-    const payload = req.body as Partial<ICreateMateri>;
+    const { fileMateri: _fileMateri, ...payload } = req.body as Partial<ICreateMateri>;
+    const file = req.file as Express.Multer.File | undefined;
 
-    const result = await materiServices.updateMateri(id, payload);
+    const result = await materiServices.updateMateri(id, payload, file);
 
     res.status(200).json({
         message: 'Materi updated successfully!',

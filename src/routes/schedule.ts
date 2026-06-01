@@ -22,7 +22,6 @@ export const scheduleRoutes = (router: Router): void => {
     scheduleRouter.get(
         '/:id',
         authMiddlewares.isAuthorized,
-        aclMiddlewares.isAdmin,
         commonValidationMiddleware.validateIdParams,
         scheduleMiddlewares.checkScheduleIdExists,
         scheduleController.getScheduleById,
@@ -31,7 +30,6 @@ export const scheduleRoutes = (router: Router): void => {
     scheduleRouter.get(
         '/',
         authMiddlewares.isAuthorized,
-        aclMiddlewares.isAdmin,
         scheduleController.getAllSchedules,
     )
 

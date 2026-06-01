@@ -26,7 +26,6 @@ export const detailScheduleRoutes = (router: Router): void => {
   detailScheduleRouter.get(
     '/:id',
     authMiddlewares.isAuthorized,
-    aclMiddlewares.isAdmin,
     commonValidationMiddleware.validateIdParams,
     detailScheduleMiddlewares.checkDeatailScheduleIdExists,
     detailScheduleController.getDetailScheduleById,
@@ -35,7 +34,6 @@ export const detailScheduleRoutes = (router: Router): void => {
   detailScheduleRouter.get(
     '/:id/all-detail-schedules',
     authMiddlewares.isAuthorized,
-    aclMiddlewares.isAdmin,
     commonValidationMiddleware.validateIdParams,
     scheduleMiddlewares.checkScheduleIdExists,
     detailScheduleController.getAllDetailSchedules,
