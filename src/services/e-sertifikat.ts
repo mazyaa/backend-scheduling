@@ -393,6 +393,8 @@ export const getAllSertifikat = async (
       : null;
 
     return {
+      id: item.user.id,
+      penilaianId: item.id,
       namaPeserta: item.user.name,
       namaTraining: item.jadwalTraining.training.namaTraining,
       batch: item.jadwalTraining.batch,

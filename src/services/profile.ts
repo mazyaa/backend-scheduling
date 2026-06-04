@@ -13,22 +13,17 @@ export const getProfile = async (userId: string) => {
         name: user.name,
         email: user.email,
         noWa: user.noWa,
-        instansi: user.profilPeserta?.instansi ?? null,
     };
 };
 
 export const updateProfile = async (
     userId: string,
-    payload: { name?: string; noWa?: string; instansi?: string },
+    payload: { name?: string; email?: string; noWa?: string },
 ) => {
-    const { name, noWa, instansi } = payload;
+    const { name, email, noWa } = payload;
 
-    if (name || noWa) {
-        await profileRepository.updateUserProfile(userId, { name, noWa });
-    }
-
-    if (instansi !== undefined) {
-        await profileRepository.updateProfilPeserta(userId, instansi);
+    if (name || email || noWa) {
+        await profileRepository.updateUserProfile(userId, { name, email, noWa });
     }
 
     return await getProfile(userId);

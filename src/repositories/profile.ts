@@ -21,7 +21,7 @@ export const getUserWithProfile = async (userId: string) => {
 
 export const updateUserProfile = async (
     userId: string,
-    data: { name?: string; noWa?: string },
+    data: { name?: string; email?: string; noWa?: string },
 ) => {
     return await prisma.user.update({
         where: { id: userId },
