@@ -2,6 +2,7 @@ import { Router } from 'express';
 import * as profileController from '../controllers/profile';
 import * as aclMiddlewares from '../middlewares/acl';
 import * as authMiddlewares from '../middlewares/auth';
+import * as profileValidationMiddlewares from '../middlewares/validation/profile';
 
 const profileRoutes = (router: Router): void => {
     const profileRouter = Router();
@@ -19,6 +20,7 @@ const profileRoutes = (router: Router): void => {
         '/',
         authMiddlewares.isAuthorized,
         aclMiddlewares.isAdminOrInstrukturOrAsesorOrPeserta,
+        profileValidationMiddlewares.updateProfileValidation,
         profileController.updateProfile,
     );
 
@@ -26,6 +28,7 @@ const profileRoutes = (router: Router): void => {
         '/change-password',
         authMiddlewares.isAuthorized,
         aclMiddlewares.isAdminOrInstrukturOrAsesorOrPeserta,
+        profileValidationMiddlewares.changePasswordValidation,
         profileController.changePassword,
     );
 };

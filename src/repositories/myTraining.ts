@@ -12,9 +12,8 @@ export const getMyTrainingAsPeserta = async (
         include: {
             jadwalTraining: {
                 include: {
-                    training: {
-                        select: { namaTraining: true },
-                    },
+                    training: { select: { namaTraining: true } },
+                    penilaian: { select: { id: true } },
                 },
             },
         },

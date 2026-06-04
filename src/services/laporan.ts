@@ -41,6 +41,7 @@ export const getLaporanSertifikat = async (payload: {
      * Group by jadwalTrainingId
      */
     const grouped: Record<string, {
+        id: string;
         namaTraining: string;
         batch: string;
         totalSertifikat: number;
@@ -52,6 +53,7 @@ export const getLaporanSertifikat = async (payload: {
 
         if (!grouped[key]) {
             grouped[key] = {
+                id: key,
                 namaTraining: jt.training.namaTraining,
                 batch: jt.batch,
                 totalSertifikat: 0,
@@ -128,6 +130,7 @@ export const getLaporanPeserta = async (payload: {
     const totalPages = Math.ceil(total / limit);
 
     const mappedData = data.map((item) => ({
+        id: item.id,
         namaPeserta: item.user.name,
         namaTraining: item.jadwalTraining.training.namaTraining,
         batch: item.jadwalTraining.batch,

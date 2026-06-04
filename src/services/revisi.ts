@@ -215,3 +215,77 @@ export const tolakRevisi = async (penilaianId: string) => {
     status: updated.status,
   };
 };
+
+export const getKompetensiPeserta = async (
+  jadwalTrainingId: string,
+  currentUser: { id: string; role: string },
+  page: number,
+  limit: number,
+  search?: string,
+) => {
+  const skip = (page - 1) * limit;
+
+  const where: any = {
+    jadwalTrainingId,
+  };
+
+  if (currentUser.role === RoleUser.peserta) {
+    where.userId = currentUser.id;
+  }
+
+  if (search?.trim()) {
+    where.user = {
+      name: { contains: search.trim(), mode: 'insensitive' },
+    };
+  }
+
+  const [data, total] = await Promise.all([
+    revisiRepository.getKompetensiPeserta(skip, limit, where),
+    revisiRepository.countKompetensiPeserta(where),
+  ]);
+
+  const totalPages = Math.ceil(total / limit);
+
+  const baseUrl = (process.env.BASE_URL || '').replace(/\/+$/, '');
+
+  const mappedData = data.map((item) => {
+    const hasSertifikat = item.sertifikat.length > 0;
+    const hasRevisiAdmin = !!item.revisiFile?.fileRevisiAdmin;
+    const hasRevisiPeserta = !!item.revisiFile?.fileRevisiPeserta;
+
+    const fileESertifikat = hasSertifikat
+      ? `http://${baseUrl}/e-sertifikat/${item.id}/download`
+      : null;
+
+    const fileRevisi = hasRevisiAdmin
+      ? `http://${baseUrl}/e-sertifikat/${item.id}/revisi/download`
+      : null;
+
+    const fileRevisiPeserta = hasRevisiPeserta
+      ? `http://${baseUrl}/e-sertifikat/${item.id}/revisi-peserta/download`
+      : null;
+
+    return {
+      nama: item.user.name,
+      trainingYangDiikuti: item.jadwalTraining.training.namaTraining,
+      batch: item.jadwalTraining.batch,
+      statusKompetensi: item.statusKompetensi,
+      fileESertifikat,
+      fileRevisi,
+      fileRevisiPeserta,
+      statusRevisi: item.revisiFile?.status ?? null,
+    };
+  });
+
+  return {
+    data: mappedData,
+    pagination: {
+      total,
+      totalPages,
+      currentPage: page,
+      limit,
+      hasNext: page < totalPages,
+      hasPrevious: page > 1,
+    },
+  };
+};

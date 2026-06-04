@@ -101,11 +101,7 @@ export const getAllSertifikat = async (
   take: number,
   search?: string,
 ) => {
-  const where: any = {
-    sertifikat: {
-      some: {},
-    },
-  };
+  const where: any = {};
 
   if (search?.trim()) {
     where.user = {
@@ -119,7 +115,7 @@ export const getAllSertifikat = async (
     where,
     include: {
       user: {
-        select: { name: true, email: true },
+        select: { id:true, name: true, email: true },
       },
       jadwalTraining: {
         include: {
@@ -143,11 +139,7 @@ export const getAllSertifikat = async (
 };
 
 export const countAllSertifikat = async (search?: string): Promise<number> => {
-  const where: any = {
-    sertifikat: {
-      some: {},
-    },
-  };
+  const where: any = {};
 
   if (search?.trim()) {
     where.user = {

@@ -54,3 +54,51 @@ export const updateStatusRevisi = async (
         data: { status },
     });
 };
+
+export const getKompetensiPeserta = async (
+    skip: number,
+    take: number,
+    where: any,
+) => {
+    return await prisma.penilaian.findMany({
+        skip,
+        take,
+        where,
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                },
+            },
+            jadwalTraining: {
+                include: {
+                    training: {
+                        select: {
+                            namaTraining: true,
+                        },
+                    },
+                },
+            },
+            revisiFile: {
+                select: {
+                    fileRevisiAdmin: true,
+                    fileRevisiPeserta: true,
+                    status: true,
+                },
+            },
+            sertifikat: {
+                select: {
+                    id: true,
+                    fileSertifikat: true,
+                },
+            },
+        },
+        orderBy: { createdAt: 'desc' },
+    });
+};
+
+export const countKompetensiPeserta = async (where: any): Promise<number> => {
+    return await prisma.penilaian.count({ where });
+};
