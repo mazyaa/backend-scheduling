@@ -5,12 +5,13 @@ export const getMyStatus = async (
     userId: string,
     page: number,
     limit: number,
+    search?: string,
 ) => {
     const skip = (page - 1) * limit;
 
     const [data, total] = await Promise.all([
-        penilaianRepository.getPenilaianByUserId(userId, skip, limit),
-        penilaianRepository.countPenilaianByUserId(userId),
+        penilaianRepository.getPenilaianByUserId(userId, skip, limit, search),
+        penilaianRepository.countPenilaianByUserId(userId, search),
     ]);
 
     const totalPages = Math.ceil(total / limit);
@@ -32,6 +33,7 @@ export const getMyStatus = async (
             : null;
 
         return {
+            penilaianId: item.id,
             nama: item.user.name,
             training: item.jadwalTraining.training.namaTraining,
             batch: item.jadwalTraining.batch,

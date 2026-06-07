@@ -67,24 +67,4 @@ export const tolakRevisi = async (req: Request, res: Response): Promise<void> =>
     });
 };
 
-export const getKompetensiPeserta = async (req: Request, res: Response): Promise<void> => {
-    const { jadwalTrainingId } = req.params;
-    const currentUser = res.locals.currentUserLogin as IUserWithoutPassword;
-    const page = Math.max(Number(req.query.page) || 1, 1);
-    const limit = Math.max(Number(req.query.limit) || 10, 1);
-    const search = (req.query.search?.toString().trim() as string) || undefined;
 
-    const result = await revisiService.getKompetensiPeserta(
-        jadwalTrainingId,
-        currentUser,
-        page,
-        limit,
-        search,
-    );
-
-    res.status(200).json({
-        message: 'Status kompetensi retrieved successfully!',
-        data: result.data,
-        pagination: result.pagination,
-    });
-};

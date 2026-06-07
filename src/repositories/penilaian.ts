@@ -4,11 +4,20 @@ export const getPenilaianByUserId = async (
     userId: string,
     skip: number,
     take: number,
+    search?: string,
 ) => {
+    const where: any = { userId };
+
+    if (search?.trim()) {
+        where.user = {
+            name: { contains: search.trim(), mode: 'insensitive' },
+        };
+    }
+
     return await prisma.penilaian.findMany({
         skip,
         take,
-        where: { userId },
+        where,
         include: {
             user: {
                 select: { name: true, email: true },
@@ -37,10 +46,19 @@ export const getPenilaianByUserId = async (
     });
 };
 
-export const countPenilaianByUserId = async (userId: string): Promise<number> => {
-    return await prisma.penilaian.count({
-        where: { userId },
-    });
+export const countPenilaianByUserId = async (
+    userId: string,
+    search?: string,
+): Promise<number> => {
+    const where: any = { userId };
+
+    if (search?.trim()) {
+        where.user = {
+            name: { contains: search.trim(), mode: 'insensitive' },
+        };
+    }
+
+    return await prisma.penilaian.count({ where });
 };
 
 export const getPenilaianByJadwalTrainingId = async (

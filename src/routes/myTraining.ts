@@ -28,6 +28,13 @@ const myTrainingRoutes = (router: Router): void => {
         aclMiddlewares.isPesertaOrInstrukturOrAsesor,
         myTrainingController.getSesiDetail,
     );
+
+    myTrainingRouter.get(
+        '/:jadwalTrainingId/participants',
+        authMiddlewares.isAuthorized,
+        aclMiddlewares.isInstrukturOrAsesor,
+        myTrainingController.getParticipants,
+    );
 };
 
 export default myTrainingRoutes;
