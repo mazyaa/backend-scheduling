@@ -10,14 +10,6 @@ const revisiRoutes = (router: Router): void => {
 
     router.use('/e-sertifikat', revisiRouter);
 
-    revisiRouter.get(
-        '/:jadwalTrainingId/kompetensi',
-        authMiddlewares.isAuthorized,
-        aclMiddlewares.isAdminOrInstrukturOrAsesorOrPeserta,
-        eSertifikatValidationMiddlewares.validatePenilaianIdParams,
-        revisiController.getKompetensiPeserta,
-    );
-
     revisiRouter.put(
         '/:penilaianId/revisi',
         authMiddlewares.isAuthorized,

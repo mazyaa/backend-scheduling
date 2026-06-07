@@ -6,7 +6,7 @@ const updateProfileSchema = Joi.object({
     name: Joi.string().max(150).optional(),
     email: Joi.string().email().max(150).optional(),
     noWa: Joi.string()
-        .pattern(/^(?:\+62|62|0)8[1-9][0-9]{6,}$/)
+        .pattern(/^(?:\+62|62|0)[1-9][0-9]{6,}$/)
         .max(20)
         .optional(),
 });
