@@ -125,6 +125,16 @@ export const uploadRevisiPeserta = async (
 
   const filePath = `uploads/revisi/${penilaianId}/${file.filename}`;
 
+  const existingRevisi =
+    await revisiRepository.getRevisiByPenilaianId(penilaianId);
+
+  if (existingRevisi?.fileRevisiPeserta) {
+    const oldFilePath = path.join(process.cwd(), existingRevisi.fileRevisiPeserta);
+    if (fs.existsSync(oldFilePath)) {
+      fs.unlinkSync(oldFilePath);
+    }
+  }
+
   const updated = await revisiRepository.updateRevisiPeserta(penilaianId, filePath);
 
   return {
@@ -147,6 +157,7 @@ export const downloadRevisiPesertaFile = async (
 
   if (
     currentUser.role !== RoleUser.admin &&
+    currentUser.role !== RoleUser.asesor &&
     assesment.userId !== currentUser.id
   ) {
     throw new HttpError(

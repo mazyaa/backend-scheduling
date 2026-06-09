@@ -18,11 +18,12 @@ export const getMyStatus = async (req: Request, res: Response): Promise<void> =>
 };
 
 export const getAllPenilaian = async (req: Request, res: Response): Promise<void> => {
+    const currentUser = res.locals.currentUserLogin as IUserWithoutPassword;
     const page = Math.max(Number(req.query.page) || 1, 1);
     const limit = Math.max(Number(req.query.limit) || 10, 1);
     const search = (req.query.search?.toString().trim() as string) || undefined;
 
-    const result = await penilaianService.getAllPenilaian(page, limit, search);
+    const result = await penilaianService.getAllPenilaian(page, limit, search, currentUser.id, currentUser.role);
 
     res.status(200).json({
         message: 'All penilaian retrieved successfully!',

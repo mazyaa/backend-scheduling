@@ -51,7 +51,7 @@ export const updateSessionDetailSchedule = async (
         jamSelesai: toTimeDate(payload.jamSelesai),
       }),
       ...(payload?.aktivitas && { aktivitas: payload.aktivitas }),
-      ...(payload?.pic && { pic: payload.pic }),
+      ...(payload?.pic ? null : { pic: payload.pic }),
     },
   });
 };

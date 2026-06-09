@@ -88,6 +88,7 @@ export const getPenilaianPeserta = async (
         statusKompetensi: item.statusKompetensi,
         catatan: item.catatan,
         fileRevisiAdmin: item.revisiFile?.fileRevisiAdmin ?? null,
+        fileRevisiPeserta: item.revisiFile?.fileRevisiPeserta ?? null,
         statusRevisi: item.revisiFile?.status ?? null,
         penilaianId: item.id,
     }));
@@ -109,12 +110,14 @@ export const getAllPenilaian = async (
     page: number,
     limit: number,
     search?: string,
+    currentUserId?: string,
+    currentUserRole?: string,
 ) => {
     const skip = (page - 1) * limit;
 
     const [data, total] = await Promise.all([
-        penilaianRepository.getAllPenilaian(skip, limit, search),
-        penilaianRepository.countAllPenilaian(search),
+        penilaianRepository.getAllPenilaian(skip, limit, search, currentUserId, currentUserRole),
+        penilaianRepository.countAllPenilaian(search, currentUserId, currentUserRole),
     ]);
 
     const totalPages = Math.ceil(total / limit);
@@ -126,6 +129,7 @@ export const getAllPenilaian = async (
         statusKompetensi: item.statusKompetensi,
         catatan: item.catatan,
         fileRevisiAdmin: item.revisiFile?.fileRevisiAdmin ?? null,
+        fileRevisiPeserta: item.revisiFile?.fileRevisiPeserta ?? null,
         statusRevisi: item.revisiFile?.status ?? null,
         penilaianId: item.id,
     }));

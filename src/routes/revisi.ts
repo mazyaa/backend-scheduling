@@ -39,7 +39,7 @@ const revisiRoutes = (router: Router): void => {
     revisiRouter.get(
         '/:penilaianId/revisi-peserta/download',
         authMiddlewares.isAuthorized,
-        aclMiddlewares.isAdminOrPeserta,
+        aclMiddlewares.isAdminOrPesertaOrAsesor,
         eSertifikatValidationMiddlewares.validatePenilaianIdParams,
         revisiController.downloadRevisiPesertaFile,
     );

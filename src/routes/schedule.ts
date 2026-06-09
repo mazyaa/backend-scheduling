@@ -20,6 +20,13 @@ export const scheduleRoutes = (router: Router): void => {
     );
 
     scheduleRouter.get(
+        '/my-schedules',
+        authMiddlewares.isAuthorized,
+        aclMiddlewares.isInstrukturOrAsesor,
+        scheduleController.getSchedulesForInstruktur,
+    );
+
+    scheduleRouter.get(
         '/:id',
         authMiddlewares.isAuthorized,
         commonValidationMiddleware.validateIdParams,

@@ -137,3 +137,18 @@ export const deleteSchedule = async (id: string) => {
 
   return deletedSchedule;
 };
+
+export const getSchedulesForInstruktur = async (userId: string, role: string) => {
+  const schedules = role === 'asesor'
+    ? await scheduleRepository.getSchedulesByAsesorId(userId)
+    : await scheduleRepository.getSchedulesByInstrukturId(userId);
+
+  if (!schedules.length) {
+    throw new HttpError('Tidak ada jadwal yang ditemukan untuk instruktur ini.', 404);
+  }
+
+  return schedules.map((s: any) => ({
+    value: s.id,
+    label: `${s.namaTraining} - ${s.batch}`,
+  }));
+};
