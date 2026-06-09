@@ -107,12 +107,22 @@ export const getAllPenilaian = async (
     skip: number,
     take: number,
     search?: string,
+    userId?: string,
+    userRole?: string,
 ) => {
     const where: any = {};
 
     if (search?.trim()) {
         where.user = {
             name: { contains: search.trim(), mode: 'insensitive' },
+        };
+    }
+
+    if (userRole === 'asesor' && userId) {
+        where.jadwalTraining = {
+            detailJadwal: {
+                some: { asesorId: userId },
+            },
         };
     }
 
@@ -145,12 +155,24 @@ export const getAllPenilaian = async (
     });
 };
 
-export const countAllPenilaian = async (search?: string): Promise<number> => {
+export const countAllPenilaian = async (
+    search?: string,
+    userId?: string,
+    userRole?: string,
+): Promise<number> => {
     const where: any = {};
 
     if (search?.trim()) {
         where.user = {
             name: { contains: search.trim(), mode: 'insensitive' },
+        };
+    }
+
+    if (userRole === 'asesor' && userId) {
+        where.jadwalTraining = {
+            detailJadwal: {
+                some: { asesorId: userId },
+            },
         };
     }
 

@@ -186,16 +186,25 @@ export const deleteMateri = async (id: string): Promise<IMateri> => {
 };
 
 export const getAllMateri = async (
-  payload: IPaginationQuery,
+  currentUserId: string,
+  currentUserRole: string,
+  page: number,
+  limit: number,
+  search?: string,
 ): Promise<{
   data: any[];
   pagination: IResultPagination;
 }> => {
-  const { page, limit, search } = payload;
 
   const skip = (page - 1) * limit;
 
   const where: any = {};
+
+  if (currentUserRole === 'instruktur') {
+    where.detailJadwalTraining = { instrukturId: currentUserId };
+  } else if (currentUserRole === 'asesor') {
+    where.detailJadwalTraining = { asesorId: currentUserId };
+  }
 
   if (search?.trim()) {
     where.judul = {
@@ -334,12 +343,15 @@ export const downloadMateri = async (
 };
 
 export const getMyMateri = async (
-  payload: IPaginationQuery,
+  currentUserId: string,
+  currentUserRole: string,
+  page: number,
+  limit: number,
+  search?: string,
 ): Promise<{
   data: any[];
   pagination: IResultPagination;
 }> => {
-  const { page, limit, search } = payload;
 
   const skip = (page - 1) * limit;
 
@@ -349,6 +361,18 @@ export const getMyMateri = async (
     where.judul = {
       contains: search.trim(),
       mode: 'insensitive',
+    };
+  }
+
+  if (currentUserRole === 'instruktur') {
+    where.detailJadwalTraining = { instrukturId: currentUserId };
+  } else if (currentUserRole === 'asesor') {
+    where.detailJadwalTraining = { asesorId: currentUserId };
+  } else if (currentUserRole === 'peserta') {
+    where.detailJadwalTraining = {
+      jadwalTraining: {
+        pesertaTraining: { some: { userId: currentUserId } },
+      },
     };
   }
 

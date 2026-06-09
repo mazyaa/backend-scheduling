@@ -21,7 +21,7 @@ const materiRoutes = (router: Router): void => {
     materiRouter.get(
         '/my-materi',
         authMiddlewares.isAuthorized,
-        aclMiddlewares.isPeserta,
+        aclMiddlewares.isAdminOrInstrukturOrAsesorOrPeserta,
         materiController.getMyMateri,
     );
 

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ICreateSchedule } from "../utils/interfaces";
+import { ICreateSchedule, IUserWithoutPassword } from "../utils/interfaces";
 import * as scheduleServices from "../services/schedule";
 
 export const createSchedule = async (req: Request, res: Response): Promise<void> => {
@@ -64,4 +64,15 @@ export const deleteSchedule = async (req: Request, res: Response): Promise<void>
         message: "Schedule deleted successfully",
         data: result,
     })
+}
+
+export const getSchedulesForInstruktur = async (req: Request, res: Response): Promise<void> => {
+    const currentUser = res.locals.currentUserLogin as IUserWithoutPassword;
+
+    const result = await scheduleServices.getSchedulesForInstruktur(currentUser.id, currentUser.role);
+
+    res.status(200).json({
+        message: 'Schedules for instruktur retrieved successfully!',
+        data: result,
+    });
 }

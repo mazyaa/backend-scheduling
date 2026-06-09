@@ -14,15 +14,18 @@ export const getMateriById = async (req: Request, res: Response): Promise<void> 
 }
 
 export const getAllMateri = async (req: Request, res: Response): Promise<void> => {
+    const currentUser = res.locals.currentUserLogin as IUserWithoutPassword;
     const page = Math.max(Number(req.query.page) || 1, 1);
     const limit = Math.max(Number(req.query.limit) || 10, 1);
     const search = (req.query.search?.toString().trim() as string) || undefined;
 
-    const result = await materiServices.getAllMateri({
+    const result = await materiServices.getAllMateri(
+        currentUser.id,
+        currentUser.role,
         page,
         limit,
         search,
-    });
+    );
 
     res.status(200).json({
         message: 'Materi retrieved successfully!',
@@ -80,15 +83,18 @@ export const downloadMateri = async (req: Request, res: Response): Promise<void>
 }
 
 export const getMyMateri = async (req: Request, res: Response): Promise<void> => {
+    const currentUser = res.locals.currentUserLogin as IUserWithoutPassword;
     const page = Math.max(Number(req.query.page) || 1, 1);
     const limit = Math.max(Number(req.query.limit) || 10, 1);
     const search = (req.query.search?.toString().trim() as string) || undefined;
 
-    const result = await materiServices.getMyMateri({
+    const result = await materiServices.getMyMateri(
+        currentUser.id,
+        currentUser.role,
         page,
         limit,
         search,
-    });
+    );
 
     res.status(200).json({
         message: 'Materi retrieved successfully!',

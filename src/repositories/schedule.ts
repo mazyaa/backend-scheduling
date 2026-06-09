@@ -95,3 +95,49 @@ export const checkConflictSchedule = async (trainingId: string, batch: string) =
         }
     });
 }
+
+export const getSchedulesByInstrukturId = async (userId: string) => {
+    const details = await prisma.detailJadwalTraining.findMany({
+        where: { instrukturId: userId },
+        select: {
+            jadwalTraining: {
+                include: {
+                    training: { select: { namaTraining: true } },
+                },
+            },
+        },
+    });
+
+    const unique = new Map<string, any>();
+    for (const d of details) {
+        const jt = d.jadwalTraining;
+        if (!unique.has(jt.id)) {
+            unique.set(jt.id, { id: jt.id, namaTraining: jt.training.namaTraining, batch: jt.batch });
+        }
+    }
+
+    return Array.from(unique.values());
+};
+
+export const getSchedulesByAsesorId = async (userId: string) => {
+    const details = await prisma.detailJadwalTraining.findMany({
+        where: { asesorId: userId },
+        select: {
+            jadwalTraining: {
+                include: {
+                    training: { select: { namaTraining: true } },
+                },
+            },
+        },
+    });
+
+    const unique = new Map<string, any>();
+    for (const d of details) {
+        const jt = d.jadwalTraining;
+        if (!unique.has(jt.id)) {
+            unique.set(jt.id, { id: jt.id, namaTraining: jt.training.namaTraining, batch: jt.batch });
+        }
+    }
+
+    return Array.from(unique.values());
+};
