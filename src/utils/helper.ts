@@ -58,3 +58,9 @@ export const toMinutes = (time: string): number => {
   const [h, m] = time.split(":").map(Number);
   return h * 60 + m;
 };
+
+export const calculateEndDate = (startDate: Date, duration: number): string => {
+  const end = new Date(startDate);
+  end.setDate(end.getDate() + duration - 1);
+  return end.toISOString().split('T')[0];
+};

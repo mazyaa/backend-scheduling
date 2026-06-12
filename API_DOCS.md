@@ -391,14 +391,119 @@ Base URL: `https://api.example.com`
 
 ## Laporan
 
-### 68. Get All Laporan
-**GET** `/api/laporan`
+### 68. Laporan Sertifikat
+**GET** `/api/laporan/sertifikat`
 
-### 69. Generate Laporan
-**POST** `/api/laporan/generate`
+**Headers:** `Authorization: Bearer {token}`
 
-### 70. Export Laporan
-**GET** `/api/laporan/export/{type}`
+**Roles:** `admin`, `direktur`
+
+**Query Parameters:**
+- `page` (int, default: 1)
+- `limit` (int, default: 10)
+- `search` (string, optional) — filter by nama training
+- `batch` (string, optional) — filter by batch name
+- `tahun` (int, optional) — filter by year of `startDate` (e.g. `2025`)
+
+**Response:**
+```json
+{
+  "message": "Laporan sertifikat retrieved successfully!",
+  "data": [
+    {
+      "id": "uuid-jadwal-training",
+      "namaTraining": "Pelatihan Kepemimpinan",
+      "batch": "Batch 3",
+      "startDate": "2025-01-15",
+      "endDate": "2025-01-17",
+      "totalPeserta": 20,
+      "totalSertifikatTerbit": 18,
+      "totalBelumTerbit": 2,
+      "peserta": [
+        {
+          "namaPeserta": "John Doe",
+          "email": "john@example.com",
+          "statusKompetensi": "kompeten",
+          "nomorSertifikat": "001/e/Sertifikat/PK/I/2025",
+          "fileSertifikat": "https://base-url/uploads/sertifikat/.../file.pdf",
+          "statusRevisi": "disetujui"
+        },
+        {
+          "namaPeserta": "Jane Smith",
+          "email": "jane@example.com",
+          "statusKompetensi": "belum_kompeten",
+          "nomorSertifikat": null,
+          "fileSertifikat": null,
+          "statusRevisi": "pending"
+        }
+      ]
+    }
+  ],
+  "pagination": {
+    "total": 5,
+    "totalPages": 1,
+    "currentPage": 1,
+    "limit": 10,
+    "hasNext": false,
+    "hasPrevious": false
+  }
+}
+```
+
+### 69. Laporan Peserta
+**GET** `/api/laporan/peserta`
+
+**Headers:** `Authorization: Bearer {token}`
+
+**Roles:** `admin`, `direktur`
+
+**Query Parameters:**
+- `page` (int, default: 1)
+- `limit` (int, default: 10)
+- `search` (string, optional) — filter by nama peserta
+- `batch` (string, optional) — filter by batch name
+- `status` (string, optional) — filter by status kompetensi (`kompeten` / `belum_kompeten`)
+- `tahun` (int, optional) — filter by year of `startDate` (e.g. `2025`)
+
+**Response:**
+```json
+{
+  "message": "Laporan peserta retrieved successfully!",
+  "data": [
+    {
+      "id": "uuid-penilaian",
+      "namaPeserta": "John Doe",
+      "email": "john@example.com",
+      "noWa": "081234567890",
+      "instansi": "PT Maju Jaya",
+      "namaTraining": "Pelatihan Kepemimpinan",
+      "batch": "Batch 3",
+      "startDate": "2025-01-15",
+      "endDate": "2025-01-17",
+      "statusKompetensi": "kompeten",
+      "catatan": "Peserta aktif dan menguasai materi",
+      "statusRevisi": "disetujui",
+      "createdAt": "2025-01-20T10:00:00.000Z",
+      "sertifikat": [
+        {
+          "nomorSertifikat": "001/e/Sertifikat/PK/I/2025",
+          "fileSertifikat": "https://base-url/uploads/sertifikat/.../file.pdf",
+          "judulMateri": "Kepemimpinan Dasar",
+          "createdAt": "2025-01-25T10:00:00.000Z"
+        }
+      ]
+    }
+  ],
+  "pagination": {
+    "total": 50,
+    "totalPages": 5,
+    "currentPage": 1,
+    "limit": 10,
+    "hasNext": true,
+    "hasPrevious": false
+  }
+}
+```
 
 ---
 

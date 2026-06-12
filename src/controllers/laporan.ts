@@ -6,12 +6,14 @@ export const getLaporanSertifikat = async (req: Request, res: Response): Promise
     const limit = Math.max(Number(req.query.limit) || 10, 1);
     const search = (req.query.search?.toString().trim() as string) || undefined;
     const batch = (req.query.batch?.toString().trim() as string) || undefined;
+    const tahun = req.query.tahun ? Number(req.query.tahun) : undefined;
 
     const result = await laporanService.getLaporanSertifikat({
         page,
         limit,
         search,
         batch,
+        tahun,
     });
 
     res.status(200).json({
@@ -27,6 +29,7 @@ export const getLaporanPeserta = async (req: Request, res: Response): Promise<vo
     const search = (req.query.search?.toString().trim() as string) || undefined;
     const batch = (req.query.batch?.toString().trim() as string) || undefined;
     const status = (req.query.status?.toString().trim() as string) || undefined;
+    const tahun = req.query.tahun ? Number(req.query.tahun) : undefined;
 
     const result = await laporanService.getLaporanPeserta({
         page,
@@ -34,6 +37,7 @@ export const getLaporanPeserta = async (req: Request, res: Response): Promise<vo
         search,
         batch,
         status,
+        tahun,
     });
 
     res.status(200).json({
