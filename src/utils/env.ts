@@ -35,3 +35,7 @@ export const JWT_SECRET: string = process.env.JWT_SECRET || '';
 export const CLOUDINARY_CLOUD_NAME: string = process.env.CLOUDINARY_CLOUD_NAME || '';
 export const CLOUDINARY_API_KEY: string = process.env.CLOUDINARY_API_KEY || '';
 export const CLOUDINARY_API_SECRET: string = process.env.CLOUDINARY_API_SECRET || '';
+
+// Seed data
+export const SEED_DOMAIN: string = process.env.SEED_DOMAIN || '@example.com';
+export const SEED_PASSWORD: string = process.env.SEED_PASSWORD || 'password123';
