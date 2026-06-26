@@ -31,7 +31,8 @@ export const login = async (payload: Ilogin): Promise<IResultLogin> => {
     }
 
     const token = generateToken({
-        userId: user.id
+        userId: user.id,
+        role: user.role
     }, TOKEN_EXPIRATION_TIME.AUTH);
 
     return {
