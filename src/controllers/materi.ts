@@ -18,6 +18,7 @@ export const getAllMateri = async (req: Request, res: Response): Promise<void> =
     const page = Math.max(Number(req.query.page) || 1, 1);
     const limit = Math.max(Number(req.query.limit) || 10, 1);
     const search = (req.query.search?.toString().trim() as string) || undefined;
+    const scheduleId = (req.query.scheduleId?.toString().trim() as string) || undefined;
 
     const result = await materiServices.getAllMateri(
         currentUser.id,
@@ -25,6 +26,7 @@ export const getAllMateri = async (req: Request, res: Response): Promise<void> =
         page,
         limit,
         search,
+        scheduleId,
     );
 
     res.status(200).json({
@@ -87,6 +89,7 @@ export const getMyMateri = async (req: Request, res: Response): Promise<void> =>
     const page = Math.max(Number(req.query.page) || 1, 1);
     const limit = Math.max(Number(req.query.limit) || 10, 1);
     const search = (req.query.search?.toString().trim() as string) || undefined;
+    const scheduleId = (req.query.scheduleId?.toString().trim() as string) || undefined;
 
     const result = await materiServices.getMyMateri(
         currentUser.id,
@@ -94,6 +97,7 @@ export const getMyMateri = async (req: Request, res: Response): Promise<void> =>
         page,
         limit,
         search,
+        scheduleId,
     );
 
     res.status(200).json({

@@ -7,6 +7,7 @@ export const getLaporanSertifikat = async (req: Request, res: Response): Promise
     const search = (req.query.search?.toString().trim() as string) || undefined;
     const batch = (req.query.batch?.toString().trim() as string) || undefined;
     const tahun = req.query.tahun ? Number(req.query.tahun) : undefined;
+    const scheduleId = (req.query.scheduleId?.toString().trim() as string) || undefined;
 
     const result = await laporanService.getLaporanSertifikat({
         page,
@@ -14,6 +15,7 @@ export const getLaporanSertifikat = async (req: Request, res: Response): Promise
         search,
         batch,
         tahun,
+        scheduleId,
     });
 
     res.status(200).json({
@@ -30,6 +32,7 @@ export const getLaporanPeserta = async (req: Request, res: Response): Promise<vo
     const batch = (req.query.batch?.toString().trim() as string) || undefined;
     const status = (req.query.status?.toString().trim() as string) || undefined;
     const tahun = req.query.tahun ? Number(req.query.tahun) : undefined;
+    const scheduleId = (req.query.scheduleId?.toString().trim() as string) || undefined;
 
     const result = await laporanService.getLaporanPeserta({
         page,
@@ -38,6 +41,7 @@ export const getLaporanPeserta = async (req: Request, res: Response): Promise<vo
         batch,
         status,
         tahun,
+        scheduleId,
     });
 
     res.status(200).json({

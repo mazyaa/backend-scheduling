@@ -1,33 +1,34 @@
 import { participantImportHelper } from './participantImportHelper';
 
-export const IMPORT_HEADERS = {
-  EMAIL: 'Email Address',
-  NAMA_LENGKAP: 'Nama Lengkap',
-  NO_HP: 'No HP',
-  INSTANSI: 'Perusahaan/Instansi/Umum',
-  CV: 'CV',
-  IJAZAH: 'Scan Ijazah Terakhir (Min SMA/SMK/Sederajat)',
-  SURAT_REKOMENDASI: 'Surat Rekomendasi dari Perusahaan (Jika ada)',
-  KTP: 'Scan KTP',
-  FOTO: 'Foto Background Merah',
-  BUKTI_BAYAR: 'Bukti pembayaran',
-  BUKTI_FOLLOW: 'Bukti Follow IG @veritrustacademy',
-} as const;
+function findColumnValue(row: Record<string, any>, keywords: string[]): string | null {
+  const headerKeys = Object.keys(row);
+  for (const keyword of keywords) {
+    const match = headerKeys.find((key) =>
+      key.toLowerCase().includes(keyword.toLowerCase()),
+    );
+    if (match) {
+      return row[match]?.toString().trim() ?? null;
+    }
+  }
+  return null;
+}
 
 export function mapRowToPayload(row: Record<string, any>, rowNumber: number) {
   const payload = {
     _rowNumber: rowNumber,
-    email: row[IMPORT_HEADERS.EMAIL]?.toString().trim() ?? null,
-    name: row[IMPORT_HEADERS.NAMA_LENGKAP]?.toString().trim() ?? null,
-    noWa: participantImportHelper.sanitizeNoWa(row[IMPORT_HEADERS.NO_HP]?.toString().trim()),
-    instansi: row[IMPORT_HEADERS.INSTANSI]?.toString().trim() ?? null,
-    fileCv: row[IMPORT_HEADERS.CV]?.toString().trim() ?? null,
-    fileIjazah: row[IMPORT_HEADERS.IJAZAH]?.toString().trim() ?? null,
-    fileSuratRekomendasi: row[IMPORT_HEADERS.SURAT_REKOMENDASI]?.toString().trim() ?? null,
-    fileKtp: row[IMPORT_HEADERS.KTP]?.toString().trim() ?? null,
-    fileFoto: row[IMPORT_HEADERS.FOTO]?.toString().trim() ?? null,
-    fileBuktiBayar: row[IMPORT_HEADERS.BUKTI_BAYAR]?.toString().trim() ?? null,
-    fileBuktiFollow: row[IMPORT_HEADERS.BUKTI_FOLLOW]?.toString().trim() ?? null,
+    email: findColumnValue(row, ['email']),
+    name: findColumnValue(row, ['nama lengkap', 'nama']),
+    noWa: participantImportHelper.sanitizeNoWa(
+      findColumnValue(row, ['no hp', 'no_wa', 'no wa', 'nomor hp', 'nomor telepon', 'telepon', 'hp']),
+    ),
+    instansi: findColumnValue(row, ['perusahaan', 'instansi', 'umum']),
+    fileCv: findColumnValue(row, ['cv']),
+    fileIjazah: findColumnValue(row, ['ijazah']),
+    fileSuratRekomendasi: findColumnValue(row, ['rekomendasi']),
+    fileKtp: findColumnValue(row, ['scan ktp', 'ktp']),
+    fileFoto: findColumnValue(row, ['foto background', 'background merah', 'foto']),
+    fileBuktiBayar: findColumnValue(row, ['bukti pembayaran', 'pembayaran', 'bayar']),
+    fileBuktiFollow: findColumnValue(row, ['follow ig', 'follow @', 'bukti follow', 'ig']),
   };
 
   const isEmpty = participantImportHelper.isRowEmpty(payload);

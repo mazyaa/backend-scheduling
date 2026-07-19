@@ -191,6 +191,7 @@ export const getAllMateri = async (
   page: number,
   limit: number,
   search?: string,
+  scheduleId?: string,
 ): Promise<{
   data: any[];
   pagination: IResultPagination;
@@ -201,9 +202,30 @@ export const getAllMateri = async (
   const where: any = {};
 
   if (currentUserRole === 'instruktur') {
-    where.detailJadwalTraining = { instrukturId: currentUserId };
+    where.OR = [
+      { detailJadwalTraining: { instrukturId: currentUserId } },
+      { diuploadOleh: currentUserId },
+    ];
   } else if (currentUserRole === 'asesor') {
-    where.detailJadwalTraining = { asesorId: currentUserId };
+    where.OR = [
+      { detailJadwalTraining: { asesorId: currentUserId } },
+      { diuploadOleh: currentUserId },
+    ];
+  }
+
+  if (scheduleId?.trim()) {
+    const jadwalFilter = { jadwalTrainingId: scheduleId.trim() };
+    if (where.OR) {
+      where.OR = where.OR.map((branch: any) => ({
+        ...branch,
+        detailJadwalTraining: {
+          ...(branch.detailJadwalTraining || {}),
+          ...jadwalFilter,
+        },
+      }));
+    } else {
+      where.detailJadwalTraining = jadwalFilter;
+    }
   }
 
   if (search?.trim()) {
@@ -348,6 +370,7 @@ export const getMyMateri = async (
   page: number,
   limit: number,
   search?: string,
+  scheduleId?: string,
 ): Promise<{
   data: any[];
   pagination: IResultPagination;
@@ -365,15 +388,39 @@ export const getMyMateri = async (
   }
 
   if (currentUserRole === 'instruktur') {
-    where.detailJadwalTraining = { instrukturId: currentUserId };
+    where.OR = [
+      { detailJadwalTraining: { instrukturId: currentUserId } },
+      { diuploadOleh: currentUserId },
+    ];
   } else if (currentUserRole === 'asesor') {
-    where.detailJadwalTraining = { asesorId: currentUserId };
+    where.OR = [
+      { detailJadwalTraining: { asesorId: currentUserId } },
+      { diuploadOleh: currentUserId },
+    ];
   } else if (currentUserRole === 'peserta') {
     where.detailJadwalTraining = {
       jadwalTraining: {
         pesertaTraining: { some: { userId: currentUserId } },
       },
     };
+  }
+
+  if (scheduleId?.trim()) {
+    const jadwalFilter = { jadwalTrainingId: scheduleId.trim() };
+    if (where.OR) {
+      where.OR = where.OR.map((branch: any) => ({
+        ...branch,
+        detailJadwalTraining: {
+          ...(branch.detailJadwalTraining || {}),
+          ...jadwalFilter,
+        },
+      }));
+    } else {
+      where.detailJadwalTraining = {
+        ...where.detailJadwalTraining,
+        ...jadwalFilter,
+      };
+    }
   }
 
   const [data, total] = await Promise.all([

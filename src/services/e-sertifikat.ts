@@ -368,12 +368,13 @@ export const getAllSertifikat = async (
   page: number,
   limit: number,
   search?: string,
+  scheduleId?: string,
 ) => {
   const skip = (page - 1) * limit;
 
   const [data, total] = await Promise.all([
-    eSertifikatRepository.getAllSertifikat(skip, limit, search),
-    eSertifikatRepository.countAllSertifikat(search),
+    eSertifikatRepository.getAllSertifikat(skip, limit, search, scheduleId),
+    eSertifikatRepository.countAllSertifikat(search, scheduleId),
   ]);
 
   const totalPages = Math.ceil(total / limit);

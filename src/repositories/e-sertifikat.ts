@@ -100,6 +100,7 @@ export const getAllSertifikat = async (
   skip: number,
   take: number,
   search?: string,
+  scheduleId?: string,
 ) => {
   const where: any = {};
 
@@ -107,6 +108,10 @@ export const getAllSertifikat = async (
     where.user = {
       name: { contains: search.trim(), mode: 'insensitive' },
     };
+  }
+
+  if (scheduleId?.trim()) {
+    where.jadwalTrainingId = scheduleId.trim();
   }
 
   return await prisma.penilaian.findMany({
@@ -138,13 +143,17 @@ export const getAllSertifikat = async (
   });
 };
 
-export const countAllSertifikat = async (search?: string): Promise<number> => {
+export const countAllSertifikat = async (search?: string, scheduleId?: string): Promise<number> => {
   const where: any = {};
 
   if (search?.trim()) {
     where.user = {
       name: { contains: search.trim(), mode: 'insensitive' },
     };
+  }
+
+  if (scheduleId?.trim()) {
+    where.jadwalTrainingId = scheduleId.trim();
   }
 
   return await prisma.penilaian.count({

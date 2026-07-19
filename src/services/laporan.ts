@@ -7,10 +7,15 @@ export const getLaporanSertifikat = async (payload: {
   search?: string;
   batch?: string;
   tahun?: number;
+  scheduleId?: string;
 }) => {
-  const { page, limit, search, batch, tahun } = payload;
+  const { page, limit, search, batch, tahun, scheduleId } = payload;
 
   const where: any = {};
+
+  if (scheduleId?.trim()) {
+    where.jadwalTrainingId = scheduleId.trim();
+  }
 
   if (search?.trim() || batch?.trim() || tahun) {
     where.jadwalTraining = {};
@@ -101,10 +106,15 @@ export const getLaporanPeserta = async (payload: {
   batch?: string;
   status?: string;
   tahun?: number;
+  scheduleId?: string;
 }) => {
-  const { page, limit, search, batch, status, tahun } = payload;
+  const { page, limit, search, batch, status, tahun, scheduleId } = payload;
 
   const where: any = {};
+
+  if (scheduleId?.trim()) {
+    where.jadwalTrainingId = scheduleId.trim();
+  }
 
   if (search?.trim()) {
     where.user = {

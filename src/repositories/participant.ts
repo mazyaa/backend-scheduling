@@ -50,7 +50,11 @@ export const getAllParticipant = async (params: IPagination) => {
         include: { 
             pesertaTraining: {
                 include: {
-                    jadwalTraining: true
+                    jadwalTraining: {
+                        include: {
+                            training: true
+                        }
+                    }
                 }
             },
              profilPeserta: true
