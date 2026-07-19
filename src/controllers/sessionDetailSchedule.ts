@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import * as sessionDetailScheduleService from '../services/sessionDetailSchedule';
-import { ISessionDetailSchedule } from '../utils/interfaces';
+import { ICreateSessionDetailSchedule, ISessionDetailSchedule } from '../utils/interfaces';
 
 export const generateSessionDetailSchedules = async (_req: Request, res: Response) => {
     const detailScheduleId = res.locals.detailSchedule.id;
@@ -13,7 +13,7 @@ export const generateSessionDetailSchedules = async (_req: Request, res: Respons
 }
 
 export const createSessionDetailSchedule = async (req: Request, res: Response) => {
-    const payload = req.body as ISessionDetailSchedule;
+    const payload = req.body as ICreateSessionDetailSchedule;
 
     const result = await sessionDetailScheduleService.createSessionDetailSchedule(payload);
 
@@ -36,7 +36,7 @@ export const getSessionDetailScheduleById = async (req: Request, res: Response) 
 
 export const updateSessionDetailSchedule = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const payload = req.body as ISessionDetailSchedule;
+    const payload = req.body as Partial<ICreateSessionDetailSchedule>;
 
     const result = await sessionDetailScheduleService.updateSessionDetailSchedule(id, payload);
 

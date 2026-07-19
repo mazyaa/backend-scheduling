@@ -5,8 +5,9 @@ export const getAllSertifikat = async (req: Request, res: Response): Promise<voi
     const page = Math.max(Number(req.query.page) || 1, 1);
     const limit = Math.max(Number(req.query.limit) || 10, 1);
     const search = (req.query.search?.toString().trim() as string) || undefined;
+    const scheduleId = (req.query.scheduleId?.toString().trim() as string) || undefined;
 
-    const result = await eSertifikatService.getAllSertifikat(page, limit, search);
+    const result = await eSertifikatService.getAllSertifikat(page, limit, search, scheduleId);
 
     res.status(200).json({
         message: 'All sertifikat retrieved successfully!',
